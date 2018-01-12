@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the Kultunaut Import feature.
+ */
+
+include_once 'kultunaut_import.features.inc';

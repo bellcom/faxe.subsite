@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the seniorportalen feature.
+ */
+
+include_once 'seniorportalen.features.inc';

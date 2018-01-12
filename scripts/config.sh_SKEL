@@ -1,0 +1,15 @@
+BASEDIR="/var/www/subsites.faxe.dk"
+SERVERIP="192.168.2.56"
+PROFILE="os2sub"
+EMAIL="drupal@bellcom.dk"
+SCRIPTDIR="$(dirname "$0")"
+ADMINPASS=$(cat "$SCRIPTDIR/.admin_password.txt")
+VHOSTTEMPLATE="$BASEDIR/vhost-template.txt"
+MULTISITE="$BASEDIR/public_html"
+SITESFILE="$MULTISITE/sites/sites.php"
+TMPDIRBASE="$BASEDIR/tmp"
+LOGDIRBASE="$BASEDIR/logs"
+SESSIONDIRBASE="$BASEDIR/sessions"
+DBDIR="/var/lib/mysql"
+DBUSER="temptest"
+NOW=$(date +"%d/%m/%y %H:%M:%S")
