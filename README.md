@@ -8,4 +8,17 @@ and using it as main codebase source for:
 
 Bellcom OS2Subsite included to project as [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
 
-To clone project with submodules please use `--recursive` flag.
+
+## Project setup
+
+To clone project repo with submodules and define project folder
+structure please following command:
+```
+https://raw.githubusercontent.com/bellcom/faxe.subsite/master/init.sh
+```
+
+After successful script finishing you should get all required files and
+folder to setup project locally.
+
+Setup db credentials `setting.php`.
+Load existing db or install drupal from profile.
