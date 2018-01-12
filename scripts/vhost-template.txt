@@ -1,6 +1,6 @@
 # DO NOT EDIT THIS VHOST. IT WILL BE MODIFIED BY SCRIPTS. (The includes for access limits and ServerAliases)
 <VirtualHost *:80>
-    <Directory /var/www/subsites.fredericia.dk>
+    <Directory /var/www/subsites.test.faxe.dk>
        AllowOverride All
        Options FollowSymLinks
        # Uncommenting below will only allow a limited number of Bellcom IPs access to the site
@@ -10,21 +10,21 @@
     </Directory>
 
     ServerAdmin domains@bellcom.dk
-    DocumentRoot /var/www/subsites.fredericia.dk/public_html
+    DocumentRoot /var/www/subsites.test.faxe.dk/public_html
     ServerName [domain]
 
-    CustomLog /var/www/subsites.fredericia.dk/logs/[domain]/access.log combined
-    ErrorLog /var/www/subsites.fredericia.dk/logs/[domain]/error.log
+    CustomLog /var/www/subsites.test.faxe.dk/logs/[domain]/access.log combined
+    ErrorLog /var/www/subsites.test.faxe.dk/logs/[domain]/error.log
 
-    php_admin_value open_basedir /var/www/subsites.fredericia.dk:/usr/share/php
-    php_value include_path .:/var/www/subsites.fredericia.dk
+    php_admin_value open_basedir /var/www/subsites.test.faxe.dk:/usr/share/php
+    php_value include_path .:/var/www/subsites.test.faxe.dk
 
     php_value log_errors 1
     php_value html_errors 0
     php_value display_errors 0
     php_admin_value error_reporting 2047
-    php_value error_log /var/www/subsites.fredericia.dk/logs/[domain]/php.log
+    php_value error_log /var/www/subsites.test.faxe.dk/logs/[domain]/php.log
 
-    php_value session.save_path /var/www/subsites.fredericia.dk/sessions/[domain]
-    php_admin_value upload_tmp_dir /var/www/subsites.fredericia.dk/tmp/[domain]
+    php_value session.save_path /var/www/subsites.test.faxe.dk/sessions/[domain]
+    php_admin_value upload_tmp_dir /var/www/subsites.test.faxe.dk/tmp/[domain]
 </VirtualHost>
