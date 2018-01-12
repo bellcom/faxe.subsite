@@ -52,7 +52,6 @@ private
 .Trashes
 
 # Drupal specific
-public_html
 project/sites.php
 project/*.dd
 scripts/.admin_password.txt

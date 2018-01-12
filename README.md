@@ -1,16 +1,11 @@
-# OS2sub - Subsites ondemand
+# FAXE Subsite project
 
-## scripts setup
-* pwgen package need to be installed
-* /root/.my.cnf should be setup with the root password for mysql
-* /usr/local/sbin/mysql-backup.sh is needed if you want backups before removing a subsite
-* the using running the webserver need to be able to call the scripts with sudo right, create the rules in /etc/sudoers.d/subsites-www-data
-* The scripts should only be writeable by root
-* copy config.sh_SKEL to config.sh and change settings
-* add .admin_password.txt
+The project is based on [Bellcom OS2Subsite solution](https://github.com/bellcom/os2_subsite)
+and using it as main codebase source for:
+- Drupal core
+- Contrib modules
+- OS2Subsites common mofules and feature.
 
-## main site setup
-* install standard drupal in the /default folder
-* drush en bc_subsites
-* drush vset bc_subsites_script_dir /var/www/<site>/scripts
-* drush vset bc_subsites_domain_suffix .subsites.xxxx.dk
+Bellcom OS2Subsite included to project as [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
+
+To clone project with submodules please use `--recursive` flag.
