@@ -1,0 +1,96 @@
+// |--------------------------------------------------------------------------
+// | Footer
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .layout__footer
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin layout__footer-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.layout__footer {
+  padding: 15px 0;
+
+  border-top: 1px solid #263c42;
+  background-color: $body-bg-tertiary;
+
+  .flexy-list {
+
+    > * {
+      padding: 0;
+
+      &:after {
+        content: "|";
+
+        padding: 0  $flexy-list-item-spacing;
+      }
+
+      &:last-child {
+
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
+
+  &,
+  a, a:hover {
+    font-weight: $font-weight-bold;
+    color: #fff;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

@@ -1,0 +1,115 @@
+// |--------------------------------------------------------------------------
+// | Banner
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .sectioned--banner
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin sectioned-banner-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.sectioned--banner {
+
+  .sectioned__inner {
+    min-height: 300px;
+
+    background-color: transparent;
+    background-image: linear-gradient(
+                    to right,
+                    rgba(27, 62, 70, .6) 40%,
+                    transparent 65%
+    );
+  }
+
+  .field-name-field-banner-headline {
+    @extend .heading-h1;
+
+    color: #fff;
+  }
+
+  .field-name-field-banner-text {
+    @extend .heading-h3;
+
+    font-weight: $headings-font-weight-light;
+    color: #fff;
+
+    + .field-name-field-knap-link {
+      margin-top: $grid-gutter-width;
+    }
+  }
+
+  .field-name-field-knap-link {
+
+    a {
+      @extend .btn;
+      @extend .btn-lg;
+
+      &, &:hover {
+        border-color: #fff;
+        color: #fff;
+      }
+    }
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {
+
+  .sectioned--banner {
+
+    .sectioned__inner {
+      min-height: 400px;
+    }
+
+    .field-name-field-banner-headline {
+      font-size: 70px;
+    }
+  }
+}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

@@ -1,0 +1,170 @@
+// |--------------------------------------------------------------------------
+// | Kultunaut activity
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .node-type-os2web-kulturnaut-knactivity
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin kultunaut-activity-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.node-type-os2web-kulturnaut-knactivity {
+
+  &.panels-layout--content-with-left-and-right-sidebar-top-footer {
+
+    .panels-pane-region--content-first {
+      margin-bottom: 0;
+    }
+
+    .panels-pane-region--content-secondary {
+      @extend .boxy__body;
+    }
+
+    .panels-pane-region--sidebar-right {
+      @extend .boxy__body;
+
+      padding-top: $boxy-spacing-left-right;
+
+      border: 0;
+
+      font-size: $font-size-large;
+
+      box-shadow: $boxy-shadow-body-box-shadow;
+      background-color: $boxy-shadow-body-background-color;
+
+      .pane-title {
+        margin: 0;
+        margin-bottom: 4px;
+
+        font-family: $font-family-base;
+        font-size: $font-size-small;
+        font-weight: $font-weight;
+
+        text-transform: uppercase;
+
+        color: $text-color-light;
+      }
+
+      .panel-separator {
+        height: $panel-separator-height;
+      }
+
+      .pane-node-field-os2web-kulturnaut-slidesho {
+        margin-bottom: $grid-gutter-width;
+
+        img {
+          width: 100%;
+
+          border-radius: $border-radius-base;
+        }
+      }
+
+      .pane-node-terms {
+
+        // Tags
+        .links {
+          list-style: none;
+          padding: 0;
+
+          li {
+            display: inline-block;
+
+            margin-right: 10px;
+            padding-bottom: 10px;
+
+            a {
+              @extend .label;
+              @extend .label-default;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {
+
+  .node-type-os2web-kulturnaut-knactivity {
+
+    &.panels-layout--content-with-left-and-right-sidebar-top-footer {
+
+      .panels-pane-region--sidebar-right {
+        min-height: 100px;
+        margin-top: -50px;
+      }
+    }
+  }
+}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {
+
+  .node-type-os2web-kulturnaut-knactivity {
+
+    &.panels-layout--content-with-left-and-right-sidebar-top-footer {
+
+      .panels-pane-region--sidebar-right {
+        min-height: 200px;
+        margin-top: -100px;
+      }
+    }
+  }
+}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {
+
+  .node-type-os2web-kulturnaut-knactivity {
+
+    &.panels-layout--content-with-left-and-right-sidebar-top-footer {
+
+      .panels-pane-region--sidebar-right {
+        min-height: 200px;
+        margin-top: -150px;
+      }
+    }
+  }
+}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

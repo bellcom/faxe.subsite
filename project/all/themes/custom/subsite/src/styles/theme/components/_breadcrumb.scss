@@ -1,0 +1,105 @@
+// |--------------------------------------------------------------------------
+// | Breadcrumb
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .breadcrumb
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// Responsive
+$xs-breadcrumb-padding-vertical: $breadcrumb-padding-vertical;
+$sm-breadcrumb-padding-vertical: 25px;
+$md-breadcrumb-padding-vertical: 35px;
+$lg-breadcrumb-padding-vertical: 40px;
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin breadcrumb-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.breadcrumb {
+  margin: 0;
+  padding: $xs-breadcrumb-padding-vertical $breadcrumb-padding-horizontal;
+
+  > li {
+    font-weight: $font-weight-bold;
+    font-size: $font-size-large;
+
+    &:first-child {
+      padding-left: 0;
+    }
+  }
+
+  > .active {
+    font-size: ( $font-size-large + 4px );
+  }
+
+  a {
+
+    &, &:hover {
+      color: $text-color;
+    }
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {
+
+  .breadcrumb {
+    padding: $sm-breadcrumb-padding-vertical $breadcrumb-padding-horizontal;
+  }
+}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {
+
+  .breadcrumb {
+    padding: $md-breadcrumb-padding-vertical $breadcrumb-padding-horizontal;
+  }
+}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {
+
+  .breadcrumb {
+    padding: $lg-breadcrumb-padding-vertical $breadcrumb-padding-horizontal;
+  }
+}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

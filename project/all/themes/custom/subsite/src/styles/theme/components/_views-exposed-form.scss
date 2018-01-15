@@ -1,0 +1,322 @@
+// |--------------------------------------------------------------------------
+// | Views exposed form
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .views-exposed-form
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin views-exposed-form-checkbox-variant-mixin($checked-color) {
+
+  &.is-checked {
+    border-color: $checked-color;
+
+    input[type="checkbox"].form-control {
+      border-color: $checked-color;
+      background-color: $checked-color;
+    }
+  }
+}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.views-exposed-form {
+
+  .views-exposed-widgets {
+    display: flex;
+
+    flex-direction: column;
+
+    margin: 0;
+  }
+
+  .views-exposed-widget {
+    display: inline-block;
+
+    // Resets
+    float: none;
+
+    margin: 10px 0 0 0;
+    padding: 0;
+
+    .btn {
+      margin: 0;
+      margin-top: 3px;
+
+      padding: 10px $padding-base-horizontal;
+    }
+  }
+
+  .views-widget {
+    display: inline-block;
+
+    > div {
+      display: inline-block;
+    }
+  }
+
+  .btn {
+
+    &.btn-default,
+    &.btn-info {
+      @extend .btn-primary;
+
+      font-weight: $font-weight-bold;
+    }
+  }
+
+  // The wrapper around all the checkboxes
+  .form-control.form-checkboxes {
+    height: auto;
+    width: auto;
+
+    border-radius: 0;
+
+    padding: 0;
+
+    font-weight: $font-weight-bold;
+    font-size: $font-size-large;
+    color: $text-color-dark;
+
+    background-color: transparent;
+
+    &, &:hover, &:focus {
+      border-color: transparent;
+    }
+  }
+
+  .bef-checkboxes {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    .form-type-bef-checkbox {
+      display: flex;
+
+      flex-direction: row-reverse;
+      align-items: center;
+
+      margin: 2px 10px 0 2px;
+      padding: 7px 12px;
+
+      border-radius: $border-radius-base;
+      border: 2px solid #d8d8d8;
+
+      transition: border-color $transition-time-short ease-in-out;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+
+    label {
+      display: block;
+
+      cursor: hand;
+      cursor: pointer;
+
+      padding: 0;
+      margin: 0 8px 0 0;
+
+      font-weight: $font-weight-bold;
+      font-size: $font-size-large;
+      color: $text-color-dark;
+
+      white-space: nowrap;
+    }
+
+    // Resets
+    input[type="checkbox"].form-control {
+      display: inline-block;
+
+      width: auto;
+      height: auto;
+
+      padding: 0;
+      margin: 0;
+
+      font-size: medium;
+
+      border: medium none;
+      border-radius: 0;
+
+      background-color: transparent;
+    }
+
+    input[type="checkbox"].form-control {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      width: 28px;
+      height: 28px;
+
+      transition: all $transition-time-short ease-in-out;
+
+      border-radius: $border-radius-base;
+      border: 2px solid #d8d8d8;
+
+      &:after {
+        display: none;
+
+        @extend .icon;
+        content: $fa-var-check;
+
+        color: $text-color;
+
+        transition: all $transition-time-short ease-in-out;
+      }
+
+      &:checked {
+
+        &:after {
+          display: block;
+
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .views-widget-filter-date_filter {
+
+    .views-widget {
+      display: flex;
+    }
+
+    .form-group {
+      max-width: 140px;
+    }
+
+    label {
+      display: block;
+
+      margin: 0 0 4px 0;
+
+      font-family: $font-family-base;
+      font-size: $font-size-small;
+      font-weight: $font-weight;
+
+      text-transform: uppercase;
+
+      color: $text-color-light;
+    }
+
+    .form-control {
+      padding-left: 0;
+
+      font-weight: $font-weight-bold;
+      font-size: $font-size-large;
+      color: $text-color-dark;
+
+      background-color: transparent;
+
+      &, &:hover, &:focus {
+        border-color: transparent;
+      }
+    }
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+.views-exposed-form {
+
+  .bef-checkboxes {
+
+    .form-type-bef-checkbox {
+      @include views-exposed-form-checkbox-variant-mixin($brand-primary);
+
+      // For boern
+      &.form-item-edit-kat-98 {
+        @include views-exposed-form-checkbox-variant-mixin($oplev-syddjurs-top-level-for-boern);
+      }
+
+      // Kunst og kultur
+      &.form-item-edit-kat-83 {
+        @include views-exposed-form-checkbox-variant-mixin($oplev-syddjurs-top-level-kunst-og-kultur);
+      }
+
+      // Natur og friluftsliv
+      &.form-item-edit-kat-116 {
+        @include views-exposed-form-checkbox-variant-mixin($oplev-syddjurs-top-level-natur-og-friluftsliv);
+      }
+
+      // Sport og fritid
+      &.form-item-edit-kat-104 {
+        @include views-exposed-form-checkbox-variant-mixin($oplev-syddjurs-top-level-sport-og-fritid);
+      }
+    }
+  }
+}
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {
+}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {
+
+  .views-exposed-form {
+
+    .views-widget-filter-date_filter {
+      flex-grow: 1;
+
+      .form-group {
+        max-width: 150px;
+      }
+    }
+
+    .views-exposed-widgets {
+      flex-direction: row;
+    }
+
+    .views-exposed-widget {
+
+      + .views-exposed-widget {
+        margin-left: 10px;
+      }
+    }
+  }
+}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

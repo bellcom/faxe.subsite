@@ -1,0 +1,209 @@
+// |--------------------------------------------------------------------------
+// | Flexy header
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .flexy-header
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// Responsive
+$xs-flexy-header-static-row-first-height: 50px;
+$sm-flexy-header-static-row-first-height: 70px;
+$md-flexy-header-static-row-first-height: 86px;
+$lg-flexy-header-static-row-first-height: 86px;
+
+$xs-flexy-header-static-row-second-height: 40px;
+$sm-flexy-header-static-row-second-height: 50px;
+$md-flexy-header-static-row-second-height: 60px;
+$lg-flexy-header-static-row-second-height: 60px;
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin flexy-header-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.flexy-header {}
+
+.flexy-header__row {
+  border-bottom: 1px solid $border-color;
+}
+
+.flexy-header--static {
+
+  .flexy-header__row--first {
+    @include flexy-header-mixin-row-height($xs-flexy-header-static-row-first-height);
+  }
+
+  .flexy-header__row--second {
+    @include flexy-header-mixin-row-height($xs-flexy-header-static-row-second-height);
+  }
+}
+
+.flexy-header__navigation__wrapper--full-width {
+
+  .flexy-navigation {
+    @extend .flexy-navigation--full-width;
+  }
+}
+
+.flexy-header__social-icons {
+
+  + .flexy-header__secondary-navigation {
+    margin-left: floor( ( $grid-gutter-width / 2 ) );
+  }
+}
+
+.flexy-header__secondary-navigation {
+
+  + .flexy-header__form {
+    margin-left: floor( ( $grid-gutter-width / 2 ) );
+  }
+
+  a {
+    color: $input-color-placeholder;
+  }
+}
+
+.flexy-header__form {
+
+  form {
+    position: relative;
+  }
+
+  .input-group {
+
+    .form-control {
+      @include border-right-radius($border-radius-large);
+    }
+
+    .input-group-addon {
+      display: none;
+    }
+  }
+
+  .form-control {
+    @extend .input-lg;
+
+    padding-right: 50px; // The width of the button, so the text dont go underneath
+
+    border: 2px solid #393d5e;
+
+    font-size: $font-size-base;
+  }
+
+  .btn {
+    position: absolute;
+
+    z-index: 2000;
+
+    top: 5px;
+    right: 0;
+
+    background-color: transparent;
+    border: 0;
+
+    font-size: 0;
+
+    color: $text-color;
+
+    @extend .btn-lg;
+
+    &:after {
+      @extend .fa;
+
+      display: inline-block;
+
+      font-size: $font-size-base;
+
+      content: $fa-var-search;
+    }
+  }
+}
+
+.flexy-header__sidebar-toggle {
+  border: 0;
+  background-color: transparent;
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {
+
+  .flexy-header--static {
+
+    .flexy-header__row--first {
+      @include flexy-header-mixin-row-height($sm-flexy-header-static-row-first-height);
+    }
+
+    .flexy-header__row--second {
+      @include flexy-header-mixin-row-height($sm-flexy-header-static-row-second-height);
+    }
+  }
+}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {
+
+  .flexy-header--static {
+
+    .flexy-header__row--first {
+      @include flexy-header-mixin-row-height($md-flexy-header-static-row-first-height);
+    }
+
+    .flexy-header__row--second {
+      @include flexy-header-mixin-row-height($md-flexy-header-static-row-second-height);
+    }
+  }
+}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {
+
+  .flexy-header--static {
+
+    .flexy-header__row--first {
+      @include flexy-header-mixin-row-height($lg-flexy-header-static-row-first-height);
+    }
+
+    .flexy-header__row--second {
+      @include flexy-header-mixin-row-height($lg-flexy-header-static-row-second-height);
+    }
+  }
+}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

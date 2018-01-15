@@ -1,0 +1,226 @@
+// |--------------------------------------------------------------------------
+// | Carousel
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .carousel
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+$carousel-overlay-color: #1b3e46;
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin carousel-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.carousel {}
+
+.carousel-control {
+
+  .icon-prev,
+  .icon-next {
+    @extend .fa;
+  }
+
+  .icon-prev {
+
+    &:before {
+      content: $fa-var-angle-left;
+    }
+  }
+
+  .icon-next {
+
+    &:before {
+      content: $fa-var-angle-right;
+    }
+  }
+}
+
+.carousel-indicators {
+  width: 100%;
+  text-align: center;
+
+  // Resets
+  left: 0;
+  margin-left: 0;
+
+  li {
+    width:  16px;
+    height: 16px;
+
+    margin: 5px;
+
+    border-width: 0;
+    border-radius: 16px;
+
+    background-color: rgba($carousel-indicator-active-bg, .5);
+  }
+
+  .active {
+    width:  16px;
+    height: 16px;
+
+    margin: 5px;
+
+    border-width: 0;
+
+    background-color: $carousel-indicator-active-bg;
+  }
+}
+
+
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// When provided by views
+.views-bootstrap-carousel-plugin-style {
+  max-height: 410px;
+
+  overflow: hidden;
+
+  img {
+    width: 100%;
+
+    min-height: 270px;
+  }
+
+  .carousel-overlay {
+    position: absolute;
+
+    z-index: 250;
+
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    content: "";
+
+    background-color: transparent;
+    background-image: linear-gradient(
+                    to right,
+                    rgba(27, 62, 70, .6) 40%,
+                    transparent 65%
+    );
+  }
+
+  .carousel-caption {
+    top: 20px;
+    bottom: auto;
+
+    z-index: 500;
+
+    padding-top: 30px;
+
+    text-align: left;
+
+    h1, h2, h3, h4, h5, h6 {
+      font-size: $font-size-h1;
+
+      color: #fff;
+    }
+
+    p {
+      font-size: $font-size-h3;
+      font-family: $headings-font-family;
+      font-weight: $headings-font-weight-light;
+
+      color: #fff;
+    }
+
+    // If we'd like to make it having spacing on the left / right, comment out the following lines.
+    //
+    // The design wants us to obey the left/right buttons, but since we are limiting
+    // the carousel to 1 slide, this should not be needed.
+    @extend .container;
+
+    // Resets
+    left: 0;
+    right: 0;
+  }
+}
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {
+
+  .carousel-control {
+    display: none;
+  }
+}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {
+
+  .carousel {
+
+    .container {
+      max-width: calc(100% - 30%);
+    }
+  }
+
+  .carousel-indicators {
+    text-align: right;
+    padding-right: 90px;
+  }
+
+  .views-bootstrap-carousel-plugin-style {
+
+    .carousel-caption {
+
+      h1, h2, h3, h4, h5, h6 {
+        font-size: 50px;
+      }
+    }
+  }
+}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {
+
+  .views-bootstrap-carousel-plugin-style {
+
+    .carousel-caption {
+
+      h1, h2, h3, h4, h5, h6 {
+        font-size: 70px;
+      }
+    }
+  }
+}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

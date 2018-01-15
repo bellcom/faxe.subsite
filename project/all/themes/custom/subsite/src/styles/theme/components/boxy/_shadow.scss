@@ -1,0 +1,72 @@
+// |--------------------------------------------------------------------------
+// | Shadow
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .boxy--shadow
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+$boxy-shadow-body-background-color: $body-bg;
+$boxy-shadow-body-box-shadow: 0 20px 40px 0 rgba(48, 55, 39, .05);
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin boxy-shadow-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.boxy--shadow {
+
+  .boxy__body {
+    border: 0;
+
+    box-shadow: $boxy-shadow-body-box-shadow;
+    background-color: $boxy-shadow-body-background-color;
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

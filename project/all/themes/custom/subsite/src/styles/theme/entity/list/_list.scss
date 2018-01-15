@@ -1,0 +1,137 @@
+// |--------------------------------------------------------------------------
+// | List
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .entity-list
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin entity-list-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.entity-list {
+  display: flex;
+
+  margin-bottom: $grid-gutter-width;
+}
+
+.entity-list__icon {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+
+  height: 40px;
+  width: 40px;
+
+  border-radius: $border-radius-base;
+
+  background-color: $brand-primary;
+
+  .icon {
+    font-size: 20px;
+
+    color: #fff;
+  }
+
+  + .entity-list__body {
+    margin-left: floor( ( $grid-gutter-width / 2 ) );
+  }
+}
+
+.entity-list__heading {}
+.entity-list__heading__title {
+  padding: 0;
+  margin: 0;
+}
+
+.entity-list__body {
+  flex-grow: 1;
+}
+
+.entity-list__date {
+  font-size: $font-size-small;
+  font-weight: $font-weight-bold;
+
+  + .entity-list__heading {
+    margin-top: 2px;
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+.entity-top-level--for-boern {
+
+  .entity-list__icon {
+    background-color: $oplev-syddjurs-top-level-for-boern;
+  }
+}
+
+.entity-top-level--kunst-og-kultur {
+
+  .entity-list__icon {
+    background-color: $oplev-syddjurs-top-level-kunst-og-kultur;
+  }
+}
+
+.entity-top-level--natur-og-friluftsliv {
+
+  .entity-list__icon {
+    background-color: $oplev-syddjurs-top-level-natur-og-friluftsliv;
+  }
+}
+
+.entity-top-level--sport-og-fritid {
+
+  .entity-list__icon {
+    background-color: $oplev-syddjurs-top-level-sport-og-fritid;
+  }
+}
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

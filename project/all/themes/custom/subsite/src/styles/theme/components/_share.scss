@@ -1,0 +1,150 @@
+// |--------------------------------------------------------------------------
+// | Share
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .share
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin share-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.share {
+  display: flex;
+
+  margin-top: 20px;
+}
+
+.share__item {
+  position: relative;
+
+  + .share__item {
+    margin-left: 10px;
+  }
+}
+
+.share__item__popup {
+  display: none;
+  position: absolute;
+
+  left: 50%;
+  bottom: 100%;
+
+  margin-left: -60px; // Half the width of the total social items
+
+  margin-bottom: 20px;
+
+  .visible > & {
+    display: block;
+  }
+
+  // Arrow
+  &:after {
+    position: absolute;
+
+    top: 100%;
+    left: 50%;
+
+    content: "";
+
+    width: 0;
+    height: 0;
+
+    margin-left: -8px;
+
+    border-style: solid;
+    border-width: 8px 8px 0 8px;
+    border-color: $social-link-color-facebook transparent transparent
+  }
+}
+
+// Social
+.share__item__social-list {
+  display: flex;
+}
+
+.share__item__social-list__item {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  width: 40px;
+  height: 40px;
+
+  &,
+  &:hover {
+    text-decoration: none;
+  }
+
+  .icon {
+    color: #fff;
+  }
+
+  &:first-child {
+    @include border-left-radius($border-radius-base);
+  }
+
+  &:last-child {
+    @include border-right-radius($border-radius-base);
+  }
+}
+
+.share__item__social-list__item--facebook {
+  background-color: $social-link-color-facebook;
+}
+.share__item__social-list__item--twitter {
+  background-color: $social-link-color-twitter;
+}
+.share__item__social-list__item--linkedin {
+  background-color: $social-link-color-linkedin;
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

@@ -1,0 +1,116 @@
+// |--------------------------------------------------------------------------
+// | Social icon
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .social-icon
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+$social-icon-height: 34px;
+$social-icon-width: 34px;
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin social-icon-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.social-icon {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  height: $social-icon-height;
+  width: $social-icon-width;
+
+  border-radius: $border-radius-base;
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  .icon {
+    font-size: 20px;
+
+    color: #fff;
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+.social-icon--facebook {
+  background-color: $social-link-color-facebook;
+}
+
+.social-icon--twitter {
+  background-color: $social-link-color-twitter;
+}
+
+.social-icon--google-plus {
+  background-color: $social-link-color-google-plus;
+}
+
+.social-icon--linkedin {
+  background-color: $social-link-color-linkedin;
+}
+
+.social-icon--pinterest {
+  background-color: $social-link-color-pinterest;
+}
+
+.social-icon--instagram {
+  background-color: $social-link-color-instagram;
+}
+
+.social-icon--youtube {
+  background-color: $social-link-color-youtube;
+}
+
+.social-icon--vimeo {
+  background-color: $social-link-color-vimeo;
+}
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

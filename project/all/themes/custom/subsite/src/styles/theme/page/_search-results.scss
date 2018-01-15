@@ -1,0 +1,109 @@
+// |--------------------------------------------------------------------------
+// | Search results
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .search-results
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// Responsive
+$xs-search-result-item-spacing: floor( ( $grid-gutter-width / 2 ) );
+$sm-search-result-item-spacing: floor( ( $grid-gutter-width / 2 ) );
+$md-search-result-item-spacing: $grid-gutter-width;
+$lg-search-result-item-spacing: $grid-gutter-width;
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin search-results-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.search-results {}
+
+.search-results__form {
+
+  .form-inline {
+
+    .control-label {
+      display: none;
+    }
+  }
+}
+
+.search-results__list {}
+
+.search-results__list__item {
+
+  &:last-child {
+
+    .entity-list-advanced--search-result {
+      border-bottom: 0;
+    }
+  }
+}
+
+.entity-list-advanced--search-result {
+  padding: $xs-search-result-item-spacing 0;
+  border-bottom: 1px solid $border-color;
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {
+
+  .entity-list-advanced--search-result {
+    padding: $sm-search-result-item-spacing 0;
+  }
+}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {
+
+  .entity-list-advanced--search-result {
+    padding: $md-search-result-item-spacing 0;
+  }
+}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {
+
+  .entity-list-advanced--search-result {
+    padding: $lg-search-result-item-spacing 0;
+  }
+}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}
