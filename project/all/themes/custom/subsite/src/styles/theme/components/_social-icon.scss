@@ -10,8 +10,8 @@
 // Variables
 // --------------------------------------------------
 
-$social-icon-height: 34px;
-$social-icon-width: 34px;
+$social-icon-height: 40px;
+$social-icon-width: 40px;
 
 // --------------------------------------------------
 // Mixins
@@ -32,16 +32,18 @@ $social-icon-width: 34px;
   height: $social-icon-height;
   width: $social-icon-width;
 
-  border-radius: $border-radius-base;
+  border-radius: 0;
 
   &:hover {
     text-decoration: none;
+
+    color: #fff;
   }
 
   .icon {
-    font-size: 20px;
+    font-size: 24px;
 
-    color: #fff;
+    color: $brand-primary;
   }
 }
 
@@ -50,35 +52,59 @@ $social-icon-width: 34px;
 // --------------------------------------------------
 
 .social-icon--facebook {
-  background-color: $social-link-color-facebook;
+
+  &:hover {
+    background-color: $social-link-color-facebook;
+  }
 }
 
 .social-icon--twitter {
-  background-color: $social-link-color-twitter;
+
+  &:hover {
+    background-color: $social-link-color-twitter;
+  }
 }
 
 .social-icon--google-plus {
-  background-color: $social-link-color-google-plus;
+
+  &:hover {
+    background-color: $social-link-color-google-plus;
+  }
 }
 
 .social-icon--linkedin {
-  background-color: $social-link-color-linkedin;
+
+  &:hover {
+    background-color: $social-link-color-linkedin;
+  }
 }
 
 .social-icon--pinterest {
-  background-color: $social-link-color-pinterest;
+
+  &:hover {
+    background-color: $social-link-color-pinterest;
+  }
 }
 
 .social-icon--instagram {
-  background-color: $social-link-color-instagram;
+
+  &:hover {
+    background-color: $social-link-color-instagram;
+  }
 }
 
 .social-icon--youtube {
-  background-color: $social-link-color-youtube;
+
+  &:hover {
+    background-color: $social-link-color-youtube;
+  }
 }
 
 .social-icon--vimeo {
-  background-color: $social-link-color-vimeo;
+
+  &:hover {
+    background-color: $social-link-color-vimeo;
+  }
 }
 
 // --------------------------------------------------
