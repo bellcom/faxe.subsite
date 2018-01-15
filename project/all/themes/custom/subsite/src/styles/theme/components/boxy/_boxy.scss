@@ -20,8 +20,8 @@
 // Styling
 // --------------------------------------------------
 
-.boxy__body {
-  border-radius: $border-radius-base;
+.boxy__heading + .boxy__body {
+  padding-top: 0;
 }
 
 // --------------------------------------------------

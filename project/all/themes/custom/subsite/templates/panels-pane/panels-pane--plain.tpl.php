@@ -2,15 +2,15 @@
     <?php print $pane_prefix; ?>
 <?php endif; ?>
 
-<div class="boxy <?php print $classes; ?>" <?php print $id; ?>>
+<div class="partial <?php print $classes; ?>" <?php print $id; ?>>
     <?php if ($admin_links): ?>
         <?php print $admin_links; ?>
     <?php endif; ?>
 
     <?php print render($title_prefix); ?>
     <?php if ($title): ?>
-        <div class="boxy__heading">
-            <h2 class="boxy__heading__title" <?php print $title_attributes; ?>><?php print $title; ?></h2>
+        <div class="partial__heading">
+            <h2 class="partial__heading__title" <?php print $title_attributes; ?>><?php print $title; ?></h2>
         </div>
     <?php endif; ?>
     <?php print render($title_suffix); ?>
@@ -21,7 +21,7 @@
         </div>
     <?php endif; ?>
 
-    <div class="boxy__body">
+    <div class="partial__body">
         <div class="pane-content">
             <?php print render($content); ?>
         </div>

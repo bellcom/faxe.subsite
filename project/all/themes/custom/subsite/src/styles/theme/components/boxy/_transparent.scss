@@ -1,35 +1,41 @@
 // |--------------------------------------------------------------------------
-// | Shadow
+// | Transparent
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .boxy--shadow
+// | - .boxy--transparent
 // |
 
 // --------------------------------------------------
 // Variables
 // --------------------------------------------------
 
-$boxy-shadow-body-background-color: $body-bg;
-$boxy-shadow-body-box-shadow: 0 20px 40px 0 rgba(48, 55, 39, .05);
+$boxy-transparent-heading-background-color: transparent;
+$boxy-transparent-body-background-color: transparent;
+$boxy-transparent-footer-background-color: transparent;
 
 // --------------------------------------------------
 // Mixins
 // --------------------------------------------------
 
-@mixin boxy-shadow-mixin() {}
+@mixin boxy-transparent-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.boxy--shadow {
+.boxy--transparent {
+
+  .boxy__heading {
+    background-color: $boxy-transparent-heading-background-color;
+  }
 
   .boxy__body {
-    border: 0;
+    background-color: $boxy-transparent-body-background-color;
+  }
 
-    box-shadow: $boxy-shadow-body-box-shadow;
-    background-color: $boxy-shadow-body-background-color;
+  .boxy__footer {
+    background-color: $boxy-transparent-footer-background-color;
   }
 }
 

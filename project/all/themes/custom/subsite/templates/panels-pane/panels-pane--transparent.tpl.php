@@ -2,7 +2,7 @@
     <?php print $pane_prefix; ?>
 <?php endif; ?>
 
-<div class="boxy <?php print $classes; ?>" <?php print $id; ?>>
+<div class="boxy boxy--transparent <?php print $classes; ?>" <?php print $id; ?>>
     <?php if ($admin_links): ?>
         <?php print $admin_links; ?>
     <?php endif; ?>
