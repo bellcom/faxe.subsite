@@ -440,6 +440,10 @@
           <div class="layout__footer__company-details">
             <div class="flexy-list flexy-list--centered">
 
+              <div>
+                <?php print $site_name; ?>
+              </div>
+
               <?php if (!empty($theme_settings['contact_information']['address'])) : ?>
                 <div>
                   <?php print $theme_settings['contact_information']['address']; ?>
