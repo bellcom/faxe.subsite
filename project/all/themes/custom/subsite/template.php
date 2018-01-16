@@ -42,6 +42,9 @@ function subsite_preprocess_page(&$variables) {
   // Overriding the one set by mother theme, as we want to limit the number of levels shown
   $variables['theme_path'] = base_path() . drupal_get_path('theme', $current_theme);
 
+  // Navigation
+  $variables['flexy_navigation__primary'] = _bellcom_generate_menu($primary_navigation_name, 'flexy_navigation', FALSE, 1);
+
   // Tabs.
   $variables['tabs_primary'] = $variables['tabs'];
   $variables['tabs_secondary'] = $variables['tabs'];
