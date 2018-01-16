@@ -11,7 +11,7 @@
 // --------------------------------------------------
 
 // Responsive
-$xs-layout-footer-row-spacing: 10px;
+$xs-layout-footer-row-spacing: 20px;
 $sm-layout-footer-row-spacing: 20px;
 $md-layout-footer-row-spacing: 40px;
 $lg-layout-footer-row-spacing: 45px;
@@ -37,8 +37,6 @@ $lg-layout-footer-border-width: 70px;
 // --------------------------------------------------
 
 .layout__footer {
-  font-size: $font-size-large;
-
   border-top-width: $xs-layout-footer-border-width;
   border-top-color: $brand-secondary;
   border-top-style: solid;
@@ -148,6 +146,10 @@ $lg-layout-footer-border-width: 70px;
 
       > * {
 
+        + * {
+          margin-top: 8px;
+        }
+
         &:after {
           display: none;
         }
@@ -157,7 +159,12 @@ $lg-layout-footer-border-width: 70px;
 }
 
 // Tablet - and up
-@media #{$breakpoint-tablet-and-up} {}
+@media #{$breakpoint-tablet-and-up} {
+
+  .layout__footer {
+    font-size: $font-size-large;
+  }
+}
 
 // Tablet - only
 @media #{$breakpoint-tablet-only} {
