@@ -11,10 +11,6 @@
 // --------------------------------------------------
 
 // Responsive
-$xs-breadcrumb-padding-vertical: $breadcrumb-padding-vertical;
-$sm-breadcrumb-padding-vertical: 25px;
-$md-breadcrumb-padding-vertical: 35px;
-$lg-breadcrumb-padding-vertical: 40px;
 
 // --------------------------------------------------
 // Mixins
@@ -27,20 +23,24 @@ $lg-breadcrumb-padding-vertical: 40px;
 // --------------------------------------------------
 
 .breadcrumb {
+  display: inline-block;
+
   margin: 0;
-  padding: $xs-breadcrumb-padding-vertical $breadcrumb-padding-horizontal;
+  border-radius: 0;
 
   > li {
-    font-weight: $font-weight-bold;
-    font-size: $font-size-large;
 
     &:first-child {
       padding-left: 0;
     }
-  }
 
-  > .active {
-    font-size: ( $font-size-large + 4px );
+    + li:before {
+      @extend .fa;
+
+      content: $fa-var-angle-right;
+
+      padding: 0 10px;
+    }
   }
 
   a {
@@ -69,31 +69,16 @@ $lg-breadcrumb-padding-vertical: 40px;
 @media #{$breakpoint-tablet-and-up} {}
 
 // Tablet - only
-@media #{$breakpoint-tablet-only} {
-
-  .breadcrumb {
-    padding: $sm-breadcrumb-padding-vertical $breadcrumb-padding-horizontal;
-  }
-}
+@media #{$breakpoint-tablet-only} {}
 
 // Desktop - and up
 @media #{$breakpoint-desktop-and-up} {}
 
 // Desktop - only
-@media #{$breakpoint-desktop-only} {
-
-  .breadcrumb {
-    padding: $md-breadcrumb-padding-vertical $breadcrumb-padding-horizontal;
-  }
-}
+@media #{$breakpoint-desktop-only} {}
 
 // Large desktop - and up
-@media #{$breakpoint-large-desktop-and-up} {
-
-  .breadcrumb {
-    padding: $lg-breadcrumb-padding-vertical $breadcrumb-padding-horizontal;
-  }
-}
+@media #{$breakpoint-large-desktop-and-up} {}
 
 // Print
 @media print {}

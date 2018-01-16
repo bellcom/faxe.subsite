@@ -225,6 +225,11 @@
 
   <!-- Begin - content -->
   <main class="layout__content" role="main">
+
+    <!-- Begin - breadcrumb -->
+    <?php print $breadcrumb; ?>
+    <!-- End - breadcrumb -->
+
     <div class="container">
 
       <?php if (!empty($page['help'])): ?>
@@ -257,12 +262,9 @@
 
     <a id="main-content"></a>
 
-    <?php print $breadcrumb; ?>
-
     <div class="container">
       <?php print render($page['content']); ?>
     </div>
-
   </main>
   <!-- End - content -->
 
