@@ -71,7 +71,15 @@ img {
 @media #{$breakpoint-mobile-and-up} {}
 
 // Mobile - only
-@media #{$breakpoint-mobile-only} {}
+@media #{$breakpoint-mobile-only} {
+
+    .text-xs-center {
+
+        .flexy-list {
+            justify-content: center;
+        }
+    }
+}
 
 // Tablet - and up
 @media #{$breakpoint-tablet-and-up} {}
