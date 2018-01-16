@@ -11,6 +11,11 @@
 // --------------------------------------------------
 
 // Responsive
+$xs-layout-footer-row-spacing: 10px;
+$sm-layout-footer-row-spacing: 20px;
+$md-layout-footer-row-spacing: 40px;
+$lg-layout-footer-row-spacing: 45px;
+
 $xs-layout-footer-top-bottom-padding: 30px;
 $sm-layout-footer-top-bottom-padding: 50px;
 $md-layout-footer-top-bottom-padding: 60px;
@@ -63,7 +68,7 @@ $lg-layout-footer-border-width: 70px;
 .layout__footer__row {
 
   + .layout__footer__row {
-    margin-top: 45px;
+    margin-top: $xs-layout-footer-row-spacing;
   }
 }
 
@@ -149,6 +154,13 @@ $lg-layout-footer-border-width: 70px;
       padding-bottom: $sm-layout-footer-top-bottom-padding;
     }
   }
+
+  .layout__footer__row {
+
+    + .layout__footer__row {
+      margin-top: $sm-layout-footer-row-spacing;
+    }
+  }
 }
 
 // Desktop - and up
@@ -167,6 +179,13 @@ $lg-layout-footer-border-width: 70px;
       padding-bottom: $md-layout-footer-top-bottom-padding;
     }
   }
+
+  .layout__footer__row {
+
+    + .layout__footer__row {
+      margin-top: $md-layout-footer-row-spacing;
+    }
+  }
 }
 
 // Large desktop - and up
@@ -180,6 +199,13 @@ $lg-layout-footer-border-width: 70px;
 
       padding-top: ($lg-layout-footer-border-width + $lg-layout-footer-top-bottom-padding);
       padding-bottom: $lg-layout-footer-top-bottom-padding;
+    }
+  }
+
+  .layout__footer__row {
+
+    + .layout__footer__row {
+      margin-top: $lg-layout-footer-row-spacing;
     }
   }
 }
