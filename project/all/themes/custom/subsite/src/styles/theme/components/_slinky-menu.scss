@@ -24,7 +24,7 @@
   color: #fff;
 
   li {
-    border-bottom: 1px solid #263c42;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
   }
 
   .back {
@@ -38,7 +38,7 @@
       font-size: 18px;
       content: $fa-var-angle-right;
 
-      color: #969899;
+      color: #fff;
     }
   }
 }

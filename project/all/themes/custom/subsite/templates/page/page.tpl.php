@@ -4,16 +4,6 @@
   <!-- Begin - sidr source provider -->
   <aside class="sidr-source-provider">
 
-    <!-- Begin - logo -->
-    <a href="<?php print $front_page; ?>" class="logo">
-      <img src="<?php print $theme_path; ?>/dist/images/logo__white.png"
-           alt="<?php print t('@site_name logo',
-             ['@site_name' => $site_name]); ?>"/>
-
-      <?php print $site_name; ?>
-    </a>
-    <!-- End - logo -->
-
     <!-- Begin - navigation -->
     <nav class="slinky-menu" role="navigation">
       <?php print render($menu_slinky__primary); ?>
