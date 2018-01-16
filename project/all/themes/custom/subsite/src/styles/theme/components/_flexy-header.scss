@@ -13,13 +13,18 @@
 // Responsive
 $xs-flexy-header-static-row-first-height: 50px;
 $sm-flexy-header-static-row-first-height: 70px;
-$md-flexy-header-static-row-first-height: 86px;
-$lg-flexy-header-static-row-first-height: 86px;
+$md-flexy-header-static-row-first-height: 90px;
+$lg-flexy-header-static-row-first-height: 90px;
 
 $xs-flexy-header-static-row-second-height: 40px;
 $sm-flexy-header-static-row-second-height: 50px;
 $md-flexy-header-static-row-second-height: 60px;
 $lg-flexy-header-static-row-second-height: 60px;
+
+$xs-logo-font-size: 20px;
+$sm-logo-font-size: 22px;
+$md-logo-font-size: 28px;
+$lg-logo-font-size: 28px;
 
 // --------------------------------------------------
 // Mixins
@@ -33,43 +38,48 @@ $lg-flexy-header-static-row-second-height: 60px;
 
 .flexy-header {}
 
-.flexy-header__row {
-  border-bottom: 1px solid $border-color;
-}
-
 .flexy-header--static {
 
   .flexy-header__row--first {
     @include flexy-header-mixin-row-height($xs-flexy-header-static-row-first-height);
+
+    background-color: $body-bg-secondary;
   }
 
   .flexy-header__row--second {
     @include flexy-header-mixin-row-height($xs-flexy-header-static-row-second-height);
-  }
-}
 
-.flexy-header__navigation__wrapper--full-width {
-
-  .flexy-navigation {
-    @extend .flexy-navigation--full-width;
-  }
-}
-
-.flexy-header__social-icons {
-
-  + .flexy-header__secondary-navigation {
-    margin-left: floor( ( $grid-gutter-width / 2 ) );
+    background-color: $body-bg-tertiary;
   }
 }
 
 .flexy-header__secondary-navigation {
 
-  + .flexy-header__form {
-    margin-left: floor( ( $grid-gutter-width / 2 ) );
+  .flexy-list {
+
+    > * {
+      padding: 0 30px 0 0;
+
+      &:last-child {
+        padding-right: 0;
+      }
+    }
   }
 
   a {
-    color: $input-color-placeholder;
+    font-size: $font-size-large;
+
+    color: $text-color;
+  }
+}
+
+.flexy-header__logo {
+  font-size: $xs-logo-font-size;
+
+  &, &:hover, &:focus {
+    color: $text-color;
+
+    text-decoration: none;
   }
 }
 
@@ -164,6 +174,10 @@ $lg-flexy-header-static-row-second-height: 60px;
       @include flexy-header-mixin-row-height($sm-flexy-header-static-row-second-height);
     }
   }
+
+  .flexy-header__logo {
+    font-size: $sm-logo-font-size;
+  }
 }
 
 // Desktop - and up
@@ -182,6 +196,10 @@ $lg-flexy-header-static-row-second-height: 60px;
       @include flexy-header-mixin-row-height($md-flexy-header-static-row-second-height);
     }
   }
+
+  .flexy-header__logo {
+    font-size: $md-logo-font-size;
+  }
 }
 
 // Large desktop - and up
@@ -196,6 +214,10 @@ $lg-flexy-header-static-row-second-height: 60px;
     .flexy-header__row--second {
       @include flexy-header-mixin-row-height($lg-flexy-header-static-row-second-height);
     }
+  }
+
+  .flexy-header__logo {
+    font-size: $lg-logo-font-size;
   }
 }
 

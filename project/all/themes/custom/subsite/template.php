@@ -15,13 +15,13 @@ function subsite_preprocess_html(&$variables) {
   // Add javascript files
   drupal_add_js($theme_path . '/dist/javascripts/modernizr.js',
     [
-      'type'  => 'file',
+      'type' => 'file',
       'scope' => 'footer',
       'group' => JS_LIBRARY,
     ]);
   drupal_add_js($theme_path . '/dist/javascripts/app.js',
     [
-      'type'  => 'file',
+      'type' => 'file',
       'scope' => 'footer',
       'group' => JS_THEME,
     ]);
@@ -35,18 +35,15 @@ function subsite_preprocess_html(&$variables) {
  * Implements hook_preprocess_page().
  */
 function subsite_preprocess_page(&$variables) {
-  $current_theme                     = variable_get('theme_default', 'none');
-  $primary_navigation_name           = variable_get('menu_main_links_source', 'main-menu');
-  $secondary_navigation_name         = variable_get('menu_secondary_links_source', 'user-menu');
+  $current_theme = variable_get('theme_default', 'none');
+  $primary_navigation_name = variable_get('menu_main_links_source', 'main-menu');
+  $secondary_navigation_name = variable_get('menu_secondary_links_source', 'user-menu');
 
   // Overriding the one set by mother theme, as we want to limit the number of levels shown
-  $variables['flexy_navigation__primary'] = _bellcom_generate_menu($primary_navigation_name, 'flexy_navigation', TRUE, 2);
-  $variables['menu_header__row_first__secondary'] = _bellcom_generate_menu($secondary_navigation_name, 'flexy_list', false, 1);
-
-  $variables['theme_path']  = base_path() . drupal_get_path('theme', $current_theme);
+  $variables['theme_path'] = base_path() . drupal_get_path('theme', $current_theme);
 
   // Tabs.
-  $variables['tabs_primary']   = $variables['tabs'];
+  $variables['tabs_primary'] = $variables['tabs'];
   $variables['tabs_secondary'] = $variables['tabs'];
   unset($variables['tabs_primary']['#secondary']);
   unset($variables['tabs_secondary']['#primary']);
