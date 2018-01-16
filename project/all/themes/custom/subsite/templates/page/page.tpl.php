@@ -35,7 +35,7 @@
                         <img src="<?php print $logo; ?>"
                              alt="<?php print t('@site_name logo', ['@site_name' => $site_name]); ?>"/>
 
-                        <?php print $site_name; ?>
+                      <?php print $site_name; ?>
                     </a>
                     <!-- End - logo -->
 
@@ -277,51 +277,17 @@
     </main>
     <!-- End - content -->
 
-    <!-- Begin - sitemap -->
-    <div class="sectioned sectioned--sitemap sectioned--large-inner-spacing">
-        <div class="sectioned__inner">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xs-12 col-sm-3">
-                        <div class="sectioned--sitemap__logo">
-                            <a href="<?php print $front_page; ?>">
-                                <img src="<?php print $theme_path; ?>/dist/images/logo__white.png"
-                                     alt="<?php print t('@site_name logo',
-                                       ['@site_name' => $site_name]); ?>"/>
-                            </a>
-                        </div>
-
-                      <?php if (!empty($theme_settings['layout']['footer']['description'])) : ?>
-                          <!-- Begin - description -->
-                          <div class="sectioned--sitemap__description">
-                              <h3 class="heading-h4"><?php print $theme_settings['layout']['footer']['description']; ?></h3>
-                          </div>
-                          <!-- End - description -->
-                      <?php endif; ?>
-
-                    </div>
-                    <div class="col-xs-12 col-sm-9">
-                      <?php if (!empty($menu_footer__primary)): ?>
-                        <?php print render($menu_footer__primary); ?>
-                      <?php endif; ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- End - sitemap -->
-
     <!-- Begin - footer -->
     <footer class="layout__footer">
-        <div class="layout__footer--inner">
+        <div class="layout__footer__inner">
             <div class="container">
 
                 <!-- Begin - first -->
-              <?php if (!empty($menu_footer__primary)): ?>
+                <?php if (!empty($flexy_list__primary)): ?>
                   <div class="layout__footer__row layout__footer__row--first">
-                    <?php print render($menu_footer__primary); ?>
+                    <?php print render($flexy_list__primary); ?>
                   </div>
-              <?php endif; ?>
+                <?php endif; ?>
                 <!-- End - first -->
 
                 <!-- Begin - secondary -->
@@ -448,7 +414,7 @@
                                      alt="<?php print t('@site_name logo',
                                        ['@site_name' => $site_name]); ?>"/>
 
-                              Dette site er en del af Faxe Kommune
+                                Dette site er en del af Faxe Kommune
                             </a>
                             <!-- End - brand -->
 
