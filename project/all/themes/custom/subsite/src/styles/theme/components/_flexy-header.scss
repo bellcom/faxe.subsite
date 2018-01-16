@@ -39,7 +39,7 @@ $lg-logo-font-size: 28px;
 .flexy-header {
 
   .social-icon {
-    background-color: $brand-primary;
+    background-color: $brand-secondary;
 
     .icon {
       color: #fff;
@@ -56,6 +56,8 @@ $lg-logo-font-size: 28px;
   }
 
   .flexy-header__row--second {
+    position: relative;
+
     @include flexy-header-mixin-row-height($xs-flexy-header-static-row-second-height);
 
     background-color: $body-bg-tertiary;
@@ -98,9 +100,19 @@ $lg-logo-font-size: 28px;
 }
 
 .flexy-header__form {
+  position: absolute;
+
+  right: 0;
 
   form {
     position: relative;
+  }
+
+  .form-inline {
+
+    .input-group {
+      display: block;
+    }
   }
 
   .input-group {
@@ -119,9 +131,13 @@ $lg-logo-font-size: 28px;
 
     padding-right: 50px; // The width of the button, so the text dont go underneath
 
-    border: 2px solid #393d5e;
+    border: 0;
 
     font-size: $font-size-base;
+    color: #fff;
+    background-color: $brand-primary;
+
+    @include placeholder(#fff);
   }
 
   .btn {
@@ -129,7 +145,7 @@ $lg-logo-font-size: 28px;
 
     z-index: 2000;
 
-    top: 5px;
+    top: 0;
     right: 0;
 
     background-color: transparent;
@@ -146,9 +162,11 @@ $lg-logo-font-size: 28px;
 
       display: inline-block;
 
-      font-size: $font-size-base;
+      font-size: $font-size-large;
 
       content: $fa-var-search;
+
+      color :#fff;
     }
   }
 }
@@ -191,6 +209,14 @@ $lg-logo-font-size: 28px;
         height: $sm-flexy-header-static-row-second-height;
         width: $sm-flexy-header-static-row-second-height;
       }
+
+      .flexy-header__form {
+
+        .form-control,
+        .btn {
+          height: $sm-flexy-header-static-row-second-height;
+        }
+      }
     }
   }
 
@@ -200,7 +226,18 @@ $lg-logo-font-size: 28px;
 }
 
 // Desktop - and up
-@media #{$breakpoint-desktop-and-up} {}
+@media #{$breakpoint-desktop-and-up} {
+
+  .flexy-header--static {
+
+    .flexy-header__row--second {
+
+      > .container {
+        padding-right: 125px; // also set in app.js
+      }
+    }
+  }
+}
 
 // Desktop - only
 @media #{$breakpoint-desktop-only} {
@@ -217,6 +254,14 @@ $lg-logo-font-size: 28px;
       .social-icon {
         height: $md-flexy-header-static-row-second-height;
         width: $md-flexy-header-static-row-second-height;
+      }
+
+      .flexy-header__form {
+
+        .form-control,
+        .btn {
+          height: $md-flexy-header-static-row-second-height;
+        }
       }
     }
   }
@@ -241,6 +286,14 @@ $lg-logo-font-size: 28px;
       .social-icon {
         height: $lg-flexy-header-static-row-second-height;
         width: $lg-flexy-header-static-row-second-height;
+      }
+
+      .flexy-header__form {
+
+        .form-control,
+        .btn {
+          height: $lg-flexy-header-static-row-second-height;
+        }
       }
     }
   }
