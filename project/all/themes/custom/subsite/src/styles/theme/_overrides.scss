@@ -71,15 +71,7 @@ img {
 @media #{$breakpoint-mobile-and-up} {}
 
 // Mobile - only
-@media #{$breakpoint-mobile-only} {
-
-    .text-xs-center {
-
-        .flexy-list {
-            justify-content: center;
-        }
-    }
-}
+@media #{$breakpoint-mobile-only} {}
 
 // Tablet - and up
 @media #{$breakpoint-tablet-and-up} {}

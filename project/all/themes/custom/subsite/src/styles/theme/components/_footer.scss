@@ -136,7 +136,25 @@ $lg-layout-footer-border-width: 70px;
 @media #{$breakpoint-mobile-and-up} {}
 
 // Mobile - only
-@media #{$breakpoint-mobile-only} {}
+@media #{$breakpoint-mobile-only} {
+
+  .layout__footer__navigation,
+  .layout__footer__company-details {
+
+    .flexy-list {
+      flex-direction: column;
+
+      align-items: flex-start;
+
+      > * {
+
+        &:after {
+          display: none;
+        }
+      }
+    }
+  }
+}
 
 // Tablet - and up
 @media #{$breakpoint-tablet-and-up} {}

@@ -288,7 +288,7 @@
         <!-- Begin - first -->
         <?php if (!empty($flexy_list__primary)): ?>
           <div class="layout__footer__row layout__footer__row--first">
-            <nav class="layout__footer__navigation text-xs-center" role="navigation">
+            <nav class="layout__footer__navigation" role="navigation">
               <?php print render($flexy_list__primary); ?>
             </nav>
           </div>
@@ -301,7 +301,7 @@
             <div class="col-xs-12 col-sm-6">
 
               <!-- Begin - social icons -->
-              <div class="layout__footer__social-icons text-xs-center">
+              <div class="layout__footer__social-icons">
                 <ul class="flexy-list">
 
                   <?php if ($theme_settings['social_links']['facebook']['active']): ?>
@@ -438,7 +438,7 @@
 
           <!-- Begin - company details -->
           <div class="layout__footer__company-details">
-            <div class="flexy-list flexy-list--centered">
+            <div class="flexy-list">
 
               <div>
                 <?php print $site_name; ?>

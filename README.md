@@ -14,7 +14,7 @@ Bellcom OS2Subsite included to project as [git submodule](https://git-scm.com/bo
 To clone project repo with submodules and define project folder
 structure please following command:
 ```
-https://raw.githubusercontent.com/bellcom/faxe.subsite/master/init.sh
+curl -o- https://raw.githubusercontent.com/bellcom/faxe.subsite/master/init.sh | sh
 ```
 
 After successful script finishing you should get all required files and
