@@ -36,7 +36,16 @@ $lg-logo-font-size: 28px;
 // Styling
 // --------------------------------------------------
 
-.flexy-header {}
+.flexy-header {
+
+  .social-icon {
+    background-color: $brand-primary;
+
+    .icon {
+      color: #fff;
+    }
+  }
+}
 
 .flexy-header--static {
 
@@ -50,6 +59,11 @@ $lg-logo-font-size: 28px;
     @include flexy-header-mixin-row-height($xs-flexy-header-static-row-second-height);
 
     background-color: $body-bg-tertiary;
+
+    .social-icon {
+      height: $xs-flexy-header-static-row-second-height;
+      width: $xs-flexy-header-static-row-second-height;
+    }
   }
 }
 
@@ -172,6 +186,11 @@ $lg-logo-font-size: 28px;
 
     .flexy-header__row--second {
       @include flexy-header-mixin-row-height($sm-flexy-header-static-row-second-height);
+
+      .social-icon {
+        height: $sm-flexy-header-static-row-second-height;
+        width: $sm-flexy-header-static-row-second-height;
+      }
     }
   }
 
@@ -194,6 +213,11 @@ $lg-logo-font-size: 28px;
 
     .flexy-header__row--second {
       @include flexy-header-mixin-row-height($md-flexy-header-static-row-second-height);
+
+      .social-icon {
+        height: $md-flexy-header-static-row-second-height;
+        width: $md-flexy-header-static-row-second-height;
+      }
     }
   }
 
@@ -213,6 +237,11 @@ $lg-logo-font-size: 28px;
 
     .flexy-header__row--second {
       @include flexy-header-mixin-row-height($lg-flexy-header-static-row-second-height);
+
+      .social-icon {
+        height: $lg-flexy-header-static-row-second-height;
+        width: $lg-flexy-header-static-row-second-height;
+      }
     }
   }
 
