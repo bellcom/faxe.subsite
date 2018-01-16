@@ -11,11 +11,6 @@ validate_sitename() {
     echo "ERROR: Domain not valid"
     exit 10
   fi
-  # hardcoded that the domain must end in subsites.faxe.dk
-  if [[ ! "$SITENAME" =~ subsites.faxe.dk$ ]]; then
-    echo "ERROR: Domain not valid (doesn't end with subsites.faxe.dk)"
-    exit 10
-  fi
 }
 
 validate_domainname() {
@@ -213,7 +208,7 @@ install_drupal() {
   /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset error_level 1
   /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset preprocess_css 1
   /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset preprocess_js 1
-  /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset cache 1
+  #/usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset cache 1
   /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset page_cache_maximum_age 10800
   # translation updates - takes a long time
   #/usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" l10n-update-refresh
