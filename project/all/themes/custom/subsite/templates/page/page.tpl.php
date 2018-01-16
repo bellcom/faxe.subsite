@@ -257,15 +257,11 @@
 
     <a id="main-content"></a>
 
-    <?php if (!panels_get_current_page_display()): ?>
-      <div class="container">
-        <?php print $breadcrumb; ?>
+    <?php print $breadcrumb; ?>
 
-        <?php print render($page['content']); ?>
-      </div>
-    <?php else: ?>
+    <div class="container">
       <?php print render($page['content']); ?>
-    <?php endif; ?>
+    </div>
 
   </main>
   <!-- End - content -->
