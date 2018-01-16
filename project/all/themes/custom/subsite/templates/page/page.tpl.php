@@ -48,8 +48,7 @@
         </div>
       </div>
     </div>
-    <div
-        class="flexy-header__row flexy-header__row--second hidden-xs hidden-sm">
+    <div class="flexy-header__row flexy-header__row--second hidden-xs hidden-sm">
       <div class="container">
         <div class="flexy-row">
 
