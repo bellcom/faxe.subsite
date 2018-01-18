@@ -178,9 +178,14 @@
 
     <a id="main-content"></a>
 
-    <div class="container">
+    <?php if (!panels_get_current_page_display()): ?>
+      <div class="container">
+        <?php print render($page['content']); ?>
+      </div>
+    <?php else: ?>
       <?php print render($page['content']); ?>
-    </div>
+    <?php endif; ?>
+
   </main>
   <!-- End - content -->
 
