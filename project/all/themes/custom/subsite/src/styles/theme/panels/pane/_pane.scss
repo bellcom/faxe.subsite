@@ -1,0 +1,80 @@
+// |--------------------------------------------------------------------------
+// | Pane
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .panel-pane
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin panel-pane-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.panel-pane {
+
+  &.boxy {
+
+    .node__image {
+      margin-top: (0 - $boxy-body-spacing-top-bottom);
+      margin-left: (0 - $boxy-spacing-left-right);
+      margin-right: (0 - $boxy-spacing-left-right);
+    }
+
+    .menu {
+      margin: (0 - $boxy-body-spacing-top-bottom) (0 - $boxy-spacing-left-right);
+
+      a {
+        padding-left: $boxy-spacing-left-right;
+        padding-right: $boxy-spacing-left-right;
+      }
+    }
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}
