@@ -1,44 +1,81 @@
 // |--------------------------------------------------------------------------
-// | Content with left and right sidebar with top and footer
+// | Menu
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .panels-layout--content-with-left-and-right-sidebar-top-footer
+// | - .menu
 // |
 
 // --------------------------------------------------
 // Variables
 // --------------------------------------------------
 
-$panel-separator-height: 25px;
-
 // --------------------------------------------------
 // Mixins
 // --------------------------------------------------
 
-@mixin panels-layout-content-with-left-and-right-sidebar-top-footer-mixin() {}
+@mixin menu-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.panels-layout--content-with-left-and-right-sidebar-top-footer {
+.menu {
 
-  .pane-views-panes {
+  &,
+  &.nav {
 
-    .pane-title {
-      @extend .heading-h3;
+    > li {
 
-      margin: 0 0 $panel-separator-height 0;
-    }
-  }
+      > a {
+        position: relative;
 
-  .panels-pane-region {
-    margin-bottom: $grid-gutter-width;
+        padding-top: 25px;
+        padding-bottom: 25px;
 
-    // Banner
-    &.panels-pane-region--top {
-      margin-bottom: 0;
+        font-size: $font-size-large;
+
+        color: $text-color;
+
+        &:after {
+          @extend .fa;
+          position: absolute;
+
+          display: flex;
+
+          justify-content: center;
+          align-items: center;
+
+          top: 50%;
+          right: 0;
+
+          content: $fa-var-angle-right;
+
+          margin-top: -20px; // Half the height
+
+          height: 40px;
+          width: 40px;
+
+          color: #fff;
+          background-color: $brand-primary;
+        }
+
+        &:hover {
+          color: $brand-primary;
+          background-color: #e5e0de;
+        }
+      }
+
+      &.active {
+
+        > a {
+
+          &, &:hover {
+            color: $brand-primary;
+            background-color: #e5e0de;
+          }
+        }
+      }
     }
   }
 }

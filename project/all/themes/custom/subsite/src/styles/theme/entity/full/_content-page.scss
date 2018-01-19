@@ -1,9 +1,9 @@
 // |--------------------------------------------------------------------------
-// | Sectioned top dark/light/dark/light
+// | Content page
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .panels-layout--sectioned-top-dark-light-dark-light
+// | - .node-os2web-base-contentpage
 // |
 
 // --------------------------------------------------
@@ -14,24 +14,13 @@
 // Mixins
 // --------------------------------------------------
 
-@mixin panels-layout-content-with-left-and-right-sidebar-top-footer-mixin() {}
+@mixin node-os2web-base-contentpage-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.panels-layout--sectioned-top-dark-light-dark-light {
-
-  .pane-title {
-    @extend .heading-h4;
-
-    margin: 0 0 5px 0;
-  }
-
-  .layout__content {
-    padding-bottom: 0;
-  }
-}
+.node-os2web-base-contentpage {}
 
 // --------------------------------------------------
 // Variants

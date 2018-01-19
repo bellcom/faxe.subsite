@@ -1,9 +1,9 @@
 // |--------------------------------------------------------------------------
-// | Sectioned top light/dark/light/dark
+// | Pane
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .panels-layout--sectioned-top-light-dark-light-dark
+// | - .panel-pane
 // |
 
 // --------------------------------------------------
@@ -14,16 +14,38 @@
 // Mixins
 // --------------------------------------------------
 
-@mixin panels-layout-content-with-left-and-right-sidebar-top-footer-mixin() {}
+@mixin panel-pane-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.panels-layout--sectioned-top-light-dark-light-dark {
+.panel-pane {
 
-  .layout__content {
-    padding-bottom: 0;
+  &.boxy {
+
+    .node__image {
+      margin-top: (0 - $boxy-body-spacing-top-bottom);
+      margin-left: (0 - $boxy-spacing-left-right);
+      margin-right: (0 - $boxy-spacing-left-right);
+    }
+
+    .menu {
+      margin: (0 - $boxy-body-spacing-top-bottom) (0 - $boxy-spacing-left-right);
+
+      a {
+        padding-left: $boxy-spacing-left-right;
+        padding-right: $boxy-spacing-left-right;
+      }
+    }
+
+    .entity-list {
+      margin: 0 (0 - $boxy-spacing-left-right);
+    }
+    .entity-list__inner {
+      padding-left: $boxy-spacing-left-right;
+      padding-right: $boxy-spacing-left-right;
+    }
   }
 }
 

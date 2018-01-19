@@ -1,9 +1,9 @@
 // |--------------------------------------------------------------------------
-// | List
+// | Node
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .entity-list
+// | - .node
 // |
 
 // --------------------------------------------------
@@ -14,64 +14,34 @@
 // Mixins
 // --------------------------------------------------
 
-@mixin entity-list-mixin() {}
+@mixin node-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.entity-list {
-  padding-top: 15px;
-  padding-bottom: 15px;
+.node {}
 
-  color: $text-color;
+.node__image {
+  margin-bottom: $grid-gutter-width;
 
-  &:hover {
-    color: $brand-primary;
-    background-color: #e5e0de;
+  img {
+    width: 100%;
   }
 }
 
-.entity-list__inner {
-  position: relative;
-
-  &:after {
-    @extend .fa;
-    position: absolute;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    top: 50%;
-    right: 0;
-
-    content: $fa-var-angle-right;
-
-    margin-top: -20px; // Half the height
-
-    height: 40px;
-    width: 40px;
-
-    color: #fff;
-    background-color: $brand-primary;
-  }
+.node__heading {
+  margin-bottom: floor( ($grid-gutter-width / 2) );
 }
-
-.entity-list__heading {
-  margin-bottom: 8px;
-}
-.entity-list__heading__title {
-  font-weight: $headings-font-weight-bold;
+.node__heading__title {
   margin: 0;
 }
 
-.entity-list__created-at {
-  font-size: $font-size-small;
-  font-weight: $font-weight-bold;
+.node__intro {
+  margin-bottom: floor( ($grid-gutter-width / 3) );
 
-  color: $brand-primary;
+  font-size: $font-size-large;
+  font-weight: $font-weight-bold;
 }
 
 // --------------------------------------------------

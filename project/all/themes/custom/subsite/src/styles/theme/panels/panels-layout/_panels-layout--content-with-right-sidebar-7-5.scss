@@ -1,9 +1,9 @@
 // |--------------------------------------------------------------------------
-// | List
+// | Content with right sidebar (7/5 grid)
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .entity-list
+// | - .panels-layout--content-with-right-sidebar-7-5
 // |
 
 // --------------------------------------------------
@@ -14,65 +14,13 @@
 // Mixins
 // --------------------------------------------------
 
-@mixin entity-list-mixin() {}
+@mixin panels-layout--content-with-right-sidebar-7-5-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.entity-list {
-  padding-top: 15px;
-  padding-bottom: 15px;
-
-  color: $text-color;
-
-  &:hover {
-    color: $brand-primary;
-    background-color: #e5e0de;
-  }
-}
-
-.entity-list__inner {
-  position: relative;
-
-  &:after {
-    @extend .fa;
-    position: absolute;
-
-    display: flex;
-
-    justify-content: center;
-    align-items: center;
-
-    top: 50%;
-    right: 0;
-
-    content: $fa-var-angle-right;
-
-    margin-top: -20px; // Half the height
-
-    height: 40px;
-    width: 40px;
-
-    color: #fff;
-    background-color: $brand-primary;
-  }
-}
-
-.entity-list__heading {
-  margin-bottom: 8px;
-}
-.entity-list__heading__title {
-  font-weight: $headings-font-weight-bold;
-  margin: 0;
-}
-
-.entity-list__created-at {
-  font-size: $font-size-small;
-  font-weight: $font-weight-bold;
-
-  color: $brand-primary;
-}
+.panels-layout--content-with-right-sidebar-7-5 {}
 
 // --------------------------------------------------
 // Variants
@@ -89,7 +37,15 @@
 @media #{$breakpoint-mobile-only} {}
 
 // Tablet - and up
-@media #{$breakpoint-tablet-and-up} {}
+@media #{$breakpoint-tablet-and-up} {
+
+  .panels-layout--content-with-right-sidebar-7-5 {
+
+    .panel-pane-region--sidebar {
+      padding-top: $grid-gutter-width;
+    }
+  }
+}
 
 // Tablet - only
 @media #{$breakpoint-tablet-only} {}

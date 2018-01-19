@@ -1,73 +1,41 @@
-<?php if ($view_mode == 'full'): ?>
-  <!-- node.tpl.php -->
-  <!-- Begin - full node -->
+<article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
-  <div id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> subsite-full"<?php print $attributes; ?>>
-<span class="print pull-right">
-<a onclick="myFunction()">
-<i class="fa fa-print" aria-hidden="true"></i> Print</a>
-
-<script>
-function myFunction() {
-    window.print();
-}
-</script>
-
-</span>   
-    <div class="subsite-full-heading">
+  <?php if ((!$page && !empty($title)) || !empty($title_prefix) || !empty($title_suffix) || $display_submitted): ?>
+    <header>
       <?php print render($title_prefix); ?>
-      <h2<?php print $title_attributes; ?> class="subsite-full-heading-title"><?php print $title; ?></h2>
-      <?php print render($title_suffix); ?>
-      
-      <?php if (isset($content['field_os2web_base_field_image'])): ?>
-        <?php
-          // $field_image_all = field_get_items('node',$node,'field_os2web_base_field_image');
-          // $img_rendered = field_view_value('node',$node,'field_os2web_base_field_image',$field_image_all[0],
-
-          // array('type' => '$img_rendered','settings'=>array('image_style' => 'os2sub_normal_imagesize')));
-          // print render($img_rendered);
-          
-          print render($content['field_os2web_base_field_image']);
-          ?>
+      <?php if (!$page && !empty($title)): ?>
+        <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
       <?php endif; ?>
+      <?php print render($title_suffix); ?>
+      <?php if ($display_submitted): ?>
+        <span class="submitted">
+      <?php print $user_picture; ?>
+      <?php print $submitted; ?>
+    </span>
+      <?php endif; ?>
+    </header>
+  <?php endif; ?>
 
+  <?php
+  // Hide comments, tags, and links now so that we can render them later.
+  hide($content['comments']);
+  hide($content['links']);
+  hide($content['field_tags']);
+  print render($content);
+  ?>
 
-      
-          <?php if (isset($content['field_os2web_base_field_summary'])): ?>
-            <div class="lead">
-              <?php print render($content['field_os2web_base_field_summary']); ?>
-            </div>
-          <?php endif; ?>
+  <?php
+  // Only display the wrapper div if there are tags or links.
+  $field_tags = render($content['field_tags']);
+  $links = render($content['links']);
+  if ($field_tags || $links):
+    ?>
+    <footer>
+      <?php print $field_tags; ?>
+      <?php print $links; ?>
+    </footer>
+  <?php endif; ?>
 
-    </div>
+  <?php print render($content['comments']); ?>
 
-    <?php if (isset($content['field_os2web_base_field_intro'])): ?>
-      <!-- Begin - intro -->
-      <div class="subsite-full-intro">
-        <?php print render($content['field_os2web_base_field_intro']); ?>
-      </div>
-      <!-- End - intro -->
-    <?php endif; ?>
-
-    <?php if (isset($content)): ?>
-      <!-- Begin - body -->
-      <div class="subsite-full-body">
-        <?php 
-          hide($content['field_os2web_base_field_image']);
-          hide($content['field_os2web_base_field_summary']);
-                    
-          print render($content); ?>
-      </div>
-      <!-- End - body -->
-    <?php endif; ?>
-
-    <!-- Begin - footer -->
-    <div class="subsite-full-footer subsite-links">
-      <?php print render($content['links']); ?>
-    </div>
-    <!-- End - footer -->
-
-  </div>
-  <!-- End - full node -->
-
-<?php endif; ?>
+</article>
