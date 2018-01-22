@@ -276,49 +276,6 @@ function os2web_base_field_default_field_bases() {
     'type' => 'image',
   );
 
-  // Exported field_base: 'field_os2web_base_field_contact'.
-  $field_bases['field_os2web_base_field_contact'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_os2web_base_field_contact',
-    'indexes' => array(
-      'nid' => array(
-        0 => 'nid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'node_reference',
-    'settings' => array(
-      'referenceable_types' => array(
-        'kontaktblok' => 0,
-        'kulturkalender' => 0,
-        'media' => 0,
-        'os2bootstrap_carousel' => 0,
-        'os2web_base_contentpage' => 0,
-        'os2web_base_gallery' => 0,
-        'os2web_base_iframe' => 0,
-        'os2web_base_news' => 0,
-        'os2web_base_rotating_image' => 0,
-        'os2web_base_selfservice_link' => 0,
-        'os2web_borger_dk_article' => 0,
-        'os2web_contact_contact' => 'os2web_contact_contact',
-        'os2web_spotbox_box' => 0,
-        'panel' => 0,
-        'spotbokse2' => 0,
-        'webform' => 0,
-      ),
-      'view' => array(
-        'args' => array(),
-        'display_name' => '',
-        'view_name' => '',
-      ),
-    ),
-    'translatable' => 0,
-    'type' => 'node_reference',
-  );
-
   // Exported field_base: 'field_os2web_base_field_edi_tags'.
   $field_bases['field_os2web_base_field_edi_tags'] = array(
     'active' => 1,
@@ -643,9 +600,7 @@ function os2web_base_field_default_field_bases() {
         'ofir_job' => 0,
         'os2web_base_contentpage' => 'os2web_base_contentpage',
         'os2web_base_gallery' => 0,
-        'os2web_base_iframe' => 0,
         'os2web_base_news' => 0,
-        'os2web_base_rotating_image' => 0,
         'os2web_spotbox_box' => 0,
         'panel' => 0,
         'person' => 0,
@@ -764,9 +719,7 @@ function os2web_base_field_default_field_bases() {
         'os2bootstrap_carousel' => 0,
         'os2web_base_contentpage' => 'os2web_base_contentpage',
         'os2web_base_gallery' => 0,
-        'os2web_base_iframe' => 0,
         'os2web_base_news' => 'os2web_base_news',
-        'os2web_base_rotating_image' => 0,
         'os2web_base_selfservice_link' => 0,
         'os2web_borger_dk_article' => 'os2web_borger_dk_article',
         'os2web_contact_contact' => 0,
@@ -783,28 +736,6 @@ function os2web_base_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'node_reference',
-  );
-
-  // Exported field_base: 'field_os2web_base_field_rota_img'.
-  $field_bases['field_os2web_base_field_rota_img'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_os2web_base_field_rota_img',
-    'indexes' => array(
-      'fid' => array(
-        0 => 'fid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'image',
-    'settings' => array(
-      'default_image' => 0,
-      'uri_scheme' => 'public',
-    ),
-    'translatable' => 0,
-    'type' => 'image',
   );
 
   // Exported field_base: 'field_os2web_base_field_rota_lnk'.
@@ -887,9 +818,7 @@ function os2web_base_field_default_field_bases() {
         'os2bootstrap_carousel' => 0,
         'os2web_base_contentpage' => 0,
         'os2web_base_gallery' => 0,
-        'os2web_base_iframe' => 0,
         'os2web_base_news' => 0,
-        'os2web_base_rotating_image' => 0,
         'os2web_base_selfservice_link' => 'os2web_base_selfservice_link',
         'os2web_borger_dk_article' => 0,
         'os2web_contact_contact' => 0,
@@ -966,9 +895,7 @@ function os2web_base_field_default_field_bases() {
         'os2bootstrap_carousel' => 0,
         'os2web_base_contentpage' => 0,
         'os2web_base_gallery' => 0,
-        'os2web_base_iframe' => 0,
         'os2web_base_news' => 0,
-        'os2web_base_rotating_image' => 0,
         'os2web_base_selfservice_link' => 0,
         'os2web_borger_dk_article' => 0,
         'os2web_contact_contact' => 0,
@@ -1099,9 +1026,7 @@ function os2web_base_field_default_field_bases() {
         'os2web_acadre_postlists' => 0,
         'os2web_base_contentpage' => 0,
         'os2web_base_gallery' => 0,
-        'os2web_base_iframe' => 0,
         'os2web_base_news' => 0,
-        'os2web_base_rotating_image' => 0,
         'os2web_base_selfservice_link' => 0,
         'os2web_borger_dk_article' => 0,
         'os2web_contact_contact' => 0,
