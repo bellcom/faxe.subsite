@@ -295,13 +295,6 @@ function os2sub_uses_and_tools_user_default_permissions() {
     'module' => 'system',
   );
 
-  // Exported permission: 'administer news type-4'.
-  $permissions['administer news type-4'] = array(
-    'name' => 'administer news type-4',
-    'roles' => array(),
-    'module' => 'os2web_news_page',
-  );
-
   // Exported permission: 'administer nodes'.
   $permissions['administer nodes'] = array(
     'name' => 'administer nodes',
