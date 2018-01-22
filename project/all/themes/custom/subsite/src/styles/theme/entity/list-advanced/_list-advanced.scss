@@ -1,0 +1,106 @@
+// |--------------------------------------------------------------------------
+// | List advanced
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .entity-list-advanced
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin entity-list-advanced-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.entity-list-advanced {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.entity-list-advanced__image {
+
+  img {
+    width: 100%;
+  }
+}
+
+.entity-list-advanced__heading {
+  margin-bottom: 10px;
+}
+.entity-list-advanced__heading__title {
+  color: $brand-primary;
+
+  .entity-list-advanced:hover & {
+    text-decoration: underline;
+  }
+}
+
+.entity-list-advanced__date {
+  margin-bottom: 10px;
+
+  font-size: $font-size-large;
+}
+
+.entity-list-advanced__description {}
+
+.entity-list-advanced__body {}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {
+
+  .entity-list-advanced {
+    flex-direction: row;
+  }
+
+  .entity-list-advanced__image {
+    flex-basis: 200px;
+
+    + .entity-list-advanced__body {
+      margin-left: 15px;
+    }
+  }
+}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}
