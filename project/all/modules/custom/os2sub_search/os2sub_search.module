@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the os2sub search feature.
+ */
+
+include_once 'os2sub_search.features.inc';

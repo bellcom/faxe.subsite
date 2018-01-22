@@ -1,0 +1,25 @@
+<?php
+/**
+ * @file
+ * Code for the OS2sub Banner feature.
+ */
+
+
+include_once 'os2sub_banner.features.inc';
+
+function os2sub_banner_install() {
+  $newnode = new stdClass();
+  $newnode->title = 'Velkommen til den nye hjemmeside';
+  $newnode->field_banner_text = 'Skift indholdet af denne side.';
+
+  global $user;
+
+  $newnode->uid = $user->uid;
+  $newnode->name = $user->name;
+  $newnode->type = 'banner';
+  $newnode->status = 1;     // 1 means published
+  $newnode->promote = 1;
+  $newnode->language = 'da';
+  $newnode = node_submit( $newnode );
+  node_save( $newnode ); 
+}

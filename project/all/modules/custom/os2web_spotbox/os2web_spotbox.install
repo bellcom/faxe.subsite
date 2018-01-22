@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * Install/Schema, and uninstall functions for os2web_spotbox.module
+ */
+
+/**
+* Cleanup from version 1.0 => 2.0. BE AWARE: This update will remove & delete
+* unnecessary image fields on the Spotbox content type.
+*/
+function os2web_spotbox_update_7200() {
+  // This update hook does all the cleanup between 1.x and 2.x.
+
+  // Remove fields.
+  $fields_to_delete = array(
+    'field_os2web_spotbox_lead_image',
+    'field_os2web_spotbox_image_tall',
+    'field_os2web_spotbox_focus_sect',
+  );
+
+  foreach ($fields_to_delete as $field_name) {
+    field_delete_field($field_name);
+  }
+
+  features_revert(array('os2web_spotbox' => array('views')));
+}
+/**
+ * Updates field url to 255 length.
+ */
+function os2web_spotbox_update_7201() {
+  _os2web_spotbox_change_text_field_max_length('field_os2web_spotbox_url', 255);
+}
+
+/**
+ * Utility to change the max length of a text field.
+ *
+ * http://drupal.stackexchange.com/questions/8829/how-to-change-the-length-of-field-settings
+ *
+ * @param string $field_name
+ *   The field to adjust
+ * @param int $new_length
+ *   The new length
+ */
+function _os2web_spotbox_change_text_field_max_length($field_name, $new_length) {
+  $field_table = 'field_data_' . $field_name;
+  $field_revision_table = 'field_revision_' . $field_name;
+  $field_column = $field_name . '_value';
+
+  // Alter value field length in fields table.
+  db_query("ALTER TABLE `{$field_table}` CHANGE `{$field_column}` `{$field_column}` VARCHAR( {$new_length} )");
+  // Alter value field length in fields revision table.
+  db_query("ALTER TABLE `{$field_revision_table}` CHANGE `{$field_column}` `{$field_column}` VARCHAR( {$new_length} )");
+
+  // Update field config with new max length.
+  $result = db_query("SELECT CAST(`data` AS CHAR(10000) CHARACTER SET utf8) FROM `field_config` WHERE field_name = '{$field_name}'");
+  $config = $result->fetchField();
+  $config_array = unserialize($config);
+  $config_array['settings']['max_length'] = $new_length;
+  $config = serialize($config_array);
+  db_update('field_config')
+    ->fields(array('data' => $config))
+    ->condition('field_name', $field_name)
+    ->execute();
+}

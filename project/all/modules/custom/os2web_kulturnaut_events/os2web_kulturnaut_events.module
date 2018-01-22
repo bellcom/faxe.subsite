@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file
+ * Code for the Kulturnaut events feature.
+ */
+
+include_once('os2web_kulturnaut_events.features.inc');
+
+/**
+ * Implements hook_os2web_help().
+ */
+function os2web_kulturnaut_events_os2web_help($sections) {
+
+  // Content types.
+  $sections['contenttype'] = t('<p><b>Kulturnaut Events:</b> Kulturnaut events are imported from the website kulturnaut.dk. An kulturnaut event is an event of some kind related to your site. <i><a href="#os2web_kulturnaut_events">See more about the importer.</a></i></p>');
+
+  // Importers.
+  $sections['import'] = t('<p><b id=="os2web_kulturnaut_events">Kulturnaut Events:</b> Initialize the importer for Kulturnaut events at <a href="@url">the import page.</a></p>', array('@url' => 'import/os2web_kulturnaut_feeds_import'));
+
+  return $sections;
+}

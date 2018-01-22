@@ -1,0 +1,96 @@
+<?php
+/**
+ * @file
+ * Code for the OS2Web Kontaktblok feature.
+ */
+
+include_once 'os2web_contact.features.inc';
+
+/**
+ * Helper function to provide a os2web_contact_contact node for views.
+ *
+ * return int nid of block node.
+ */
+function os2web_contact_get_block() {
+  $result = NULL;
+  $hide_contact = FALSE;
+  $menu = menu_get_active_trail();
+  while ($item = array_pop($menu)) {
+    $path = explode('/', $item['link_path']);
+    if ((isset($path[1]) && $path[1] == 'add') || (isset($path[2]) && $path[2] == 'edit')) {
+      continue;
+    }
+    if ($path[0] === 'taxonomy' && $path[1] === 'term') {
+      $ent = taxonomy_term_load($path[2]);
+      if ($ent) {
+        $field = field_get_items('taxonomy_term', $ent, 'field_os2web_base_field_contact');
+      }
+    }
+    elseif ($path[0] === 'node') {
+      if (isset($path[1]) && is_numeric($path[1])) {
+        $ent = node_load($path[1]);
+        $field = field_get_items('node', $ent, 'field_os2web_base_field_contact');
+        if ($field_hide = field_get_items('node', $ent, 'field_svendborg_hide_contact')) {
+          if ($field_hide[0]['value']) {
+            $hide_contact = TRUE;
+          }
+        }
+        
+      }
+    }
+    else {
+      $node = menu_get_object();
+      if ($node) {
+        $field = field_get_items('node', $node, 'field_os2web_base_field_contact');
+      }
+    }
+    if (isset($field[0]['nid'])) {
+      if (node_load($field[0]['nid'])) {
+        if (!$hide_contact) {
+          $result = $field[0]['nid'];
+        }
+      }
+      break;
+    }
+  }
+  return $result;
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function os2web_contact_block_info() {
+  $blocks = array();
+  $blocks['os2web_contact'] = array(
+    'info' => t('OS2web contact block - Inherits contact blocks on nodes.'),
+  );
+
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function os2web_contact_block_view($delta = '') {
+  $block = array();
+  switch ($delta) {
+    case 'os2web_contact':
+      if ($nid = os2web_contact_get_block()) {
+        $block['content'] = drupal_render(node_view(node_load($nid)));
+      }
+
+      break;
+  }
+
+  return $block;
+}
+
+/**
+ * Implements hook_os2web_help().
+ */
+function os2web_contact_os2web_help($sections) {
+
+  // Content types.
+  $sections['contenttype'] = t('<p><b>Contact block:</b> Add a <a href="@url" target="_blank">contact block</a> that can be used on any page. Contact blocks are blocks that will be shown next to the main content of a page. Add a contact for each department you have on your site. If a contact block is wanted on a specific page, it can be added by editing the page itself.<br />Contact blocks includes opening hours.</p>', array('@url' => url('node/add/os2web-contact-contact')));
+  return $sections;
+}

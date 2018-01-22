@@ -1,0 +1,74 @@
+<?php
+/**
+ * @file
+ * Code for the OS2Web indholdstyper feature.
+ */
+
+include_once('os2web_base.features.inc');
+
+/**
+ * Implements hook_date_format_types().
+ */
+function os2web_base_date_format_types() {
+  // Define the core date format types.
+  return array(
+    'os2web_base_date_only' => t('Date Only'),
+  );
+}
+/**
+ * Implements hook_date_formats().
+ */
+function os2web_base_date_formats() {
+  return array(
+    array(
+      'type' => 'os2web_base_date_only',
+      'format' => 'Y-m-d',
+      'locales' => array(),
+    ),
+  );
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function os2web_base_form_alter(&$form, &$form_state, $form_id) {
+  // We need to handle redirect to current page, a bit differently, when
+  // it's a normal contentpage, with a webform embedded.
+  if (strstr($form_id, 'webform_client_form_')) {
+    $current_node = menu_get_object();
+    $webform_node = $form['#node'];
+
+    if ($current_node->type == 'os2web_base_contentpage'
+        && $webform_node->webform['redirect_url'] == '<none>') {
+      $webform_node->webform['redirect_url'] = current_path();
+    }
+  }
+}
+
+/**
+ * Implements hook_os2web_help().
+ */
+function os2web_base_os2web_help($sections) {
+
+  // Content types.
+  $sections['contenttype'] = t('<p><b>Contentpage:</b> A <a href="@url" target="_blank">contentpage</a> is a regular CMS page, where you can show regular static content.</p>', array('@url' => url('node/add/os2web-base-contentpage')));
+  $sections['contenttype'] .= t('<p><b>Gallery:</b> <a href="@url" target="_blank">Create a Gallery</a> to show a group of images together in an album.</p>', array('@url' => url('node/add/os2web-base-gallery')));
+  $sections['contenttype'] .= t('<p><b>iFrame:</b> <a href="@url" target="_blank">Create an iFrame</a> to show a external article or page directly on your site as normal content .</p>', array('@url' => url('node/add/os2web-base-iframe')));
+  $sections['contenttype'] .= t('<p><b>Video and Sound:</b> <a href="@url" target="_blank">Create a page with a video or a sound</a></p>', array('@url' => url('node/add/media')));
+  if (module_exists('os2web_breaking_news')) {
+    $sections['contenttype'] .= t('<p><b>Nyheder:</b> <a href="@url" target="_blank">Create a news story</a>. News stories are shown in the different news overviews. Promote a News story to get in at the top of every page on your site.</p>', array('@url' => url('node/add/os2web_base_news')));
+  }
+  else {
+    $sections['contenttype'] .= t('<p><b>Nyheder:</b> <a href="@url" target="_blank">Create a news story</a>. News stories are shown in the different news overviews.</p>', array('@url' => url('node/add/os2web_base_news')));
+  }
+  $sections['contenttype'] .= t('<p><b>Image carrousell:</b> <a href="@url" target="_blank">Add an image</a> to be shown in the carrousell at the frontpages.<br />Promote the image to e.g. the fronpage or a portalfrontpage. The image can also be shown in a time interval. Define what the image should link to by entering an internal or external URL.</p>', array('@url' => url('node/add/os2web_base_rotating_image')));
+  $sections['contenttype'] .= t('<p><b>Selfservicelinks (<i>Selvbetjeningslink</i>):</b> <a href="@url" target="_blank">Selfservicelinks</a> are links to functions on tour site. The links are shown in the boxes of selfservicelinks. Create a link to what <b>could</b> be a selfservice.</p>', array('@url' => url('node/add/os2web_base_selfservice_link')));
+
+  return $sections;
+}
+
+function os2web_base_webform_node_defaults_alter(&$defaults) {
+  $defaults['confirmation'] = 'Tak for det';
+  $defaults['confirmation_format'] = 'full_html';
+  $defaults['redirect_url'] = '<none>';
+}

@@ -1,0 +1,171 @@
+<?php
+/**
+ * @file
+ * Code for the OS2Web Spotbokse feature.
+ */
+
+include_once 'os2web_spotbox.features.inc';
+define('OS2WEB_SPOTBOX_PATH', drupal_get_path('module', 'os2web_spotbox'));
+
+/**
+* Implements hook_entity_info_alter().
+*/
+function os2web_spotbox_entity_info_alter(&$entity_info) {
+  $entity_info['node']['view modes']['spotbox'] = array(
+    'label' => t('Spotbox'),
+    'custom settings' => TRUE,
+  );
+}
+
+
+/**
+ * Implements hook_theme_registry_alter().
+ *
+ * Be sure that the theme registry knows about this modules templates.
+ * See @url https://drupal.org/node/715160.
+ */
+function os2web_spotbox_theme_registry_alter(&$theme_registry) {
+  $theme_registry_copy = $theme_registry;
+  _theme_process_registry($theme_registry_copy, 'phptemplate', 'theme_engine', 'my_custom_theme', OS2WEB_SPOTBOX_PATH);
+  $theme_registry += array_diff_key($theme_registry_copy, $theme_registry);
+  // A list of templates the module will provide templates for
+  $hooks = array('page');
+  foreach ($hooks as $h) {
+    // Add the key 'theme paths' if it doesn't exist in this theme's registry
+    if (!isset($theme_registry[$h]['theme paths'])) {
+      $theme_registry[$h]['theme paths'] = array();
+    }
+    //Shift this module's directory to the top of the theme path list
+    if(is_array($theme_registry[$h]['theme paths'])) {
+      $first_element = array_shift($theme_registry[$h]['theme paths']);
+      if ($first_element) {
+        array_unshift($theme_registry[$h]['theme paths'], $first_element, OS2WEB_SPOTBOX_PATH);
+      } else {
+        array_unshift($theme_registry[$h]['theme paths'], OS2WEB_SPOTBOX_PATH);
+      }
+    }
+  }
+}
+
+/**
+ * Implements template_preprocess_node().
+
+function os2web_spotbox_preprocess_node(&$variables) {
+  $node = $variables['node'];
+
+  $spotbox_url_field = field_get_items('node', $node, 'field_os2web_spotbox_url');
+  $variables['spotbox_url'] = !empty($spotbox_url_field) ? array_shift($spotbox_url_field)['value'] : null;
+}
+ */
+/**
+ * Implements hook_ctools_plugin_directory().
+ */
+function os2web_spotbox_ctools_plugin_directory($module, $plugin) {
+  if (($module == 'ctools' || $module == 'content_types') && !empty($plugin)) {
+    return 'plugins/' . $plugin;
+  }
+}
+
+/**
+ * Helper to get the render array for spotboxes.
+ *
+ * @param mixed  $nids
+ *   The spotbox nids, either as array or comma string.
+ *
+ * @param int $count
+ *   The number of spotboxes.
+ * @param int $offset
+ *   The offset
+ * @param string  $sitestruct
+ *   The sitestruct
+ * @param string  $spotbox_type
+ *   Spotbox image type to render.
+ * @param bool $show_latest
+ *   Whether to show latest instead of specific nids.
+ *
+ * @return array
+ *   The render array for spotboxes.
+ */
+function os2web_spotbox_render_spotboxes($nids = NULL, $count = 10, $offset = 0, $sitestruct = NULL, $spotbox_type = NULL, $show_latest = FALSE) {
+
+  // Get all spotboxes to show.
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'os2web_spotbox_box')
+    ->propertyCondition('status', 1)
+    ->propertyOrderBy('created', 'DESC');
+
+  // If specific nids are spcified, query for them.
+  if (!empty($nids)) {
+    if (is_string($nids)) {
+      $nids = explode(',', $nids);
+    }
+    $query->entityCondition('entity_id', $nids, 'IN');
+  }
+  elseif ($show_latest) {
+    if (!empty($count)) {
+      // If not specific, query for latest spotboxes with a limit.
+      $offset = isset($offset) ? (int) $offset : NULL;
+      $count = isset($count) ? (int) $count : 100;
+      $query->range($offset, $count);
+    }
+
+    // If the sitestruct are filled, filter the spotboxes.
+    if (!empty($sitestruct)) {
+      $term = taxonomy_get_term_by_name($sitestruct, 'os2web_base_tax_site_structure');
+      $term = array_shift($term);
+      $query->fieldCondition('field_os2web_spotbox_sitestruct', 'tid', $term->tid, '=');
+    }
+  }
+
+  // We do only query for spotboxes if either we have specific nids or
+  // 'Show latest' are checked. If neither we shouldnt show any spotboxes.
+  if (!empty($nids) || $show_latest) {
+    $result = $query->execute();
+  }
+
+  $spotboxes = array();
+  if (isset($result['node'])) {
+    $spotbox_nids = array_keys($result['node']);
+    if (!empty($nids)) {
+      // Be sure to order the spotboxes the same way as recieved.
+      $spotbox_nids_ordered = array();
+      foreach ($nids as $nid) {
+        if (!empty($nid) & array_search($nid, $spotbox_nids) !== FALSE) {
+          $spotbox_nids_ordered[] = $nid;
+        }
+      }
+      $spotbox_nids = $spotbox_nids_ordered;
+    }
+    $spotboxes = entity_load('node', $spotbox_nids);
+  }
+
+  $render_array = entity_view('node', $spotboxes, 'spotbox');
+
+  foreach ($render_array['node'] as $key => &$rendered_spotbox) {
+    // If a specific image style is set the formatter.
+    if (!empty($spotbox_type) && isset($rendered_spotbox['field_os2web_spotbox_big_image'][0]['#image_style'])) {
+      $rendered_spotbox['field_os2web_spotbox_big_image'][0]['#image_style'] = $spotbox_type;
+    }
+
+    // Add the spotbox url as an variable to the node. This is used in the
+    // template file.
+    if (isset($rendered_spotbox['field_os2web_spotbox_url']['#items'][0]['value'])) {
+      $spotbox_url = $rendered_spotbox['field_os2web_spotbox_url']['#items'][0]['value'];
+      $rendered_spotbox['#spotbox_url'] = (substr( $spotbox_url, 0, 4 ) !== "http" && substr( $spotbox_url, 0, 1 ) !== "/" && substr( $spotbox_url, 0, 3 ) !== "www") ? '/' . $spotbox_url : $spotbox_url;
+    }
+  }
+
+  return $render_array;
+}
+
+/**
+ * Implements hook_os2web_help().
+ */
+function os2web_spotbox_os2web_help($sections) {
+
+  // Contenttypes.
+  $sections['contenttype'] = t('<p><b id=="os2web_spotbox">Spotbox:</b> Create a <a href="@url">Spotbox</a> to quickly add a box of content on one of your pages. Promote a spotbox to a frontpage. In the individually pages, add a reference to the Spotbox you have created, to enable the spotbox on a specific page.</p>', array('@url' => 'add/node/os2web_spotbox_box'));
+
+  return $sections;
+}

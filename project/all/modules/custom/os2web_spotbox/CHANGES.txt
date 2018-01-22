@@ -1,0 +1,10 @@
+Version 2.0
+
+- Removed all unnecessary image fields on Spotbox. BE AWARE that this results in
+  deleted data. Be sure to have an backup before continueing.
+
+- Uses Media module to handle image uploads.
+
+- Uses epsacrop to handle crops of images.
+
+- Removes bloat from the feature, settings etc. which shouldn't be in files.

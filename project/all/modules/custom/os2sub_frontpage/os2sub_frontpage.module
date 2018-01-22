@@ -1,0 +1,54 @@
+<?php
+/**
+ * @file
+ * Code for the OS2sub - Frontpage feature.
+ */
+
+include_once 'os2sub_frontpage.features.inc';
+
+/**
+ * Implements hook_menu().
+ */
+function os2sub_frontpage_menu() {
+  $items['subsite_settings'] = array(
+    'title' => 'Subsite settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2sub_frontpage_settings'),
+    'access arguments' => array('administer site configuration'),
+  );
+  return $items;
+}
+
+/**
+ * Settings form.
+ */
+function os2sub_frontpage_settings() {
+  $form = array();
+
+  $var = variable_get('os2sub_frontpage_footer_block_1', array('value' => '', 'format' => 'full_html'));
+  $form['os2sub_frontpage_footer_block_1'] = array(
+    '#type' => 'text_format',
+    '#title' => 'Footer block 1',
+    '#format' => $var['format'],
+    '#default_value' => $var['value'],
+  );
+
+  $var = variable_get('os2sub_frontpage_footer_block_2', array('value' => '', 'format' => 'full_html'));
+  $form['os2sub_frontpage_footer_block_2'] = array(
+    '#type' => 'text_format',
+    '#title' => 'Footer block 2',
+    '#format' => $var['format'],
+    '#default_value' => $var['value'],
+  );
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_preprocess_page().
+ */
+function os2sub_frontpage_preprocess_page(&$variables) {
+  $var = variable_get('os2sub_frontpage_footer_block_1', array('value' => '', 'format' => 'full_html'));
+  $variables['footer_blocks']['block_1'] = $var['value'];
+  $var = variable_get('os2sub_frontpage_footer_block_2', array('value' => '', 'format' => 'full_html'));
+  $variables['footer_blocks']['block_2'] = $var['value'];
+}

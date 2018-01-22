@@ -1,0 +1,5 @@
+/* Fix some issues when max-width are set gloally on all img. */
+.jcrop-holder img, .jcrop-preview {
+  max-width: initial;
+  height: initial;
+}

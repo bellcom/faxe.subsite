@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the OS2sub - Galleri feature.
+ */
+
+include_once 'os2sub_galleri.features.inc';

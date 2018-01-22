@@ -1,0 +1,7 @@
+<?php
+/**
+ * @file
+ * Code for the OS2sub Uses and Tools feature.
+ */
+
+include_once 'os2sub_uses_and_tools.features.inc';
