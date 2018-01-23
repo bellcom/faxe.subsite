@@ -6,12 +6,6 @@
 function subsite_preprocess_html(&$variables) {
   $theme_path = path_to_theme();
 
-  // Add stylesheets
-  drupal_add_css($theme_path . '/dist/stylesheets/stylesheet.css',
-    [
-      'group' => CSS_THEME,
-    ]);
-
   // Add javascript files
   drupal_add_js($theme_path . '/dist/javascripts/modernizr.js',
     [
@@ -29,6 +23,17 @@ function subsite_preprocess_html(&$variables) {
   // Add fonts from Google fonts API.
   drupal_add_css('https://fonts.googleapis.com/css?family=Lato:400,700',
     ['type' => 'external']);
+}
+
+/**
+ * Override or insert variables into the page template for HTML output.
+ */
+function subsite_process_html(&$variables) {
+
+  // Hook into color.module.
+  if (module_exists('color')) {
+    _color_html_alter($variables);
+  }
 }
 
 /**
@@ -50,6 +55,17 @@ function subsite_preprocess_page(&$variables) {
   $variables['tabs_secondary'] = $variables['tabs'];
   unset($variables['tabs_primary']['#secondary']);
   unset($variables['tabs_secondary']['#primary']);
+}
+
+/**
+ * Override or insert variables into the page template.
+ */
+function subsite_process_page(&$variables) {
+
+  // Hook into color.module.
+  if (module_exists('color')) {
+    _color_page_alter($variables);
+  }
 }
 
 /**

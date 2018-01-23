@@ -20,6 +20,8 @@ regions[content] = 'Content'
 ;; Stylesheets
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+stylesheets[all][] = 'dist/stylesheets/stylesheet.css'
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Scripts
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
