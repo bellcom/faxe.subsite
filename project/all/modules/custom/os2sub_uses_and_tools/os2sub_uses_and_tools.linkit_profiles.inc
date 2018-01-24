@@ -47,7 +47,6 @@ function os2sub_uses_and_tools_default_linkit_profiles() {
         'os2web_base_contentpage' => 'os2web_base_contentpage',
         'os2web_base_news' => 'os2web_base_news',
         'webform' => 'webform',
-        'event_calendar' => 0,
         'banner' => 0,
         'os2web_contact_contact' => 0,
         'media' => 0,
@@ -61,7 +60,6 @@ function os2sub_uses_and_tools_default_linkit_profiles() {
     'entity:taxonomy_term' => array(
       'result_description' => '',
       'bundles' => array(
-        'event_calendar_status' => 0,
         'os2web_news_page_newstypes' => 0,
         'os2web_taxonomies_tax_comittee' => 0,
         'os2web_taxonomies_tax_editor_tag' => 0,
@@ -160,7 +158,6 @@ function os2sub_uses_and_tools_default_linkit_profiles() {
         'kalenderside' => 'kalenderside',
         'webform' => 'webform',
         'banner' => 0,
-        'event_calendar' => 0,
         'os2web_contact_contact' => 0,
         'media' => 0,
         'os2web_base_news' => 0,
@@ -191,7 +188,6 @@ function os2sub_uses_and_tools_default_linkit_profiles() {
     'entity:taxonomy_term' => array(
       'result_description' => '',
       'bundles' => array(
-        'event_calendar_status' => 0,
         'os2web_news_page_newstypes' => 0,
         'os2web_taxonomies_tax_comittee' => 0,
         'os2web_taxonomies_tax_editor_tag' => 0,

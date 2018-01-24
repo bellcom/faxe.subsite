@@ -193,16 +193,6 @@ function os2sub_uses_and_tools_user_default_permissions() {
     'module' => 'ckeditor',
   );
 
-  // Exported permission: 'administer event status'.
-  $permissions['administer event status'] = array(
-    'name' => 'administer event status',
-    'roles' => array(
-      'Editor' => 'Editor',
-      'subsiteadmin' => 'subsiteadmin',
-    ),
-    'module' => 'event_calendar',
-  );
-
   // Exported permission: 'administer file types'.
   $permissions['administer file types'] = array(
     'name' => 'administer file types',
@@ -825,15 +815,6 @@ function os2sub_uses_and_tools_user_default_permissions() {
     'module' => 'node',
   );
 
-  // Exported permission: 'delete terms in event_calendar_status'.
-  $permissions['delete terms in event_calendar_status'] = array(
-    'name' => 'delete terms in event_calendar_status',
-    'roles' => array(
-      'subsiteadmin' => 'subsiteadmin',
-    ),
-    'module' => 'taxonomy',
-  );
-
   // Exported permission: 'delete terms in os2web_base_tax_promoteto'.
   $permissions['delete terms in os2web_base_tax_promoteto'] = array(
     'name' => 'delete terms in os2web_base_tax_promoteto',
@@ -1253,15 +1234,6 @@ function os2sub_uses_and_tools_user_default_permissions() {
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'webform',
-  );
-
-  // Exported permission: 'edit terms in event_calendar_status'.
-  $permissions['edit terms in event_calendar_status'] = array(
-    'name' => 'edit terms in event_calendar_status',
-    'roles' => array(
-      'subsiteadmin' => 'subsiteadmin',
-    ),
-    'module' => 'taxonomy',
   );
 
   // Exported permission: 'edit terms in os2web_base_tax_promoteto'.
