@@ -30,26 +30,30 @@ function os2sub_banner_image_default_styles() {
   $styles['os2sub_banner'] = array(
     'label' => 'OS2sub Banner',
     'effects' => array(
-      7 => array(
-        'name' => 'manualcrop_crop_and_scale',
+      3 => array(
+        'name' => 'epsacrop_crop',
         'data' => array(
           'width' => 1200,
           'height' => 400,
-          'upscale' => 0,
-          'respectminimum' => 1,
-          'onlyscaleifcrop' => 1,
-          'style_name' => 'os2sub_banner',
+          'anchor' => 'center-center',
+          'disable_scale' => 0,
+          'jcrop_settings' => array(
+            'aspect_ratio' => '',
+            'bgcolor' => 'black',
+            'bgopacity' => 0.6,
+            'fallback' => 1,
+          ),
         ),
-        'weight' => 0,
+        'weight' => -9,
       ),
-      6 => array(
+      2 => array(
         'name' => 'image_scale',
         'data' => array(
           'width' => 1200,
           'height' => '',
           'upscale' => 0,
         ),
-        'weight' => 2,
+        'weight' => -8,
       ),
     ),
   );

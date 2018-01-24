@@ -77,7 +77,6 @@ features[user_permission][] = administer menu
 features[user_permission][] = administer meta tags
 features[user_permission][] = administer mini panels
 features[user_permission][] = administer modules
-features[user_permission][] = administer news type-4
 features[user_permission][] = administer nodes
 features[user_permission][] = administer panels layouts
 features[user_permission][] = administer panels styles

@@ -53,7 +53,7 @@ function os2sub_frontpage_default_page_manager_pages() {
     'name' => '',
   );
   $display = new panels_display();
-  $display->layout = 'ballerup-frontpage';
+  $display->layout = 'content-with-right-sidebar-7-5';
   $display->layout_settings = array();
   $display->panel_settings = array(
     'style_settings' => array(
@@ -64,6 +64,7 @@ function os2sub_frontpage_default_page_manager_pages() {
       'footer' => NULL,
       'top' => NULL,
       'bottom' => NULL,
+      'sidebar' => NULL,
     ),
   );
   $display->cache = array();
@@ -74,86 +75,27 @@ function os2sub_frontpage_default_page_manager_pages() {
   $display->content = array();
   $display->panels = array();
   $pane = new stdClass();
-  $pane->pid = 'new-ffc99cb3-67aa-4439-86e7-36e4db10ad23';
+  $pane->pid = 'new-42f3d75e-7933-4ef9-bdc0-e98ae999786c';
   $pane->panel = 'content';
-  $pane->type = 'views';
-  $pane->subtype = 'ballerup_subsites_spots';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'os2sub_velkomst-panel_pane_1';
   $pane->shown = TRUE;
   $pane->access = array();
-  $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '0',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
-    'args' => '',
-    'url' => '',
-    'display' => 'block_2',
-    'override_title' => 0,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
-  );
+  $pane->configuration = array();
   $pane->cache = array();
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array(
-    'css_id' => '',
-    'css_class' => '',
-    'template_suggestion' => 'plain',
-  );
+  $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = 'ffc99cb3-67aa-4439-86e7-36e4db10ad23';
-  $display->content['new-ffc99cb3-67aa-4439-86e7-36e4db10ad23'] = $pane;
-  $display->panels['content'][0] = 'new-ffc99cb3-67aa-4439-86e7-36e4db10ad23';
+  $pane->uuid = '42f3d75e-7933-4ef9-bdc0-e98ae999786c';
+  $display->content['new-42f3d75e-7933-4ef9-bdc0-e98ae999786c'] = $pane;
+  $display->panels['content'][0] = 'new-42f3d75e-7933-4ef9-bdc0-e98ae999786c';
   $pane = new stdClass();
-  $pane->pid = 'new-998e56b3-34bc-4070-b98c-40c907acea61';
-  $pane->panel = 'sidebar-left';
-  $pane->type = 'views';
-  $pane->subtype = 'ballerup_subsites_spots';
-  $pane->shown = TRUE;
-  $pane->access = array();
-  $pane->configuration = array(
-    'override_pager_settings' => 0,
-    'use_pager' => 1,
-    'nodes_per_page' => '0',
-    'pager_id' => '0',
-    'offset' => '0',
-    'more_link' => 0,
-    'feed_icons' => 0,
-    'panel_args' => 0,
-    'link_to_view' => 0,
-    'args' => '',
-    'url' => '',
-    'display' => 'block_1',
-    'override_title' => 1,
-    'override_title_text' => '',
-    'override_title_heading' => 'h2',
-  );
-  $pane->cache = array();
-  $pane->style = array(
-    'settings' => NULL,
-  );
-  $pane->css = array(
-    'css_id' => '',
-    'css_class' => '',
-    'template_suggestion' => 'plain',
-  );
-  $pane->extras = array();
-  $pane->position = 0;
-  $pane->locks = array();
-  $pane->uuid = '998e56b3-34bc-4070-b98c-40c907acea61';
-  $display->content['new-998e56b3-34bc-4070-b98c-40c907acea61'] = $pane;
-  $display->panels['sidebar-left'][0] = 'new-998e56b3-34bc-4070-b98c-40c907acea61';
-  $pane = new stdClass();
-  $pane->pid = 'new-0a309486-028f-4cc5-850a-360aa747f7d8';
-  $pane->panel = 'sidebar-right';
+  $pane->pid = 'new-dd6b5f9f-eb00-4312-99a6-2d0528f54528';
+  $pane->panel = 'content';
   $pane->type = 'views';
   $pane->subtype = 'os2sub_kontaktblok';
   $pane->shown = TRUE;
@@ -171,7 +113,39 @@ function os2sub_frontpage_default_page_manager_pages() {
     'args' => '',
     'url' => '',
     'display' => 'block',
-    'override_title' => 0,
+    'override_title' => 1,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'dd6b5f9f-eb00-4312-99a6-2d0528f54528';
+  $display->content['new-dd6b5f9f-eb00-4312-99a6-2d0528f54528'] = $pane;
+  $display->panels['content'][1] = 'new-dd6b5f9f-eb00-4312-99a6-2d0528f54528';
+  $pane = new stdClass();
+  $pane->pid = 'new-4fc5a73e-c9f6-451d-a1a9-25a4c7f936dd';
+  $pane->panel = 'sidebar';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'os2web_news_lists-panel_pane_2';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'use_pager' => 0,
+    'pager_id' => '0',
+    'items_per_page' => '5',
+    'offset' => '0',
+    'arguments' => array(
+      'field_os2web_news_page_type_tid' => '',
+      'field_os2web_news_page_type_tid_1' => '',
+      'term_node_tid_depth' => '',
+    ),
+    'override_title' => 1,
     'override_title_text' => '',
     'override_title_heading' => 'h2',
   );
@@ -183,15 +157,15 @@ function os2sub_frontpage_default_page_manager_pages() {
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = '0a309486-028f-4cc5-850a-360aa747f7d8';
-  $display->content['new-0a309486-028f-4cc5-850a-360aa747f7d8'] = $pane;
-  $display->panels['sidebar-right'][0] = 'new-0a309486-028f-4cc5-850a-360aa747f7d8';
+  $pane->uuid = '4fc5a73e-c9f6-451d-a1a9-25a4c7f936dd';
+  $display->content['new-4fc5a73e-c9f6-451d-a1a9-25a4c7f936dd'] = $pane;
+  $display->panels['sidebar'][0] = 'new-4fc5a73e-c9f6-451d-a1a9-25a4c7f936dd';
   $pane = new stdClass();
-  $pane->pid = 'new-e1070e0a-b9df-4343-8e86-513d5a0a4cad';
+  $pane->pid = 'new-1f77bd4b-1f19-452d-a245-75f9d7e9f55a';
   $pane->panel = 'top';
   $pane->type = 'views';
   $pane->subtype = 'os2sub_banner';
-  $pane->shown = FALSE;
+  $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
     'override_pager_settings' => 0,
@@ -206,7 +180,7 @@ function os2sub_frontpage_default_page_manager_pages() {
     'args' => '',
     'url' => '',
     'display' => 'block',
-    'override_title' => 0,
+    'override_title' => 1,
     'override_title_text' => '',
     'override_title_heading' => 'h2',
   );
@@ -214,17 +188,13 @@ function os2sub_frontpage_default_page_manager_pages() {
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array(
-    'css_id' => '',
-    'css_class' => '',
-    'template_suggestion' => 'plain',
-  );
+  $pane->css = array();
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();
-  $pane->uuid = 'e1070e0a-b9df-4343-8e86-513d5a0a4cad';
-  $display->content['new-e1070e0a-b9df-4343-8e86-513d5a0a4cad'] = $pane;
-  $display->panels['top'][0] = 'new-e1070e0a-b9df-4343-8e86-513d5a0a4cad';
+  $pane->uuid = '1f77bd4b-1f19-452d-a245-75f9d7e9f55a';
+  $display->content['new-1f77bd4b-1f19-452d-a245-75f9d7e9f55a'] = $pane;
+  $display->panels['top'][0] = 'new-1f77bd4b-1f19-452d-a245-75f9d7e9f55a';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;

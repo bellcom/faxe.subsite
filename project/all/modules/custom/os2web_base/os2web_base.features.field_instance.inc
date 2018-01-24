@@ -825,53 +825,6 @@ function os2web_base_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-os2web_base_contentpage-field_os2web_base_field_contact'.
-  $field_instances['node-os2web_base_contentpage-field_os2web_base_field_contact'] = array(
-    'bundle' => 'os2web_base_contentpage',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 18,
-      ),
-      'related_block' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'spotbox' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_os2web_base_field_contact',
-    'label' => 'Kontaktblok',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'node_reference',
-      'settings' => array(
-        'autocomplete_match' => 'contains',
-        'autocomplete_path' => 'node_reference/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'node_reference_autocomplete',
-      'weight' => 52,
-    ),
-  );
-
-  // Exported field_instance:
   // 'node-os2web_base_contentpage-field_os2web_base_field_edi_tags'.
   $field_instances['node-os2web_base_contentpage-field_os2web_base_field_edi_tags'] = array(
     'bundle' => 'os2web_base_contentpage',
@@ -1138,9 +1091,7 @@ function os2web_base_field_default_field_instances() {
         'manualcrop_keyboard' => 1,
         'manualcrop_maximize_default_crop_area' => 0,
         'manualcrop_require_cropping' => array(),
-        'manualcrop_styles_list' => array(
-          'os2sub_normal_imagesize' => 'os2sub_normal_imagesize',
-        ),
+        'manualcrop_styles_list' => array(),
         'manualcrop_styles_mode' => 'include',
         'manualcrop_thumblist' => 0,
       ),
@@ -2114,65 +2065,6 @@ function os2web_base_field_default_field_instances() {
       ),
       'type' => 'media_generic',
       'weight' => 54,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'node-os2web_base_news-field_os2web_base_field_contact'.
-  $field_instances['node-os2web_base_news-field_os2web_base_field_contact'] = array(
-    'bundle' => 'os2web_base_news',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 13,
-      ),
-      'search_index' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 12,
-      ),
-      'search_result' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 12,
-      ),
-      'spotbox' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 13,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 15,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_os2web_base_field_contact',
-    'label' => 'Kontaktblok',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'node_reference',
-      'settings' => array(
-        'autocomplete_match' => 'contains',
-        'autocomplete_path' => 'node_reference/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'node_reference_autocomplete',
-      'weight' => 52,
     ),
   );
 
@@ -4295,9 +4187,7 @@ function os2web_base_field_default_field_instances() {
         'manualcrop_keyboard' => 1,
         'manualcrop_maximize_default_crop_area' => 0,
         'manualcrop_require_cropping' => array(),
-        'manualcrop_styles_list' => array(
-          'os2sub_normal_imagesize' => 'os2sub_normal_imagesize',
-        ),
+        'manualcrop_styles_list' => array(),
         'manualcrop_styles_mode' => 'include',
         'manualcrop_thumblist' => 0,
       ),
@@ -4504,41 +4394,6 @@ function os2web_base_field_default_field_instances() {
       ),
       'type' => 'media_generic',
       'weight' => 16,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'taxonomy_term-os2web_base_tax_site_structure-field_os2web_base_field_contact'.
-  $field_instances['taxonomy_term-os2web_base_tax_site_structure-field_os2web_base_field_contact'] = array(
-    'bundle' => 'os2web_base_tax_site_structure',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 9,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_os2web_base_field_contact',
-    'label' => 'Kontaktblok',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'node_reference',
-      'settings' => array(
-        'autocomplete_match' => 'contains',
-        'autocomplete_path' => 'node_reference/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'node_reference_autocomplete',
-      'weight' => 35,
     ),
   );
 
@@ -5063,7 +4918,6 @@ function os2web_base_field_default_field_instances() {
   t('Banner');
   t('Billede');
   t('Billeder');
-  t('Det der vises med sort');
   t('Egenavne / stednavne');
   t('Egennavne/stednavne');
   t('Filer');
@@ -5072,12 +4926,9 @@ function os2web_base_field_default_field_instances() {
   t('Harmonika enheder');
   t('Indhold');
   t('Indlejret galleri');
-  t('Indløb / Udløb');
-  t('Intro');
   t('Intro / Resume (maks 2 linier!)');
   t('KL Emneord');
   t('Kilde');
-  t('Kontaktblok');
   t('Link');
   t('Logo');
   t('Nedarv højrespalte');
@@ -5096,7 +4947,6 @@ function os2web_base_field_default_field_instances() {
   t('Opmærk dit indhold med steder fra kommunens GIS system.
 <br>Dette giver mulighed for kortvisning.
 <br>Adskil flere opmærkninger med komma.');
-  t('Organisation');
   t('Organistation');
   t('Overordnet placering');
   t('Overskrift over undersider');
@@ -5121,10 +4971,8 @@ function os2web_base_field_default_field_instances() {
   t('Unikke relaterede links');
   t('Video');
   t('Vis på portalside');
-  t('Vises før indholdet af iframe');
   t('Vist navn');
   t('Webform');
-  t('iFrame URL');
 
   return $field_instances;
 }

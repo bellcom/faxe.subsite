@@ -55,25 +55,29 @@ function os2web_base_image_default_styles() {
   $styles['os2sub_normal_imagesize'] = array(
     'label' => 'Normal billede',
     'effects' => array(
-      4 => array(
-        'name' => 'manualcrop_crop_and_scale',
+      6 => array(
+        'name' => 'epsacrop_crop',
         'data' => array(
           'width' => 848,
           'height' => 410,
-          'upscale' => 0,
-          'respectminimum' => 1,
-          'onlyscaleifcrop' => 1,
-          'style_name' => 'os2sub_normal_imagesize',
+          'anchor' => 'center-center',
+          'disable_scale' => 0,
+          'jcrop_settings' => array(
+            'aspect_ratio' => '',
+            'bgcolor' => 'black',
+            'bgopacity' => 0.6,
+            'fallback' => 1,
+          ),
         ),
-        'weight' => 0,
+        'weight' => -10,
       ),
-      3 => array(
+      5 => array(
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 848,
           'height' => 410,
         ),
-        'weight' => 2,
+        'weight' => -9,
       ),
     ),
   );

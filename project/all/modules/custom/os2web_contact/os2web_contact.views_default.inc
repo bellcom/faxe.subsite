@@ -97,11 +97,10 @@ function os2web_contact_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Forbindelse: Felt: Kontaktblok (field_os2web_base_field_contact) */
+  /* Forbindelse: Handler mangler eller er i stykker */
   $handler->display->display_options['relationships']['field_os2web_base_field_contact_nid']['id'] = 'field_os2web_base_field_contact_nid';
   $handler->display->display_options['relationships']['field_os2web_base_field_contact_nid']['table'] = 'field_data_field_os2web_base_field_contact';
   $handler->display->display_options['relationships']['field_os2web_base_field_contact_nid']['field'] = 'field_os2web_base_field_contact_nid';
-  $handler->display->display_options['relationships']['field_os2web_base_field_contact_nid']['delta'] = '-1';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Felt: Indhold: Titel */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -192,7 +191,7 @@ function os2web_contact_views_default_views() {
     t('næste ›'),
     t('sidste »'),
     t('Page'),
-    t('field_os2web_base_field_contact'),
+    t('field_os2web_base_field_contact_nid'),
     t('Redigér'),
     t('Handler i stykker field_data_field_banner_vis_paa_sider.field_banner_vis_paa_sider'),
     t('Titel'),
