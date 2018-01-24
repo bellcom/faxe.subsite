@@ -721,6 +721,48 @@ function os2web_base_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-os2web_base_contentpage-field_os2sub_contact_ref'.
+  $field_instances['node-os2web_base_contentpage-field_os2sub_contact_ref'] = array(
+    'bundle' => 'os2web_base_contentpage',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'hidden',
+        'module' => 'node_reference',
+        'settings' => array(
+          'node_reference_view_mode' => 'spotbox',
+        ),
+        'type' => 'node_reference_node',
+        'weight' => 23,
+      ),
+      'spotbox' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2sub_contact_ref',
+    'label' => 'Kontaktblok',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'options',
+      'settings' => array(
+        'content_taxonomy_opt_groups' => FALSE,
+      ),
+      'type' => 'options_select',
+      'weight' => 54,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-os2web_base_contentpage-field_os2sub_menuheader'.
   $field_instances['node-os2web_base_contentpage-field_os2sub_menuheader'] = array(
     'bundle' => 'os2web_base_contentpage',
@@ -779,7 +821,7 @@ function os2web_base_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 49,
+      'weight' => 55,
     ),
   );
 
@@ -979,7 +1021,7 @@ function os2web_base_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 50,
+      'weight' => 56,
     ),
   );
 
@@ -1651,7 +1693,7 @@ function os2web_base_field_default_field_instances() {
         'display_label' => 1,
       ),
       'type' => 'options_onoff',
-      'weight' => 51,
+      'weight' => 57,
     ),
   );
 
@@ -3824,9 +3866,9 @@ function os2web_base_field_default_field_instances() {
       'better_formats' => array(
         'allowed_formats' => array(
           'full_html' => 'full_html',
-          'plain_text' => 'plain_text',
+          'plain_text' => 0,
         ),
-        'allowed_formats_toggle' => 0,
+        'allowed_formats_toggle' => 1,
         'default_order_toggle' => 0,
         'default_order_wrapper' => array(
           'formats' => array(
@@ -4929,6 +4971,7 @@ function os2web_base_field_default_field_instances() {
   t('Intro / Resume (maks 2 linier!)');
   t('KL Emneord');
   t('Kilde');
+  t('Kontaktblok');
   t('Link');
   t('Logo');
   t('Nedarv højrespalte');

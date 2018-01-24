@@ -194,6 +194,43 @@ function os2web_base_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
+  // Exported field_base: 'field_os2sub_contact_ref'.
+  $field_bases['field_os2sub_contact_ref'] = array(
+    'active' => 1,
+    'cardinality' => 1,
+    'deleted' => 0,
+    'entity_types' => array(),
+    'field_name' => 'field_os2sub_contact_ref',
+    'indexes' => array(
+      'nid' => array(
+        0 => 'nid',
+      ),
+    ),
+    'locked' => 0,
+    'module' => 'node_reference',
+    'settings' => array(
+      'referenceable_types' => array(
+        'banner' => 0,
+        'media' => 0,
+        'os2web_base_contentpage' => 0,
+        'os2web_base_gallery' => 0,
+        'os2web_base_news' => 0,
+        'os2web_base_selfservice_link' => 0,
+        'os2web_contact_contact' => 'os2web_contact_contact',
+        'os2web_spotbox_box' => 0,
+        'velkomst' => 0,
+        'webform' => 0,
+      ),
+      'view' => array(
+        'args' => array(),
+        'display_name' => '',
+        'view_name' => '',
+      ),
+    ),
+    'translatable' => 0,
+    'type' => 'node_reference',
+  );
+
   // Exported field_base: 'field_os2sub_menuheader'.
   $field_bases['field_os2sub_menuheader'] = array(
     'active' => 1,
