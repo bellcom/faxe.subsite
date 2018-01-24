@@ -1,9 +1,10 @@
 <?php
 
+
 /**
  * Implements hook_install_tasks().
  */
-function _project_profile_install_tasks(&$task) {
+function _project_profile_install_tasks($install_state, &$task) {
   // This is where you define tasks
 
   $task['project_local_settings'] = array(
@@ -12,18 +13,16 @@ function _project_profile_install_tasks(&$task) {
     'run' => INSTALL_TASK_RUN_IF_NOT_COMPLETED,
     'function' => '_project_profile_install_tasks__local_settings',
   );
-  
 }
 
 /**
  * Implements hook_install().
  */
 function _project_profile_install() {
+
   // This is where you define settings
   module_enable(array('os2web_base', 'subsites_urls','os2web_spotbox', 'os2sub_banner','os2web_aaa_index', 'os2web_contact', 'os2sub_frontpage', 'os2sub_uses_and_tools'));
 }
-
-
 
 /**
  * Implements hook_install().
@@ -32,21 +31,6 @@ function _project_profile_install() {
  */
 
 function _project_profile_install_tasks__local_settings() {
-
-  // Create a default role for site administrators, with all available permissions assigned.
-  $admin_role = new stdClass();
-  $admin_role->name = 'subsiteadmin';
-  $admin_role->weight = 2;
-  user_role_save($admin_role);
-  user_role_grant_permissions($admin_role->rid, array_keys(module_invoke_all('permission')));
-  // Set this as the administrator role.
-  variable_set('user_admin_role', $admin_role->rid);
-
-  // Assign user 1 the "administrator" role.
-  db_insert('users_roles')
-    ->fields(array('uid' => 1, 'rid' => $admin_role->rid))
-    ->execute();
-
   theme_enable(array('adminimal', 'subsite'));
   theme_disable(array('bartik', 'rubik', 'seven'));
   variable_set('theme_default', 'subsite');
@@ -57,6 +41,16 @@ function _project_profile_install_tasks__local_settings() {
   variable_set('node_admin_theme', '1');
   module_disable(array('update'));
   
+  module_enable(array(
+	  'os2web_base',
+	  'os2sub_banner',
+	  'os2web_spotbox',
+	  'os2web_aaa_index',
+	  'os2sub_uses_and_tools',
+	  'os2sub_frontpage',
+	  'subsites_urls',
+	  'os2web_contact',
+  ));
 
   // Set default TZ.
   variable_set('date_default_timezone', "Europe/Copenhagen");
@@ -74,6 +68,17 @@ function _project_profile_install_tasks__local_settings() {
   variable_set('jquery_update_jquery_migrate_plugin_migrate_warnings', 1);
   variable_set('jquery_update_jquery_version', '1.9');
 
+
+  variable_set('site_frontpage', 'forside');
+  
+  
+  theme_enable(array('adminimal', 'subsite'));
+  theme_disable(array('bartik', 'rubik', 'seven'));
+  variable_set('theme_default', 'subsite');
+  variable_set('admin_theme', 'adminimal');
+
+  module_disable(array('update'));
+
   // Set default language.
   $langs = language_list();
   variable_set('language_default', $langs['da']);
@@ -83,46 +88,4 @@ function _project_profile_install_tasks__local_settings() {
     ->fields(array("enabled" => 0))
     ->condition("language", "en")
     ->execute();
-    
-  // News category is just a single term.
-  /*
-  $vocab = taxonomy_vocabulary_machine_name_load('os2web_news_page_newstypes');
-  $category = new StdClass();
-  $category->vid = $vocab->vid;
-  $category->name = 'Nyheder';
-  taxonomy_term_save($category);
-
-  $vocab = taxonomy_vocabulary_machine_name_load('os2web_taxonomies_tax_kle');
-
-  $file_path = DRUPAL_ROOT . '/' . drupal_get_path('module', 'os2web_taxonomies') . '/data/kle.xml';
-
-  $xml = simplexml_load_file($file_path);
-
-  foreach ($xml as $row) {
-    drupal_static_reset();
-    $term = new StdClass();
-    $term->vid = $vocab->vid;
-    $term->name = $row->Key . ' ' . $row->Name;
-    $term->description[LANGUAGE_NONE][0]['value'] = $row->Description;
-
-    if ($row->Tag['TagTypeSqlID'] && $type = reset($row->Tag['TagTypeSqlID'])) {
-      switch ($type) {
-        case 2:
-            $term->field_os2web_taxonomies_legi_ref[LANGUAGE_NONE][0]['url'] = $row->Tag->Value;
-            $term->field_os2web_taxonomies_legi_ref[LANGUAGE_NONE][0]['title'] = $row->Tag->Key;
-          break;
-
-        case 3:
-          $term->field_os2web_taxonomies_search[LANGUAGE_NONE][0]['value'] = $row->Tag->Key;
-          break;
-
-        case 4:
-          $term->field_os2web_taxonomies_cue_word[LANGUAGE_NONE][0]['value'] = $row->Tag->Key;
-          break;
-      }
-    }
-
-    taxonomy_term_save($term);
-  }
-  */
 }
