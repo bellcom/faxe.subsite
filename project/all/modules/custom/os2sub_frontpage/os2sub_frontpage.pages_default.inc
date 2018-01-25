@@ -65,6 +65,8 @@ function os2sub_frontpage_default_page_manager_pages() {
       'top' => NULL,
       'bottom' => NULL,
       'sidebar' => NULL,
+      'top-container' => NULL,
+      'bottom-container' => NULL,
     ),
   );
   $display->cache = array();
@@ -188,7 +190,11 @@ function os2sub_frontpage_default_page_manager_pages() {
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => '',
+    'css_class' => '',
+    'template_suggestion' => 'plain',
+  );
   $pane->extras = array();
   $pane->position = 0;
   $pane->locks = array();

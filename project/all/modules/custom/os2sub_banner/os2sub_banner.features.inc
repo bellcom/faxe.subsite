@@ -30,7 +30,7 @@ function os2sub_banner_image_default_styles() {
   $styles['os2sub_banner'] = array(
     'label' => 'OS2sub Banner',
     'effects' => array(
-      3 => array(
+      1 => array(
         'name' => 'epsacrop_crop',
         'data' => array(
           'width' => 1200,
@@ -41,19 +41,10 @@ function os2sub_banner_image_default_styles() {
             'aspect_ratio' => '',
             'bgcolor' => 'black',
             'bgopacity' => 0.6,
-            'fallback' => 1,
+            'fallback' => 0,
           ),
         ),
         'weight' => -9,
-      ),
-      2 => array(
-        'name' => 'image_scale',
-        'data' => array(
-          'width' => 1200,
-          'height' => '',
-          'upscale' => 0,
-        ),
-        'weight' => -8,
       ),
     ),
   );
