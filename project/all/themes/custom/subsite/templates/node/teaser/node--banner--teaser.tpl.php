@@ -1,9 +1,9 @@
 <?php if ($view_mode == 'teaser'): ?>
   <?php
-  $image_style = $content['field_background_image'][0]['#image_style'];
+  $image_style = $content['field_banner_billede'][0]['#image_style'];
   $image_url = FALSE;
 
-  if (isset($node->field_background_image['und']['0']['uri']) && $uri = $node->field_background_image['und']['0']['uri']) {
+  if (isset($node->field_banner_billede['und']['0']['uri']) && $uri = $node->field_banner_billede['und']['0']['uri']) {
     $image_url = file_create_url(image_style_url($image_style, $uri));
   }
   ?>
