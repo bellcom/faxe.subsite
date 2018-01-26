@@ -28,7 +28,7 @@
     background-color: transparent;
     background-image: linear-gradient(
                     to right,
-                    rgba(27, 62, 70, .6) 40%,
+                    rgba($brand-primary, .6) 40%,
                     transparent 65%
     );
   }
@@ -54,12 +54,11 @@
 
     a {
       @extend .btn;
+      @extend .btn-default;
       @extend .btn-lg;
+      @extend .btn-block;
 
-      &, &:hover {
-        border-color: #fff;
-        color: #fff;
-      }
+      margin-bottom: 10px;
     }
   }
 }

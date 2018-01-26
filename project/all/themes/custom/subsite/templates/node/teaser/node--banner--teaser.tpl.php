@@ -21,19 +21,26 @@
 
     <div class="sectioned__inner">
       <div class="container">
+        <div class="row">
+          <div class="col-sm-7">
 
-        <!-- Begin - headline -->
-        <?php print render($content['field_banner_headline']); ?>
-        <!-- End - headline -->
+            <!-- Begin - headline -->
+            <?php print render($content['field_banner_headline']); ?>
+            <!-- End - headline -->
 
-        <!-- Begin - body -->
-        <?php print render($content['field_banner_text']); ?>
-        <!-- End - body -->
+            <!-- Begin - body -->
+            <?php print render($content['field_banner_text']); ?>
+            <!-- End - body -->
 
-        <!-- Begin - link -->
-        <?php print render($content['field_knap_link']); ?>
-        <!-- End - link -->
+          </div>
+          <div class="col-sm-5">
 
+            <!-- Begin - link -->
+            <?php print render($content['field_knap_link']); ?>
+            <!-- End - link -->
+
+          </div>
+        </div>
       </div>
     </div>
   </div>
