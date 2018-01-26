@@ -40,4 +40,12 @@
       <!-- End - paragraphs -->
   <?php endif; ?>
 
+  <?php if ( isset( $content['field_os2web_base_field_webform'] ) ): ?>
+      <!-- Begin - webform -->
+      <div class="node__webform">
+          <?php print render( $content['field_os2web_base_field_webform'] ); ?>
+      </div>
+      <!-- End - webform -->
+  <?php endif; ?>
+
 </article>
