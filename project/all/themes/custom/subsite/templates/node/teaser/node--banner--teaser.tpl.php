@@ -1,9 +1,9 @@
 <?php if ($view_mode == 'teaser'): ?>
   <?php
-  $image_style = $content['field_background_image'][0]['#image_style'];
+  $image_style = $content['field_banner_billede'][0]['#image_style'];
   $image_url = FALSE;
 
-  if (isset($node->field_background_image['und']['0']['uri']) && $uri = $node->field_background_image['und']['0']['uri']) {
+  if (isset($node->field_banner_billede['und']['0']['uri']) && $uri = $node->field_banner_billede['und']['0']['uri']) {
     $image_url = file_create_url(image_style_url($image_style, $uri));
   }
   ?>
@@ -21,19 +21,26 @@
 
     <div class="sectioned__inner">
       <div class="container">
+        <div class="row">
+          <div class="col-sm-7">
 
-        <!-- Begin - headline -->
-        <?php print render($content['field_banner_headline']); ?>
-        <!-- End - headline -->
+            <!-- Begin - headline -->
+            <?php print render($content['field_banner_headline']); ?>
+            <!-- End - headline -->
 
-        <!-- Begin - body -->
-        <?php print render($content['field_banner_text']); ?>
-        <!-- End - body -->
+            <!-- Begin - body -->
+            <?php print render($content['field_banner_text']); ?>
+            <!-- End - body -->
 
-        <!-- Begin - link -->
-        <?php print render($content['field_knap_link']); ?>
-        <!-- End - link -->
+          </div>
+          <div class="col-sm-5">
 
+            <!-- Begin - link -->
+            <?php print render($content['field_knap_link']); ?>
+            <!-- End - link -->
+
+          </div>
+        </div>
       </div>
     </div>
   </div>
