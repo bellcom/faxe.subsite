@@ -36,6 +36,8 @@
   .field-name-field-banner-headline {
     @extend .heading-h1;
 
+    margin: 0;
+
     color: #fff;
   }
 
@@ -58,7 +60,41 @@
       @extend .btn-lg;
       @extend .btn-block;
 
+      position: relative;
+
+      padding-right: floor( ( $padding-large-horizontal * 1.5 ) );
+      margin: auto;
       margin-bottom: 10px;
+
+      max-width: 280px;
+
+      text-align: left;
+
+      &:after {
+        @extend .fa;
+        position: absolute;
+
+        display: flex;
+
+        justify-content: center;
+        align-items: center;
+
+        top: 50%;
+        right: 0;
+
+        content: $fa-var-angle-right;
+
+        margin-top: -15px; // Half the height
+        padding-right: $padding-large-horizontal;
+
+        height: 30px;
+
+        color: $text-color;
+      }
+
+      &:hover {
+        color: $brand-primary;
+      }
     }
   }
 }
@@ -87,7 +123,7 @@
     }
 
     .field-name-field-banner-headline {
-      font-size: 70px;
+      font-size: 50px;
     }
   }
 }

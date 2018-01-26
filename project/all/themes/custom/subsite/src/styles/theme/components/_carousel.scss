@@ -170,13 +170,6 @@ $carousel-overlay-color: #1b3e46;
 // Tablet - and up
 @media #{$breakpoint-tablet-and-up} {
 
-  .carousel {
-
-    .container {
-      max-width: calc(100% - 30%);
-    }
-  }
-
   .carousel-indicators {
     text-align: right;
     padding-right: 90px;
@@ -187,7 +180,7 @@ $carousel-overlay-color: #1b3e46;
     .carousel-caption {
 
       h1, h2, h3, h4, h5, h6 {
-        font-size: 50px;
+        font-size: 40px;
       }
     }
   }
@@ -204,7 +197,7 @@ $carousel-overlay-color: #1b3e46;
     .carousel-caption {
 
       h1, h2, h3, h4, h5, h6 {
-        font-size: 70px;
+        font-size: 50px;
       }
     }
   }
