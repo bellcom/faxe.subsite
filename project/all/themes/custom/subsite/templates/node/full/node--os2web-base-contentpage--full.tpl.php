@@ -20,16 +20,24 @@
     <!-- Begin - intro -->
     <div class="node__intro">
       <?php print render($content['field_os2web_base_field_summary']); ?>
-    </div>
-    <!-- End - intro -->
+  </div>
+  <!-- End - intro -->
   <?php endif; ?>
 
   <?php if (isset($content['body'])): ?>
-    <!-- Begin - body -->
-    <div class="node__body">
-      <?php print render($content['body']); ?>
-    </div>
-    <!-- End - body -->
+  <!-- Begin - body -->
+  <div class="node__body">
+    <?php print render($content['body']); ?>
+  </div>
+  <!-- End - body -->
+  <?php endif; ?>
+  
+  <?php if ( isset( $content['field_afsnit'] ) ): ?>
+      <!-- Begin - paragraphs -->
+      <div class="node__paragraphs">
+          <?php print render( $content['field_afsnit'] ); ?>
+      </div>
+      <!-- End - paragraphs -->
   <?php endif; ?>
 
 </article>
