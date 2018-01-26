@@ -10,7 +10,6 @@ features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:2
 features[variable][] = pathauto_file_pattern
 features[variable][] = pathauto_node_banner_pattern
-features[variable][] = pathauto_node_event_calendar_pattern
 features[variable][] = pathauto_node_media_pattern
 features[variable][] = pathauto_node_os2web_base_contentpage_pattern
 features[variable][] = pathauto_node_os2web_base_gallery_pattern

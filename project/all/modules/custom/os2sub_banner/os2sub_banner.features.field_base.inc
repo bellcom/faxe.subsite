@@ -90,8 +90,8 @@ function os2sub_banner_field_default_field_bases() {
     'module' => 'list',
     'settings' => array(
       'allowed_values' => array(
-        0 => 'black',
-        1 => 'white',
+        0 => '',
+        1 => '',
       ),
       'allowed_values_function' => '',
     ),
@@ -102,7 +102,7 @@ function os2sub_banner_field_default_field_bases() {
   // Exported field_base: 'field_knap_link'.
   $field_bases['field_knap_link'] = array(
     'active' => 1,
-    'cardinality' => 1,
+    'cardinality' => -1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_knap_link',

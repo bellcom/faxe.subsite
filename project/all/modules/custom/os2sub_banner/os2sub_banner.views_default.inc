@@ -134,11 +134,84 @@ function os2sub_banner_views_default_views() {
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
   $handler->display->display_options['pager']['options']['offset'] = '0';
   $handler->display->display_options['defaults']['style_plugin'] = FALSE;
-  $handler->display->display_options['style_plugin'] = 'owlcarousel';
+  $handler->display->display_options['style_plugin'] = 'views_bootstrap_carousel_plugin_style';
+  $handler->display->display_options['style_options']['interval'] = '5000';
+  $handler->display->display_options['style_options']['navigation'] = 1;
+  $handler->display->display_options['style_options']['indicators'] = 1;
+  $handler->display->display_options['style_options']['pause'] = 0;
   $handler->display->display_options['defaults']['style_options'] = FALSE;
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
-  $handler->display->display_options['row_plugin'] = 'node';
+  $handler->display->display_options['row_plugin'] = 'entity';
+  $handler->display->display_options['row_options']['view_mode'] = 'teaser';
   $handler->display->display_options['defaults']['row_options'] = FALSE;
+  $handler->display->display_options['defaults']['fields'] = FALSE;
+  /* Felt: Indhold: Hvid tekst */
+  $handler->display->display_options['fields']['field_hvid_tekst']['id'] = 'field_hvid_tekst';
+  $handler->display->display_options['fields']['field_hvid_tekst']['table'] = 'field_data_field_hvid_tekst';
+  $handler->display->display_options['fields']['field_hvid_tekst']['field'] = 'field_hvid_tekst';
+  $handler->display->display_options['fields']['field_hvid_tekst']['label'] = '';
+  $handler->display->display_options['fields']['field_hvid_tekst']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['field_hvid_tekst']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_hvid_tekst']['type'] = 'list_key';
+  /* Felt: Indhold: Titel */
+  $handler->display->display_options['fields']['title']['id'] = 'title';
+  $handler->display->display_options['fields']['title']['table'] = 'node';
+  $handler->display->display_options['fields']['title']['field'] = 'title';
+  $handler->display->display_options['fields']['title']['label'] = '';
+  $handler->display->display_options['fields']['title']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
+  $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
+  $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
+  /* Felt: Indhold: Knap / link */
+  $handler->display->display_options['fields']['field_knap_link']['id'] = 'field_knap_link';
+  $handler->display->display_options['fields']['field_knap_link']['table'] = 'field_data_field_knap_link';
+  $handler->display->display_options['fields']['field_knap_link']['field'] = 'field_knap_link';
+  $handler->display->display_options['fields']['field_knap_link']['label'] = '';
+  $handler->display->display_options['fields']['field_knap_link']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_knap_link']['alter']['text'] = '<div class="button-group">[field_knap_link]</div>';
+  $handler->display->display_options['fields']['field_knap_link']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_knap_link']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_knap_link']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_knap_link']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_knap_link']['click_sort_column'] = 'url';
+  $handler->display->display_options['fields']['field_knap_link']['delta_offset'] = '0';
+  $handler->display->display_options['fields']['field_knap_link']['multi_type'] = 'ul';
+  /* Felt: Indhold: Banner overskrift */
+  $handler->display->display_options['fields']['field_banner_headline']['id'] = 'field_banner_headline';
+  $handler->display->display_options['fields']['field_banner_headline']['table'] = 'field_data_field_banner_headline';
+  $handler->display->display_options['fields']['field_banner_headline']['field'] = 'field_banner_headline';
+  $handler->display->display_options['fields']['field_banner_headline']['label'] = '';
+  $handler->display->display_options['fields']['field_banner_headline']['element_type'] = 'span';
+  $handler->display->display_options['fields']['field_banner_headline']['element_class'] = '[field_hvid_tekst]';
+  $handler->display->display_options['fields']['field_banner_headline']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_banner_headline']['element_default_classes'] = FALSE;
+  /* Felt: Indhold: Banner text */
+  $handler->display->display_options['fields']['field_banner_text']['id'] = 'field_banner_text';
+  $handler->display->display_options['fields']['field_banner_text']['table'] = 'field_data_field_banner_text';
+  $handler->display->display_options['fields']['field_banner_text']['field'] = 'field_banner_text';
+  $handler->display->display_options['fields']['field_banner_text']['label'] = '';
+  $handler->display->display_options['fields']['field_banner_text']['alter']['alter_text'] = TRUE;
+  $handler->display->display_options['fields']['field_banner_text']['alter']['text'] = '[field_banner_text]
+[field_knap_link]';
+  $handler->display->display_options['fields']['field_banner_text']['element_type'] = 'span';
+  $handler->display->display_options['fields']['field_banner_text']['element_class'] = '[field_hvid_tekst]';
+  $handler->display->display_options['fields']['field_banner_text']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_banner_text']['element_default_classes'] = FALSE;
+  /* Felt: Indhold: Billede */
+  $handler->display->display_options['fields']['field_banner_billede']['id'] = 'field_banner_billede';
+  $handler->display->display_options['fields']['field_banner_billede']['table'] = 'field_data_field_banner_billede';
+  $handler->display->display_options['fields']['field_banner_billede']['field'] = 'field_banner_billede';
+  $handler->display->display_options['fields']['field_banner_billede']['label'] = '';
+  $handler->display->display_options['fields']['field_banner_billede']['element_type'] = '0';
+  $handler->display->display_options['fields']['field_banner_billede']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['field_banner_billede']['element_wrapper_type'] = '0';
+  $handler->display->display_options['fields']['field_banner_billede']['element_default_classes'] = FALSE;
+  $handler->display->display_options['fields']['field_banner_billede']['click_sort_column'] = 'fid';
+  $handler->display->display_options['fields']['field_banner_billede']['settings'] = array(
+    'image_style' => 'os2sub_banner',
+    'image_link' => '',
+  );
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filterkriterie: Indhold: Udgivet */
@@ -247,6 +320,9 @@ function os2sub_banner_views_default_views() {
     t('Billede'),
     t('Redigér'),
     t('Forsidebanner Block'),
+    t('<div class="button-group">[field_knap_link]</div>'),
+    t('[field_banner_text]
+[field_knap_link]'),
     t('Indholdsside Banner Block'),
     t('Alle'),
     t('Banner valgt på node'),
