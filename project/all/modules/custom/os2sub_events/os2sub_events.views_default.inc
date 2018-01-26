@@ -161,9 +161,28 @@ function os2sub_events_views_default_views() {
   $handler->display->display_options['filters']['type']['value'] = array(
     'os2sub_event' => 'os2sub_event',
   );
+  /* Filterkriterie: Dato: Dato (node) */
+  $handler->display->display_options['filters']['date_filter']['id'] = 'date_filter';
+  $handler->display->display_options['filters']['date_filter']['table'] = 'node';
+  $handler->display->display_options['filters']['date_filter']['field'] = 'date_filter';
+  $handler->display->display_options['filters']['date_filter']['operator'] = '>=';
+  $handler->display->display_options['filters']['date_filter']['default_date'] = 'today';
+  $handler->display->display_options['filters']['date_filter']['year_range'] = '-3:+10';
+  $handler->display->display_options['filters']['date_filter']['date_fields'] = array(
+    'field_data_field_os2sub_event_date.field_os2sub_event_date_value' => 'field_data_field_os2sub_event_date.field_os2sub_event_date_value',
+    'field_data_field_os2sub_event_date.field_os2sub_event_date_value2' => 'field_data_field_os2sub_event_date.field_os2sub_event_date_value2',
+  );
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['style_options']['row_class'] = 'col-md-4';
+  $handler->display->display_options['style_options']['row_class_special'] = FALSE;
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'node';
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['path'] = 'kommende-begivenheder';
   $handler->display->display_options['menu']['type'] = 'normal';
   $handler->display->display_options['menu']['title'] = 'Kommende begivenheder';
@@ -171,10 +190,24 @@ function os2sub_events_views_default_views() {
 
   /* Display: Content pane */
   $handler = $view->new_display('panel_pane', 'Content pane', 'panel_pane_1');
+  $handler->display->display_options['defaults']['css_class'] = FALSE;
+  $handler->display->display_options['defaults']['arguments'] = FALSE;
+  /* Kontekstuelt filter: Indhold: Nid */
+  $handler->display->display_options['arguments']['nid']['id'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['table'] = 'node';
+  $handler->display->display_options['arguments']['nid']['field'] = 'nid';
+  $handler->display->display_options['arguments']['nid']['default_action'] = 'default';
+  $handler->display->display_options['arguments']['nid']['exception']['title'] = 'Alle';
+  $handler->display->display_options['arguments']['nid']['default_argument_type'] = 'node';
+  $handler->display->display_options['arguments']['nid']['summary']['number_of_records'] = '0';
+  $handler->display->display_options['arguments']['nid']['summary']['format'] = 'default_summary';
+  $handler->display->display_options['arguments']['nid']['summary_options']['items_per_page'] = '25';
+  $handler->display->display_options['arguments']['nid']['not'] = TRUE;
   $handler->display->display_options['link_to_view'] = '1';
 
   /* Display: Blok */
   $handler = $view->new_display('block', 'Blok', 'block_1');
+  $handler->display->display_options['defaults']['css_class'] = FALSE;
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '1';
@@ -218,6 +251,7 @@ function os2sub_events_views_default_views() {
     t('sidste »'),
     t('Page'),
     t('Content pane'),
+    t('Alle'),
     t('View panes'),
     t('Blok'),
     t('<h3>Aktivitetskalender</h3>
