@@ -111,7 +111,7 @@ function os2sub_events_views_default_views() {
 
   /* Display: Master */
   $handler = $view->new_display('default', 'Master', 'default');
-  $handler->display->display_options['title'] = 'OS2sub - Kommende begivenheder';
+  $handler->display->display_options['title'] = 'Kommende begivenheder';
   $handler->display->display_options['css_class'] = 'row rows--equal-heights';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['use_more_text'] = 'mere';
@@ -235,7 +235,7 @@ function os2sub_events_views_default_views() {
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
   $translatables['os2sub_kommende_begivenheder'] = array(
     t('Master'),
-    t('OS2sub - Kommende begivenheder'),
+    t('Kommende begivenheder'),
     t('mere'),
     t('Udfør'),
     t('Gendan'),

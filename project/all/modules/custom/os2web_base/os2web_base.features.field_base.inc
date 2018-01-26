@@ -212,6 +212,7 @@ function os2web_base_field_default_field_bases() {
       'referenceable_types' => array(
         'banner' => 0,
         'media' => 0,
+        'os2sub_event' => 0,
         'os2web_base_contentpage' => 0,
         'os2web_base_gallery' => 0,
         'os2web_base_news' => 0,
@@ -493,7 +494,7 @@ function os2web_base_field_default_field_bases() {
   // Exported field_base: 'field_os2web_base_field_loca_ref'.
   $field_bases['field_os2web_base_field_loca_ref'] = array(
     'active' => 1,
-    'cardinality' => -1,
+    'cardinality' => 1,
     'deleted' => 0,
     'entity_types' => array(),
     'field_name' => 'field_os2web_base_field_loca_ref',
@@ -509,6 +510,7 @@ function os2web_base_field_default_field_bases() {
         0 => array(
           'vocabulary' => 'os2web_taxonomies_tax_places',
           'parent' => 0,
+          'depth' => '',
         ),
       ),
       'options_list_callback' => 'content_taxonomy_allowed_values',
