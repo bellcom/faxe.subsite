@@ -22,18 +22,18 @@
     <div class="sectioned__inner">
       <div class="container">
         <div class="row">
-          <div class="col-sm-7">
+          <div class="col-sm-7 text-xs-center">
 
             <!-- Begin - headline -->
             <?php print render($content['field_banner_headline']); ?>
             <!-- End - headline -->
 
             <!-- Begin - body -->
-            <?php print render($content['field_banner_text']); ?>
+            <?php // print render($content['field_banner_text']); ?>
             <!-- End - body -->
 
           </div>
-          <div class="col-sm-5">
+          <div class="col-sm-5 text-center">
 
             <!-- Begin - link -->
             <?php print render($content['field_knap_link']); ?>
