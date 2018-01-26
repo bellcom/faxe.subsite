@@ -1,9 +1,9 @@
 // |--------------------------------------------------------------------------
-// | Banner
+// | Webform
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .sectioned--banner
+// | - .node-webform
 // |
 
 // --------------------------------------------------
@@ -14,56 +14,29 @@
 // Mixins
 // --------------------------------------------------
 
-@mixin sectioned-banner-mixin() {}
+@mixin node-webform-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.sectioned--banner {
+.node-webform {
 
-  .sectioned__inner {
-    min-height: 300px;
-
-    background-color: transparent;
-    background-image: linear-gradient(
-                    to right,
-                    rgba($brand-primary, .6) 40%,
-                    transparent 65%
-    );
+  .panel {
+    border: 0;
+    box-shadow: none;
   }
 
-  .field-name-field-banner-headline {
-    @extend .heading-h1;
+  .panel-body {
+    padding: 0;
 
-    margin: 0;
+    @include make-row();
 
-    color: #fff;
-  }
-
-  .field-name-field-banner-text {
-    @extend .heading-h3;
-
-    font-weight: $headings-font-weight-light;
-    color: #fff;
-
-    + .field-name-field-knap-link {
-      margin-top: $grid-gutter-width;
-    }
-  }
-
-  .field-name-field-knap-link {
-
-    a {
-      @extend .btn;
-      @extend .btn-default;
-
-      margin: auto;
-      margin-bottom: 10px;
-
-      &:hover {
-        color: $brand-primary;
-      }
+    > .form-item {
+      @include make-xs-column(12);
+      @include make-sm-column(6);
+      @include make-md-column(6);
+      @include make-lg-column(6);
     }
   }
 }
@@ -83,19 +56,7 @@
 @media #{$breakpoint-mobile-only} {}
 
 // Tablet - and up
-@media #{$breakpoint-tablet-and-up} {
-
-  .sectioned--banner {
-
-    .sectioned__inner {
-      min-height: 400px;
-    }
-
-    .field-name-field-banner-headline {
-      font-size: 50px;
-    }
-  }
-}
+@media #{$breakpoint-tablet-and-up} {}
 
 // Tablet - only
 @media #{$breakpoint-tablet-only} {}
