@@ -3,10 +3,10 @@
   <a href="<?php print $node_url; ?>" id="node-<?php print $node->nid; ?>"
      class="<?php print $classes; ?> element-wrapper-link clearfix"<?php print $attributes; ?>>
 
-    <?php if (isset($content['field_image'])): ?>
+    <?php if (isset($content['field_os2web_base_field_image'])): ?>
       <!-- Begin - image -->
       <div class="entity-list-advanced__image">
-        <?php print render($content['field_image']); ?>
+        <?php print render($content['field_os2web_base_field_image']); ?>
       </div>
       <!-- End - image -->
     <?php endif; ?>
