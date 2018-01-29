@@ -1,43 +1,33 @@
 // |--------------------------------------------------------------------------
-// | Transparent
+// | News - list default
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .boxy--transparent
+// | - .pane-os2web-news-lists-panel-pane-2
 // |
 
 // --------------------------------------------------
 // Variables
 // --------------------------------------------------
 
-$boxy-transparent-heading-background-color: transparent;
-$boxy-transparent-body-background-color: transparent;
-$boxy-transparent-footer-background-color: transparent;
-
 // --------------------------------------------------
 // Mixins
 // --------------------------------------------------
 
-@mixin boxy-transparent-mixin() {}
+@mixin pane-os2web-news-lists-panel-pane-2-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.boxy--transparent {
+.pane-os2web-news-lists-panel-pane-2 {
 
-  .boxy__heading {
-    padding-top: 0;
+  &.boxy {
 
-    background-color: $boxy-transparent-heading-background-color;
-  }
-
-  .boxy__body {
-    background-color: $boxy-transparent-body-background-color;
-  }
-
-  .boxy__footer {
-    background-color: $boxy-transparent-footer-background-color;
+    .boxy__body {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
   }
 }
 
