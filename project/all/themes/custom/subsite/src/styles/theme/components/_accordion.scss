@@ -1,0 +1,141 @@
+// |--------------------------------------------------------------------------
+// | Accordion
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .accordion
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin accordion-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.accordion {}
+
+.accordion__heading {
+  position: relative;
+
+  margin: 0;
+  padding: 10px 20px;
+
+  font-weight: $headings-font-weight-bold;
+
+  background-color: $body-bg-tertiary;
+
+  &:after {
+    @extend .fa;
+    position: absolute;
+
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+
+    top: 50%;
+    right: 20px;
+
+    content: $fa-var-plus;
+
+    margin-top: -13px; // Half the height
+
+    height: 26px;
+    width: 26px;
+
+    color: $text-color;
+    background-color: #fff;
+    border-radius: 100%;
+  }
+
+  .open > & {
+    color: #fff;
+    background-color: $brand-primary;
+
+    &:after {
+      content: $fa-var-minus;
+    }
+  }
+
+  button {
+    display: block;
+
+    transition: none;
+
+    text-align: left;
+
+    width: 100%;
+
+    padding: 0;
+    margin: 0;
+
+    cursor: hand;
+    cursor: pointer;
+
+    border: 0;
+
+    font-size: inherit;
+
+    color: inherit;
+    background-color: transparent;
+  }
+}
+
+.accordion__body {
+  display: none;
+
+  padding: 15px 20px;
+
+  border: 1px solid $border-color;
+  border-top: 0;
+
+  .open > & {
+    display: block;
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

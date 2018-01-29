@@ -47,4 +47,15 @@ jQuery(function($) {
     $(window).on('resize', function(){
         _set_flexy_header_form_position();
     });
+
+    // Accordion
+
+
+
+    $('.accordion__heading').on('click', function(event) {
+        var $element = $(this),
+            $parent = $element.parents('.accordion');
+
+        $parent.toggleClass('open');
+    });
 });
