@@ -13,10 +13,10 @@
 
     <div class="entity-list-advanced__body">
 
-      <?php if (isset($content['field_date'])): ?>
+      <?php if (isset($content['field_os2sub_event_date'])): ?>
         <!-- Begin - date -->
         <div class="entity-list-advanced__date heading-h4">
-          <?php print render($content['field_date']); ?>
+          <?php print render($content['field_os2sub_event_date']); ?>
         </div>
         <!-- End - date -->
       <?php endif; ?>
@@ -27,10 +27,10 @@
         </h3>
       </div>
 
-      <?php if ( isset( $content['field_description'] ) ): ?>
+      <?php if ( isset( $content['body'] ) ): ?>
           <!-- Begin - description -->
           <div class="entity-list-advanced__description">
-              <?php print render( $content['field_description'] ); ?>
+              <?php print render( $content['body'] ); ?>
           </div>
           <!-- End - description -->
       <?php endif; ?>
