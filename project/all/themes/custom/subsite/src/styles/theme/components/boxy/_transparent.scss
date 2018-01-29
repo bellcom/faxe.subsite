@@ -27,6 +27,8 @@ $boxy-transparent-footer-background-color: transparent;
 .boxy--transparent {
 
   .boxy__heading {
+    padding-top: 0;
+
     background-color: $boxy-transparent-heading-background-color;
   }
 

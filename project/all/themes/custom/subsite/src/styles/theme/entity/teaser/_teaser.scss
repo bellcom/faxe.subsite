@@ -10,9 +10,6 @@
 // Variables
 // --------------------------------------------------
 
-$entity-teaser-padding-left-right: $boxy-spacing-left-right;
-$entity-teaser-body-padding-top-bottom: 30px;
-
 // --------------------------------------------------
 // Mixins
 // --------------------------------------------------
@@ -27,11 +24,6 @@ $entity-teaser-body-padding-top-bottom: 30px;
   margin-bottom: floor( ( $grid-gutter-width / 2 ) );
 
   background-color: $body-bg-secondary;
-
-  .boxy & {
-    margin-left: (0 - $boxy-spacing-left-right);
-    margin-right: (0 - $boxy-spacing-left-right);
-  }
 }
 
 .entity-teaser__image {
@@ -44,7 +36,11 @@ $entity-teaser-body-padding-top-bottom: 30px;
 .entity-teaser__genre {
   margin-right: 60px;
 
-  padding: 8px $entity-teaser-padding-left-right;
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  padding-right: $xs-boxy-spacing-left-right;
+  padding-left: $xs-boxy-spacing-left-right;
 
   font-weight: $font-weight-bold;
 
@@ -73,7 +69,11 @@ $entity-teaser-body-padding-top-bottom: 30px;
 .entity-teaser__description {}
 
 .entity-teaser__body {
-  padding: $entity-teaser-body-padding-top-bottom $entity-teaser-padding-left-right;
+  padding-top: floor( ($grid-gutter-width / 2) );
+  padding-bottom: floor( ($grid-gutter-width / 2) );
+
+  padding-right: $xs-boxy-spacing-left-right;
+  padding-left: $xs-boxy-spacing-left-right;
 }
 
 // --------------------------------------------------
@@ -94,16 +94,49 @@ $entity-teaser-body-padding-top-bottom: 30px;
 @media #{$breakpoint-tablet-and-up} {}
 
 // Tablet - only
-@media #{$breakpoint-tablet-only} {}
+@media #{$breakpoint-tablet-only} {
+
+  .entity-teaser__genre {
+    padding-right: $sm-boxy-spacing-left-right;
+    padding-left: $sm-boxy-spacing-left-right;
+  }
+
+  .entity-teaser__body {
+    padding-right: $sm-boxy-spacing-left-right;
+    padding-left: $sm-boxy-spacing-left-right;
+  }
+}
 
 // Desktop - and up
 @media #{$breakpoint-desktop-and-up} {}
 
 // Desktop - only
-@media #{$breakpoint-desktop-only} {}
+@media #{$breakpoint-desktop-only} {
+
+  .entity-teaser__genre {
+    padding-right: $md-boxy-spacing-left-right;
+    padding-left: $md-boxy-spacing-left-right;
+  }
+
+  .entity-teaser__body {
+    padding-right: $md-boxy-spacing-left-right;
+    padding-left: $md-boxy-spacing-left-right;
+  }
+}
 
 // Large desktop - and up
-@media #{$breakpoint-large-desktop-and-up} {}
+@media #{$breakpoint-large-desktop-and-up} {
+
+  .entity-teaser__genre {
+    padding-right: $lg-boxy-spacing-left-right;
+    padding-left: $lg-boxy-spacing-left-right;
+  }
+
+  .entity-teaser__body {
+    padding-right: $lg-boxy-spacing-left-right;
+    padding-left: $lg-boxy-spacing-left-right;
+  }
+}
 
 // Print
 @media print {}

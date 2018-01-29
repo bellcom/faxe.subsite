@@ -20,7 +20,30 @@
 // Styling
 // --------------------------------------------------
 
-.node-os2web-base-contentpage {}
+.node-os2web-base-contentpage {
+
+  .node__body {
+
+    + .node__contact-block,
+    + .node__paragraphs {
+      margin-top: floor( ( $grid-gutter-width / 2 ) );
+    }
+  }
+
+  .node__contact-block {
+
+    + .node__paragraphs {
+      margin-top: floor( ( $grid-gutter-width / 2 ) );
+    }
+  }
+
+  .node__paragraphs {
+
+    .accordion {
+      margin: 5px 0;
+    }
+  }
+}
 
 // --------------------------------------------------
 // Variants

@@ -1,4 +1,5 @@
-<article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+<article id="node-<?php print $node->nid; ?>"
+         class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
   <?php if (isset($content['field_os2web_base_field_image'])): ?>
     <!-- Begin - image -->
@@ -20,32 +21,40 @@
     <!-- Begin - intro -->
     <div class="node__intro">
       <?php print render($content['field_os2web_base_field_summary']); ?>
-  </div>
-  <!-- End - intro -->
+    </div>
+    <!-- End - intro -->
   <?php endif; ?>
 
   <?php if (isset($content['body'])): ?>
-  <!-- Begin - body -->
-  <div class="node__body">
-    <?php print render($content['body']); ?>
-  </div>
-  <!-- End - body -->
-  <?php endif; ?>
-  
-  <?php if ( isset( $content['field_afsnit'] ) ): ?>
-      <!-- Begin - paragraphs -->
-      <div class="node__paragraphs">
-          <?php print render( $content['field_afsnit'] ); ?>
-      </div>
-      <!-- End - paragraphs -->
+    <!-- Begin - body -->
+    <div class="node__body">
+      <?php print render($content['body']); ?>
+    </div>
+    <!-- End - body -->
   <?php endif; ?>
 
-  <?php if ( isset( $content['field_os2web_base_field_webform'] ) ): ?>
-      <!-- Begin - webform -->
-      <div class="node__webform">
-          <?php print render( $content['field_os2web_base_field_webform'] ); ?>
-      </div>
-      <!-- End - webform -->
+  <?php if (isset($content['field_os2sub_contact_ref'])): ?>
+    <!-- Begin - contact block -->
+    <div class="node__contact-block">
+      <?php print render($content['field_os2sub_contact_ref']); ?>
+    </div>
+    <!-- End - contact block -->
+  <?php endif; ?>
+
+  <?php if (isset($content['field_afsnit'])): ?>
+    <!-- Begin - paragraphs -->
+    <div class="node__paragraphs">
+      <?php print render($content['field_afsnit']); ?>
+    </div>
+    <!-- End - paragraphs -->
+  <?php endif; ?>
+
+  <?php if (isset($content['field_os2web_base_field_webform'])): ?>
+    <!-- Begin - webform -->
+    <div class="node__webform">
+      <?php print render($content['field_os2web_base_field_webform']); ?>
+    </div>
+    <!-- End - webform -->
   <?php endif; ?>
 
 </article>
