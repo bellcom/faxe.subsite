@@ -1,9 +1,9 @@
 // |--------------------------------------------------------------------------
-// | Pane
+// | Image
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .panel-pane
+// | - .field-name-field-os2web-base-field-image
 // |
 
 // --------------------------------------------------
@@ -14,19 +14,17 @@
 // Mixins
 // --------------------------------------------------
 
-@mixin panel-pane-mixin() {}
+@mixin field-name-field-os2web-base-field-image-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.panel-pane {
+.field-name-field-os2web-base-field-image {
 
-  &.boxy {
-
-    .node__image {
-      margin-top: (0 - $boxy-body-spacing-top-bottom);
-    }
+  img {
+    width: 100% !important;
+    height: auto;
   }
 }
 

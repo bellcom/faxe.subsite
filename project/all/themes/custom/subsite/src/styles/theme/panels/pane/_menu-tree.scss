@@ -1,9 +1,9 @@
 // |--------------------------------------------------------------------------
-// | Pane
+// | Menu tree
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .panel-pane
+// | - .pane-menu-tree
 // |
 
 // --------------------------------------------------
@@ -14,18 +14,19 @@
 // Mixins
 // --------------------------------------------------
 
-@mixin panel-pane-mixin() {}
+@mixin pane-menu-tree-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.panel-pane {
+.pane-menu-tree {
 
   &.boxy {
 
-    .node__image {
-      margin-top: (0 - $boxy-body-spacing-top-bottom);
+    .boxy__body {
+      padding-top: 0;
+      padding-bottom: 0;
     }
   }
 }
