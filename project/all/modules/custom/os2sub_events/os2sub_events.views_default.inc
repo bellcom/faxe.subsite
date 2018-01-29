@@ -218,7 +218,7 @@ function os2sub_events_views_default_views() {
   $handler->display->display_options['fields']['title']['label'] = '';
   $handler->display->display_options['fields']['title']['alter']['alter_text'] = TRUE;
   $handler->display->display_options['fields']['title']['alter']['text'] = '<p>Besøg vores aktivitetskalender og se vores planlagte begivenheder</p>
-<a href="/kommende-begivenheder" title="Åbner side med liste over planlagte begivenheder" class="btn btn-primary btn-lg btn-block">Se kommende begivenheder</a>';
+<a href="/kommende-begivenheder" title="Åbner side med liste over planlagte begivenheder" class="btn btn-primary btn-block">Se kommende begivenheder</a>';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
@@ -246,7 +246,7 @@ function os2sub_events_views_default_views() {
     t('Blok'),
     t('Aktivitetskalender'),
     t('<p>Besøg vores aktivitetskalender og se vores planlagte begivenheder</p>
-<a href="/kommende-begivenheder" title="Åbner side med liste over planlagte begivenheder" class="btn btn-primary btn-lg btn-block">Se kommende begivenheder</a>'),
+<a href="/kommende-begivenheder" title="Åbner side med liste over planlagte begivenheder" class="btn btn-primary btn-block">Se kommende begivenheder</a>'),
   );
   $export['os2sub_kommende_begivenheder'] = $view;
 

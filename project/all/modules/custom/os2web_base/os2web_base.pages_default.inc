@@ -1145,7 +1145,11 @@ function os2web_base_default_page_manager_handlers() {
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => '',
+    'css_class' => '',
+    'template_suggestion' => 'transparent',
+  );
   $pane->extras = array();
   $pane->position = 6;
   $pane->locks = array();
