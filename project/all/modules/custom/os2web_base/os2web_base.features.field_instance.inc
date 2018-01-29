@@ -732,7 +732,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'node_reference',
         'settings' => array(
-          'node_reference_view_mode' => 'spotbox',
+          'node_reference_view_mode' => 'embedded',
         ),
         'type' => 'node_reference_node',
         'weight' => 23,

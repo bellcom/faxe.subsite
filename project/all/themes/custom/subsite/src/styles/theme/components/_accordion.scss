@@ -33,7 +33,6 @@
   background-color: $body-bg-tertiary;
 
   &:after {
-    @extend .fa;
     position: absolute;
 
     display: flex;
@@ -44,7 +43,7 @@
     top: 50%;
     right: 20px;
 
-    content: $fa-var-plus;
+    content: "+";
 
     margin-top: -13px; // Half the height
 
@@ -61,7 +60,7 @@
     background-color: $brand-primary;
 
     &:after {
-      content: $fa-var-minus;
+      content: "-";
     }
   }
 
