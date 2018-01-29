@@ -53,8 +53,7 @@ function os2web_contact_field_group_info() {
     'weight' => '0',
     'children' => array(
       0 => 'group_kontakt',
-      1 => 'group_tekst',
-      2 => 'group_telmail',
+      1 => 'group_telmail',
     ),
     'format_type' => 'htabs',
     'format_settings' => array(
@@ -81,7 +80,8 @@ function os2web_contact_field_group_info() {
     'children' => array(
       0 => 'field_os2web_contact_field_dept',
       1 => 'field_os2web_contact_field_info',
-      2 => 'title',
+      2 => 'field_knap_link',
+      3 => 'title',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -109,8 +109,8 @@ function os2web_contact_field_group_info() {
     'label' => 'Kontaktdata',
     'weight' => '14',
     'children' => array(
-      0 => 'field_os2web_contact_field_tel',
-      1 => 'field_os2web_contact_field_mail',
+      0 => 'field_os2web_contact_field_mail',
+      1 => 'field_os2web_contact_field_tel',
       2 => 'group_adresse',
     ),
     'format_type' => 'htab',

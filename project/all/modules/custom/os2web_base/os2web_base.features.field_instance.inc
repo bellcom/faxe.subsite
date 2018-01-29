@@ -732,7 +732,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'hidden',
         'module' => 'node_reference',
         'settings' => array(
-          'node_reference_view_mode' => 'spotbox',
+          'node_reference_view_mode' => 'embedded',
         ),
         'type' => 'node_reference_node',
         'weight' => 23,
@@ -1092,8 +1092,9 @@ function os2web_base_field_default_field_instances() {
       'default_image' => 0,
       'epsacrop' => array(
         'styles' => array(
-          'os2sub_220x130' => 0,
-          'os2sub_300x175' => 0,
+          'os2sub_banner' => 0,
+          'os2sub_normal_imagesize' => 'os2sub_normal_imagesize',
+          'os2web_spotbox_image' => 0,
         ),
       ),
       'file_directory' => '',
@@ -1111,6 +1112,7 @@ function os2web_base_field_default_field_instances() {
         'allowed_schemes' => array(
           'oembed' => 0,
           'public' => 'public',
+          'youtube' => 0,
         ),
         'allowed_types' => array(
           'audio' => 0,
@@ -1126,7 +1128,7 @@ function os2web_base_field_default_field_instances() {
         ),
         'manualcrop_crop_info' => 1,
         'manualcrop_default_crop_area' => 1,
-        'manualcrop_enable' => 1,
+        'manualcrop_enable' => 0,
         'manualcrop_inline_crop' => 0,
         'manualcrop_instant_crop' => FALSE,
         'manualcrop_instant_preview' => 1,

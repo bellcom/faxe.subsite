@@ -50,6 +50,13 @@ function os2sub_banner_field_default_field_instances() {
     'settings' => array(
       'alt_field' => 1,
       'default_image' => 0,
+      'epsacrop' => array(
+        'styles' => array(
+          'os2sub_banner' => 'os2sub_banner',
+          'os2sub_normal_imagesize' => 0,
+          'os2web_spotbox_image' => 0,
+        ),
+      ),
       'file_directory' => '',
       'file_extensions' => 'png gif jpg jpeg',
       'max_filesize' => '',
@@ -65,6 +72,7 @@ function os2sub_banner_field_default_field_instances() {
         'allowed_schemes' => array(
           'oembed' => 0,
           'public' => 'public',
+          'youtube' => 0,
         ),
         'allowed_types' => array(
           'audio' => 0,
@@ -80,7 +88,7 @@ function os2sub_banner_field_default_field_instances() {
         ),
         'manualcrop_crop_info' => 1,
         'manualcrop_default_crop_area' => 1,
-        'manualcrop_enable' => 1,
+        'manualcrop_enable' => 0,
         'manualcrop_inline_crop' => 0,
         'manualcrop_instant_crop' => FALSE,
         'manualcrop_instant_preview' => 1,

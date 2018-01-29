@@ -71,7 +71,7 @@ function os2web_base_image_default_styles() {
         ),
         'weight' => -10,
       ),
-      5 => array(
+      7 => array(
         'name' => 'image_scale_and_crop',
         'data' => array(
           'width' => 848,

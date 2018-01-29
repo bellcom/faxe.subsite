@@ -34,27 +34,31 @@ function os2web_spotbox_image_default_styles() {
 
   // Exported image style: os2web_spotbox_image.
   $styles['os2web_spotbox_image'] = array(
-    'label' => 'os2web_spotbox_image',
+    'label' => 'Spotboks',
     'effects' => array(
-      9 => array(
-        'name' => 'manualcrop_crop_and_scale',
+      5 => array(
+        'name' => 'epsacrop_crop',
         'data' => array(
-          'width' => 300,
-          'height' => 261,
-          'upscale' => 0,
-          'respectminimum' => 1,
-          'onlyscaleifcrop' => 1,
-          'style_name' => 'os2web_spotbox_image',
+          'width' => 618,
+          'height' => 288,
+          'anchor' => 'center-center',
+          'disable_scale' => 0,
+          'jcrop_settings' => array(
+            'aspect_ratio' => '',
+            'bgcolor' => 'black',
+            'bgopacity' => 0.6,
+            'fallback' => 1,
+          ),
         ),
-        'weight' => 1,
+        'weight' => -10,
       ),
-      10 => array(
+      4 => array(
         'name' => 'image_scale_and_crop',
         'data' => array(
-          'width' => 300,
-          'height' => 261,
+          'width' => 618,
+          'height' => 288,
         ),
-        'weight' => 2,
+        'weight' => -9,
       ),
     ),
   );

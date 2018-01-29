@@ -97,10 +97,6 @@ function os2web_contact_views_default_views() {
   $handler->display->display_options['defaults']['row_plugin'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Forbindelse: Handler mangler eller er i stykker */
-  $handler->display->display_options['relationships']['field_os2web_base_field_contact_nid']['id'] = 'field_os2web_base_field_contact_nid';
-  $handler->display->display_options['relationships']['field_os2web_base_field_contact_nid']['table'] = 'field_data_field_os2web_base_field_contact';
-  $handler->display->display_options['relationships']['field_os2web_base_field_contact_nid']['field'] = 'field_os2web_base_field_contact_nid';
   $handler->display->display_options['defaults']['fields'] = FALSE;
   /* Felt: Indhold: Titel */
   $handler->display->display_options['fields']['title']['id'] = 'title';
@@ -114,10 +110,6 @@ function os2web_contact_views_default_views() {
   $handler->display->display_options['fields']['edit_node']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['edit_node']['field'] = 'edit_node';
   $handler->display->display_options['fields']['edit_node']['label'] = 'Redigér';
-  /* Felt: Handler mangler eller er i stykker */
-  $handler->display->display_options['fields']['field_banner_vis_paa_sider']['id'] = 'field_banner_vis_paa_sider';
-  $handler->display->display_options['fields']['field_banner_vis_paa_sider']['table'] = 'field_data_field_banner_vis_paa_sider';
-  $handler->display->display_options['fields']['field_banner_vis_paa_sider']['field'] = 'field_banner_vis_paa_sider';
   /* Felt: Indhold: Titel */
   $handler->display->display_options['fields']['title_1']['id'] = 'title_1';
   $handler->display->display_options['fields']['title_1']['table'] = 'node';
@@ -137,6 +129,14 @@ function os2web_contact_views_default_views() {
   $handler->display->display_options['defaults']['pager'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['pager']['options']['items_per_page'] = '5';
+  $handler->display->display_options['defaults']['style_plugin'] = FALSE;
+  $handler->display->display_options['style_plugin'] = 'default';
+  $handler->display->display_options['defaults']['style_options'] = FALSE;
+  $handler->display->display_options['defaults']['row_plugin'] = FALSE;
+  $handler->display->display_options['row_plugin'] = 'node';
+  $handler->display->display_options['row_options']['view_mode'] = 'embedded';
+  $handler->display->display_options['row_options']['links'] = FALSE;
+  $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
   /* Filterkriterie: Indhold: Udgivet */
@@ -191,9 +191,7 @@ function os2web_contact_views_default_views() {
     t('næste ›'),
     t('sidste »'),
     t('Page'),
-    t('field_os2web_base_field_contact_nid'),
     t('Redigér'),
-    t('Handler i stykker field_data_field_banner_vis_paa_sider.field_banner_vis_paa_sider'),
     t('Titel'),
     t('Forsidekontakt'),
     t('Indholdsside Banner Block'),

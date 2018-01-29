@@ -28,7 +28,6 @@ features[ctools][] = views:views_default:3.0
 features[features_api][] = api:2
 features[field_base][] = field_video
 features[field_instance][] = node-velkomst-body
-features[field_instance][] = node-velkomst-field_baggrund
 features[field_instance][] = node-velkomst-field_video
 features[image][] = os2web_cover
 features[node][] = velkomst
