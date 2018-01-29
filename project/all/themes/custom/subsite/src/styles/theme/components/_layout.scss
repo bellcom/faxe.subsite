@@ -11,10 +11,10 @@
 // --------------------------------------------------
 
 // Responsive
-$xs-layout-content-padding-bottom: $xs-sectioned-inner-spacing;
-$sm-layout-content-padding-bottom: $sm-sectioned-inner-spacing;
-$md-layout-content-padding-bottom: $md-sectioned-inner-spacing;
-$lg-layout-content-padding-bottom: $lg-sectioned-inner-spacing;
+$xs-layout-content-padding-bottom: $grid-gutter-width;
+$sm-layout-content-padding-bottom: $grid-gutter-width;
+$md-layout-content-padding-bottom: $grid-gutter-width;
+$lg-layout-content-padding-bottom: $grid-gutter-width;
 
 // --------------------------------------------------
 // Mixins
