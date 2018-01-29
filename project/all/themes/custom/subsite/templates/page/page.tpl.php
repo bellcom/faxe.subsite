@@ -180,7 +180,11 @@
 
     <?php if (!panels_get_current_page_display()): ?>
       <div class="container">
-        <?php print render($page['content']); ?>
+        <div class="boxy">
+          <div class="boxy__body">
+            <?php print render($page['content']); ?>
+          </div>
+        </div>
       </div>
     <?php else: ?>
       <?php print render($page['content']); ?>
