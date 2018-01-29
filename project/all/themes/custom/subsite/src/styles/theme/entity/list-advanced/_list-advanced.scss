@@ -29,11 +29,6 @@
 
   border-top: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
-
-  .boxy & {
-    margin-left: (0 - $boxy-spacing-left-right);
-    margin-right: (0 - $boxy-spacing-left-right);
-  }
 }
 
 .entity-list-advanced__image {
@@ -65,7 +60,11 @@
 .entity-list-advanced__description {}
 
 .entity-list-advanced__body {
-  padding: floor( ($grid-gutter-width / 2) ) $boxy-spacing-left-right;
+  padding-top: floor( ($grid-gutter-width / 2) );
+  padding-bottom: floor( ($grid-gutter-width / 2) );
+
+  padding-right: $xs-boxy-spacing-left-right;
+  padding-left: $xs-boxy-spacing-left-right;
 }
 
 // --------------------------------------------------
@@ -96,16 +95,34 @@
 }
 
 // Tablet - only
-@media #{$breakpoint-tablet-only} {}
+@media #{$breakpoint-tablet-only} {
+
+  .entity-list-advanced__body {
+    padding-right: $sm-boxy-spacing-left-right;
+    padding-left: $sm-boxy-spacing-left-right;
+  }
+}
 
 // Desktop - and up
 @media #{$breakpoint-desktop-and-up} {}
 
 // Desktop - only
-@media #{$breakpoint-desktop-only} {}
+@media #{$breakpoint-desktop-only} {
+
+  .entity-list-advanced__body {
+    padding-right: $md-boxy-spacing-left-right;
+    padding-left: $md-boxy-spacing-left-right;
+  }
+}
 
 // Large desktop - and up
-@media #{$breakpoint-large-desktop-and-up} {}
+@media #{$breakpoint-large-desktop-and-up} {
+
+  .entity-list-advanced__body {
+    padding-right: $lg-boxy-spacing-left-right;
+    padding-left: $lg-boxy-spacing-left-right;
+  }
+}
 
 // Print
 @media print {}
