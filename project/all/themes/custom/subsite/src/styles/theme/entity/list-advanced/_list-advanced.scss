@@ -65,7 +65,7 @@
 .entity-list-advanced__description {}
 
 .entity-list-advanced__body {
-  padding: 10px $boxy-spacing-left-right;
+  padding: floor( ($grid-gutter-width / 2) ) $boxy-spacing-left-right;
 }
 
 // --------------------------------------------------
@@ -91,6 +91,7 @@
 
   .entity-list-advanced__image {
     flex-basis: 370px;
+    flex-shrink: 0;
   }
 }
 

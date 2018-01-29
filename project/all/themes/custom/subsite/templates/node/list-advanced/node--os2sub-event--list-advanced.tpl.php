@@ -1,5 +1,4 @@
 <?php if ($view_mode == 'list_advanced'): ?>
-  <!-- Begin - list -->
   <a href="<?php print $node_url; ?>" id="node-<?php print $node->nid; ?>"
      class="<?php print $classes; ?> element-wrapper-link clearfix"<?php print $attributes; ?>>
 
@@ -39,5 +38,4 @@
     </div>
 
   </a>
-  <!-- End - list -->
 <?php endif; ?>
