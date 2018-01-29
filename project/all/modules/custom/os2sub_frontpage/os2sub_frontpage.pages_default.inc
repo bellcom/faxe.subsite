@@ -143,12 +143,10 @@ function os2sub_frontpage_default_page_manager_pages() {
     'items_per_page' => '5',
     'offset' => '0',
     'arguments' => array(
-      'field_os2web_news_page_type_tid' => '',
-      'field_os2web_news_page_type_tid_1' => '',
       'term_node_tid_depth' => '',
     ),
     'override_title' => 1,
-    'override_title_text' => '',
+    'override_title_text' => 'Nyheder',
     'override_title_heading' => 'h2',
   );
   $pane->cache = array();
@@ -225,7 +223,11 @@ function os2sub_frontpage_default_page_manager_pages() {
   $pane->style = array(
     'settings' => NULL,
   );
-  $pane->css = array();
+  $pane->css = array(
+    'css_id' => '',
+    'css_class' => '',
+    'template_suggestion' => 'transparent',
+  );
   $pane->extras = array();
   $pane->position = 2;
   $pane->locks = array();
