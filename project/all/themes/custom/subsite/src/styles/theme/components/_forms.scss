@@ -32,8 +32,14 @@ label {
   color: $brand-danger;
 }
 
+.webform {
+
+  .form-actions {
+    margin-top: 0 - $form-group-margin-bottom;
+  }
+}
+
 .form-actions {
-  margin-top: 0 - $form-group-margin-bottom;
 
   .btn {
     @extend .btn-lg;

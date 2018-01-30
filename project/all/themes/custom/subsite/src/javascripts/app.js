@@ -36,7 +36,7 @@ jQuery(function($) {
         let $form = $('.flexy-header__form'),
             overlap_width = 125, // in pixels (also set in CSS)
             window_width = $(window).width(),
-            container_width = $('.flexy-header__row--second > .container').outerWidth(true),
+            container_width = $('.flexy-header__row--second > .container').outerWidth(),
             diff = ((window_width - container_width) / 2);
 
         $form.css('width', (diff + overlap_width));
@@ -46,16 +46,5 @@ jQuery(function($) {
     // Recalculate width of form when window is resized
     $(window).on('resize', function(){
         _set_flexy_header_form_position();
-    });
-
-    // Accordion
-
-
-
-    $('.accordion__heading').on('click', function(event) {
-        var $element = $(this),
-            $parent = $element.parents('.accordion');
-
-        $parent.toggleClass('open');
     });
 });

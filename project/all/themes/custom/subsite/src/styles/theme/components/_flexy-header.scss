@@ -126,6 +126,10 @@ $lg-logo-font-size: 28px;
     }
   }
 
+  .form-actions {
+    display: none;
+  }
+
   .form-control {
     @extend .input-lg;
 
@@ -141,6 +145,8 @@ $lg-logo-font-size: 28px;
   }
 
   .btn {
+    @extend .btn-lg;
+
     position: absolute;
 
     z-index: 2000;
@@ -155,12 +161,22 @@ $lg-logo-font-size: 28px;
 
     color: $text-color;
 
-    @extend .btn-lg;
-
     &:after {
       @extend .fa;
 
-      display: inline-block;
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      top: 50%;
+      left: 50%;
+
+      height: 30px;
+      width: 30px;
+
+      margin-top: -15px;
+      margin-right: -15px;
 
       font-size: $font-size-large;
 
