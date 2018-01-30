@@ -158,7 +158,7 @@ function os2sub_frontpage_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'owlcarousel_add_class_active_owlcarousel_settings_default';
-  $strongarm->value = 0;
+  $strongarm->value = 1;
   $export['owlcarousel_add_class_active_owlcarousel_settings_default'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -542,7 +542,7 @@ function os2sub_frontpage_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'owlcarousel_pagination_owlcarousel_settings_default';
-  $strongarm->value = 1;
+  $strongarm->value = 0;
   $export['owlcarousel_pagination_owlcarousel_settings_default'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -556,7 +556,7 @@ function os2sub_frontpage_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'owlcarousel_pagination_speed_owlcarousel_settings_default';
-  $strongarm->value = '800';
+  $strongarm->value = '1000';
   $export['owlcarousel_pagination_speed_owlcarousel_settings_default'] = $strongarm;
 
   $strongarm = new stdClass();
@@ -682,7 +682,7 @@ function os2sub_frontpage_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'owlcarousel_slide_speed_owlcarousel_settings_default';
-  $strongarm->value = '200';
+  $strongarm->value = '1000';
   $export['owlcarousel_slide_speed_owlcarousel_settings_default'] = $strongarm;
 
   $strongarm = new stdClass();

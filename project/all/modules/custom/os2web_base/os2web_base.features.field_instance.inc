@@ -1034,40 +1034,13 @@ function os2web_base_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'field_slideshow',
+        'module' => 'owlcarousel_fields',
         'settings' => array(
-          'slideshow_caption' => '',
-          'slideshow_caption_link' => '',
-          'slideshow_carousel_circular' => 0,
-          'slideshow_carousel_follow' => 0,
-          'slideshow_carousel_image_style' => 'media_thumbnail',
-          'slideshow_carousel_scroll' => 1,
-          'slideshow_carousel_skin' => '',
-          'slideshow_carousel_speed' => 500,
-          'slideshow_carousel_vertical' => 0,
-          'slideshow_carousel_visible' => 7,
-          'slideshow_colorbox_image_style' => '',
-          'slideshow_colorbox_slideshow' => '',
-          'slideshow_colorbox_slideshow_speed' => 4000,
-          'slideshow_colorbox_speed' => 350,
-          'slideshow_colorbox_transition' => 'elastic',
-          'slideshow_controls' => 0,
-          'slideshow_controls_pause' => 0,
-          'slideshow_controls_position' => 'after',
-          'slideshow_field_collection_image' => '',
-          'slideshow_fx' => 'fade',
-          'slideshow_image_style' => 'os2sub_normal_imagesize',
-          'slideshow_link' => '',
-          'slideshow_order' => '',
-          'slideshow_pager' => 'carousel',
-          'slideshow_pager_image_style' => '',
-          'slideshow_pager_position' => 'after',
-          'slideshow_pause' => 0,
-          'slideshow_speed' => 1000,
-          'slideshow_start_on_hover' => 0,
-          'slideshow_timeout' => 4000,
+          'image_style' => 'os2sub_normal_imagesize',
+          'settings_group' => 'owlcarousel_settings_default',
+          'trim_length' => '',
         ),
-        'type' => 'slideshow',
+        'type' => 'owlcarousel_formatter',
         'weight' => 0,
       ),
       'related_block' => array(
@@ -1942,7 +1915,7 @@ function os2web_base_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 2,
+        'weight' => 3,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -2032,7 +2005,7 @@ function os2web_base_field_default_field_instances() {
           'random' => 0,
         ),
         'type' => 'backstretch',
-        'weight' => 19,
+        'weight' => 6,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -2125,7 +2098,7 @@ function os2web_base_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 4,
+        'weight' => 5,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -2330,7 +2303,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 14,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -2391,9 +2364,14 @@ function os2web_base_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 5,
+        'module' => 'owlcarousel_fields',
+        'settings' => array(
+          'image_style' => 'os2sub_normal_imagesize',
+          'settings_group' => 'owlcarousel_settings_default',
+          'trim_length' => '',
+        ),
+        'type' => 'owlcarousel_formatter',
+        'weight' => 0,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -2580,7 +2558,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 17,
+        'weight' => 16,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -2645,7 +2623,7 @@ function os2web_base_field_default_field_instances() {
         'module' => 'file',
         'settings' => array(),
         'type' => 'file_table',
-        'weight' => 3,
+        'weight' => 4,
       ),
       'search_index' => array(
         'label' => 'hidden',
@@ -2741,7 +2719,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 15,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -2806,7 +2784,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 7,
+        'weight' => 8,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -2873,7 +2851,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 14,
+        'weight' => 13,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -2934,7 +2912,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 18,
+        'weight' => 17,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -3065,7 +3043,7 @@ function os2web_base_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -3146,7 +3124,7 @@ function os2web_base_field_default_field_instances() {
           'file_view_mode' => 'default',
         ),
         'type' => 'file_rendered',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'search_index' => array(
         'label' => 'hidden',
