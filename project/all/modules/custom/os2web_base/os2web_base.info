@@ -40,6 +40,7 @@ dependencies[] = os2sub_galleri
 dependencies[] = os2web_news_page
 dependencies[] = os2web_news_page_archive
 dependencies[] = os2web_taxonomies
+dependencies[] = owlcarousel_fields
 dependencies[] = page_manager
 dependencies[] = panels
 dependencies[] = paragraphs
