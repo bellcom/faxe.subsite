@@ -1,9 +1,9 @@
 // |--------------------------------------------------------------------------
-// | Content page
+// | Node fields
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .node-os2web-base-contentpage
+// | - .pane-os2sub-node-fields-panel-pane-1
 // |
 
 // --------------------------------------------------
@@ -14,43 +14,22 @@
 // Mixins
 // --------------------------------------------------
 
-@mixin node-os2web-base-contentpage-mixin() {}
+@mixin pane-os2sub-node-fields-panel-pane-1-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.node-os2web-base-contentpage {
+.pane-os2sub-node-fields-panel-pane-1 {
 
-  .node__body {
+  a {
+    display: block;
 
-    + .node__contact-block,
-    + .node__paragraphs,
-    + .node__pdf-files {
-      margin-top: floor( ( $grid-gutter-width / 2 ) );
-    }
-  }
+    padding: 10px 0;
 
-  .node__contact-block {
+    font-size: $font-size-large;
 
-    + .node__paragraphs,
-    + .node__pdf-files {
-      margin-top: floor( ( $grid-gutter-width / 2 ) );
-    }
-  }
-
-  .node__pdf-files {
-
-    + .node__paragraphs {
-      margin-top: floor( ( $grid-gutter-width / 2 ) );
-    }
-  }
-
-  .node__paragraphs {
-
-    .accordion {
-      margin: 5px 0;
-    }
+    color: $text-color;
   }
 }
 

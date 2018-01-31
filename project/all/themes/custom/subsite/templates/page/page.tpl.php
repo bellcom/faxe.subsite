@@ -142,6 +142,10 @@
   <!-- Begin - content -->
   <main class="layout__content" role="main">
 
+    <?php if (!empty($page['banner'])): ?>
+      <?php print render($page['banner']); ?>
+    <?php endif; ?>
+
     <!-- Begin - breadcrumb -->
     <?php print $breadcrumb; ?>
     <!-- End - breadcrumb -->
