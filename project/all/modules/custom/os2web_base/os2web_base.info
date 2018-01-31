@@ -288,7 +288,6 @@ features[variable][] = field_bundle_settings_node__os2web_base_gallery
 features[variable][] = field_bundle_settings_node__os2web_base_news
 features[variable][] = field_bundle_settings_node__os2web_base_selfservice_link
 features[variable][] = field_bundle_settings_node__webform
-features[variable][] = file_temporary_path
 features[variable][] = jquery_update_compression_type
 features[variable][] = jquery_update_jquery_admin_version
 features[variable][] = jquery_update_jquery_cdn
