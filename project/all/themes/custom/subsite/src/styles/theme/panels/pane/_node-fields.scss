@@ -1,0 +1,72 @@
+// |--------------------------------------------------------------------------
+// | Node fields
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .pane-os2sub-node-fields-panel-pane-1
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin pane-os2sub-node-fields-panel-pane-1-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.pane-os2sub-node-fields-panel-pane-1 {
+
+  a {
+    display: block;
+
+    padding: 10px 0;
+
+    font-size: $font-size-large;
+
+    color: $text-color;
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}
