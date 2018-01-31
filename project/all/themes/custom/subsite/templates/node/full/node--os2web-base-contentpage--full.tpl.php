@@ -32,14 +32,6 @@
     </div>
     <!-- End - body -->
   <?php endif; ?>
-  
-  <?php if ( isset( $content['field_os2web_base_field_media'] ) ): ?>
-      <!-- Begin - PDF files -->
-      <div class="node__pdf-files">
-          <?php print render( $content['field_os2web_base_field_media'] ); ?>
-      </div>
-      <!-- End - PDF files -->
-  <?php endif; ?>
 
   <?php if (isset($content['field_os2sub_contact_ref'])): ?>
     <!-- Begin - contact block -->
@@ -47,6 +39,14 @@
       <?php print render($content['field_os2sub_contact_ref']); ?>
     </div>
     <!-- End - contact block -->
+  <?php endif; ?>
+
+  <?php if ( isset( $content['field_os2web_base_field_media'] ) ): ?>
+    <!-- Begin - PDF files -->
+    <div class="node__pdf-files">
+      <?php print render( $content['field_os2web_base_field_media'] ); ?>
+    </div>
+    <!-- End - PDF files -->
   <?php endif; ?>
 
   <?php if (isset($content['field_afsnit'])): ?>

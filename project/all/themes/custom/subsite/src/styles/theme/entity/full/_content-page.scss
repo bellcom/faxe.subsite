@@ -25,12 +25,21 @@
   .node__body {
 
     + .node__contact-block,
-    + .node__paragraphs {
+    + .node__paragraphs,
+    + .node__pdf-files {
       margin-top: floor( ( $grid-gutter-width / 2 ) );
     }
   }
 
   .node__contact-block {
+
+    + .node__paragraphs,
+    + .node__pdf-files {
+      margin-top: floor( ( $grid-gutter-width / 2 ) );
+    }
+  }
+
+  .node__pdf-files {
 
     + .node__paragraphs {
       margin-top: floor( ( $grid-gutter-width / 2 ) );
