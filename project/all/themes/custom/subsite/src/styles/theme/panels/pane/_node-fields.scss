@@ -30,6 +30,10 @@
     font-size: $font-size-large;
 
     color: $text-color;
+
+    &:hover {
+      color: $link-hover-color;
+    }
   }
 }
 
