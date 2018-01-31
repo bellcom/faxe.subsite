@@ -77,26 +77,6 @@ function _project_profile_install_tasks__local_settings() {
   variable_set('theme_default', 'subsite');
   variable_set('admin_theme', 'adminimal');
 
-  $blocks = array(
-    array(
-      'module' => 'search',
-      'delta' => 'form',
-      'theme' => 'subsite',
-      'status' => 1,
-      'weight' => -1,
-      'region' => 'search',
-      'pages' => '',
-      'cache' => -1,
-    ),
-  );
-  $query = db_insert('block')->fields(array('module', 'delta', 'theme', 'status', 'weight', 'region', 'pages', 'cache'));
-  foreach ($blocks as $block) {
-    $query->values($block);
-  }
-  $query->execute();
-
-
-
   module_disable(array('update'));
 
   // Set default language.
