@@ -28,6 +28,11 @@
   margin: 0;
   padding: 10px 20px;
 
+  cursor: hand;
+  cursor: pointer;
+
+  user-select: none;
+
   font-weight: $headings-font-weight-bold;
 
   background-color: $body-bg-tertiary;
@@ -62,29 +67,6 @@
     &:after {
       content: "-";
     }
-  }
-
-  button {
-    display: block;
-
-    transition: none;
-
-    text-align: left;
-
-    width: 100%;
-
-    padding: 0;
-    margin: 0;
-
-    cursor: hand;
-    cursor: pointer;
-
-    border: 0;
-
-    font-size: inherit;
-
-    color: inherit;
-    background-color: transparent;
   }
 }
 

@@ -2715,25 +2715,19 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
-jquery-accessible-hide-show-aria@^1.8.0:
-  version "1.8.0"
-  resolved "https://registry.yarnpkg.com/jquery-accessible-hide-show-aria/-/jquery-accessible-hide-show-aria-1.8.0.tgz#a5534c6742a42e20ddf21d6bbab3bd952d7cbc85"
-  dependencies:
-    jquery ">=1.0.0"
-
 jquery-slinky@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/jquery-slinky/-/jquery-slinky-3.0.0.tgz#bb95528bb782b9784408071847285e45d6a1dc7a"
   dependencies:
     jquery "^3.1.0"
 
-jquery@>=1.0.0, jquery@^3.3.1:
-  version "3.3.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
-
 jquery@>=1.4.3, jquery@^3.1.0:
   version "3.2.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.2.1.tgz#5c4d9de652af6cd0a770154a631bba12b015c787"
+
+jquery@^3.3.1:
+  version "3.3.1"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.3.1.tgz#958ce29e81c9790f31be7792df5d4d95fc57fbca"
 
 js-base64@^2.1.8:
   version "2.4.0"
