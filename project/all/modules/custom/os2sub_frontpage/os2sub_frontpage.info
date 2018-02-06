@@ -132,4 +132,4 @@ features[variable][] = owlcarousel_transition_style_owlcarousel_settings_forside
 features[variable][] = site_frontpage
 features[views_view][] = os2sub_selvbetjeniing_forside
 features[views_view][] = os2sub_velkomst
-project path = profiles/os2sub/modules/custom
+project path = sites/all/modules/custom
