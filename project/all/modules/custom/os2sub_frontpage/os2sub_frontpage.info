@@ -131,5 +131,6 @@ features[variable][] = owlcarousel_transition_style_owlcarousel_settings_default
 features[variable][] = owlcarousel_transition_style_owlcarousel_settings_forsidenyheder
 features[variable][] = site_frontpage
 features[views_view][] = os2sub_selvbetjeniing_forside
+features[views_view][] = os2sub_spotbox
 features[views_view][] = os2sub_velkomst
 project path = sites/all/modules/custom
