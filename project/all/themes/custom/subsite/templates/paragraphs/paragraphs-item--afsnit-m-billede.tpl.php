@@ -1,6 +1,3 @@
-<?php
-
-?>
 <div class="accordion <?php print $classes; ?>"<?php print $attributes; ?>>
 
   <?php if ( isset( $content['field_paragraph_header'] ) ): ?>
@@ -14,8 +11,6 @@
   <!-- Begin - body -->
   <div class="accordion__body"<?php print $content_attributes; ?>>
     <?php
-    hide($content['field_paragraph_header']);
-
     print render($content);
     ?>
   </div>
