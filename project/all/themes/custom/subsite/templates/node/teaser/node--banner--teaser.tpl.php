@@ -8,8 +8,6 @@
   }
   ?>
 
-  <?php if (isset($content['field_banner_headline']) OR isset($content['field_banner_text']) OR isset($content['field_knap_link'])): ?>
-
   <!-- Begin - teaser -->
   <?php if ($image_url): ?>
     <div
@@ -29,7 +27,7 @@
             <!-- End - headline -->
 
             <!-- Begin - body -->
-            <?php // print render($content['field_banner_text']); ?>
+            <?php print render($content['field_banner_text']); ?>
             <!-- End - body -->
 
           </div>
@@ -45,5 +43,4 @@
     </div>
   </div>
   <!-- End - teaser -->
-  <?php endif; ?>
 <?php endif; ?>
