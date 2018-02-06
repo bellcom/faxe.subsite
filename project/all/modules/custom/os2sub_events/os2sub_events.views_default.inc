@@ -184,7 +184,7 @@ function os2sub_events_views_default_views() {
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['path'] = 'kommende-begivenheder';
   $handler->display->display_options['menu']['type'] = 'normal';
-  $handler->display->display_options['menu']['title'] = 'Kommende begivenheder';
+  $handler->display->display_options['menu']['title'] = 'Kalender';
   $handler->display->display_options['menu']['name'] = 'main-menu';
 
   /* Display: Content pane */
