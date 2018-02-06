@@ -7,22 +7,18 @@
 function _project_profile_install_tasks($install_state, &$task) {
   // This is where you define tasks
 
-  $task['project_local_settings'] = array(
+  $task['project_local_settings'] = [
     'display_name' => t('Project - local settings'),
     'display' => TRUE,
     'run' => INSTALL_TASK_RUN_IF_NOT_COMPLETED,
     'function' => '_project_profile_install_tasks__local_settings',
-  );
+  ];
 }
 
 /**
  * Implements hook_install().
  */
-function _project_profile_install() {
-
-  // This is where you define settings
-  module_enable(array('os2web_base', 'subsites_urls','os2web_spotbox', 'os2sub_banner','os2web_aaa_index', 'os2web_contact', 'os2sub_frontpage', 'os2sub_uses_and_tools'));
-}
+function _project_profile_install() {}
 
 /**
  * Implements hook_install().
@@ -31,32 +27,28 @@ function _project_profile_install() {
  */
 
 function _project_profile_install_tasks__local_settings() {
-  theme_enable(array('adminimal', 'subsite'));
-  theme_disable(array('bartik', 'rubik', 'seven'));
+
+  // Themes
+  theme_enable(['subsite']);
   variable_set('theme_default', 'subsite');
-  variable_set('admin_theme', 'adminimal');
+  theme_disable(['bartik']);
+
   variable_set('site_frontpage', 'forside');
 
-  // Set admin theme on node/edit and node/add
-  variable_set('node_admin_theme', '1');
-  module_disable(array('update'));
-  
-  module_enable(array(
-	  'os2web_base',
-	  'os2sub_banner',
-	  'os2web_spotbox',
-	  'os2web_aaa_index',
-	  'os2sub_uses_and_tools',
-	  'os2sub_frontpage',
-	  'subsites_urls',
-	  'os2web_contact',
-  ));
+  // Enable modules
+  module_enable([
+    'os2web_base',
+    'os2sub_banner',
+    'os2web_spotbox',
+    'os2web_aaa_index',
+    'os2sub_uses_and_tools',
+    'os2sub_frontpage',
+    'subsites_urls',
+    'os2web_contact',
+  ]);
 
-  // Set default TZ.
-  variable_set('date_default_timezone', "Europe/Copenhagen");
-  variable_set('date_first_day', "1");
-  variable_set('configurable_timezones', "0");
-  variable_set('site_default_country', "DK");
+  // Disable modules
+  module_disable(['update']);
 
   // jQuery update module.
   variable_set('jquery_update_compression_type', 'min');
@@ -68,16 +60,7 @@ function _project_profile_install_tasks__local_settings() {
   variable_set('jquery_update_jquery_migrate_plugin_migrate_warnings', 1);
   variable_set('jquery_update_jquery_version', '1.9');
 
-
   variable_set('site_frontpage', 'forside');
-  
-  
-  theme_enable(array('adminimal', 'subsite'));
-  theme_disable(array('bartik', 'rubik', 'seven'));
-  variable_set('theme_default', 'subsite');
-  variable_set('admin_theme', 'adminimal');
-
-  module_disable(array('update'));
 
   // Set default language.
   $langs = language_list();
@@ -85,7 +68,7 @@ function _project_profile_install_tasks__local_settings() {
 
   // Disable english.
   db_update("languages")
-    ->fields(array("enabled" => 0))
+    ->fields(["enabled" => 0])
     ->condition("language", "en")
     ->execute();
 }
