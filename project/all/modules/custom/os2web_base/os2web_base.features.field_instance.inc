@@ -1991,20 +1991,8 @@ function os2web_base_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'backstretch',
-        'settings' => array(
-          'center_x' => 1,
-          'center_y' => 1,
-          'delta' => '',
-          'duration' => 5000,
-          'element' => 'other',
-          'element_other' => '.content',
-          'fade' => 0,
-          'field' => '',
-          'image_style' => 'os2web_cover',
-          'random' => 0,
-        ),
-        'type' => 'backstretch',
+        'settings' => array(),
+        'type' => 'hidden',
         'weight' => 6,
       ),
       'spotbox' => array(
@@ -2784,7 +2772,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 9,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -3119,11 +3107,13 @@ function os2web_base_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'file_entity',
+        'module' => 'owlcarousel_fields',
         'settings' => array(
-          'file_view_mode' => 'default',
+          'image_style' => 'large',
+          'settings_group' => 'owlcarousel_settings_default',
+          'trim_length' => '',
         ),
-        'type' => 'file_rendered',
+        'type' => 'owlcarousel_formatter',
         'weight' => 1,
       ),
       'search_index' => array(
