@@ -55,6 +55,10 @@ function subsite_preprocess_page(&$variables) {
   $variables['tabs_secondary'] = $variables['tabs'];
   unset($variables['tabs_primary']['#secondary']);
   unset($variables['tabs_secondary']['#primary']);
+
+  // Theme settings
+  $variables['theme_settings']['project_branding_toggle'] = theme_get_setting('project_branding_toggle');
+  $variables['theme_settings']['project_branding_text'] = theme_get_setting('project_branding_text');
 }
 
 /**

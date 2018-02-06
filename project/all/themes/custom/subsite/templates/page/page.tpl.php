@@ -341,18 +341,22 @@
             </div>
             <div class="col-xs-12 col-sm-6">
 
-              <!-- Begin - brand -->
-              <div class="layout__footer__company-branding text-right hidden-xs">
-                <a href="<?php print $front_page; ?>">
-                  <img
-                      src="<?php print $theme_path; ?>/dist/images/logo__white.png"
-                      alt="<?php print t('@site_name logo',
-                        ['@site_name' => $site_name]); ?>"/>
+              <?php if (!empty($theme_settings['project_branding_toggle'])) : ?>
+                <!-- Begin - brand -->
+                <div class="layout__footer__company-branding text-right hidden-xs">
+                  <a href="<?php print $front_page; ?>">
+                    <img
+                        src="<?php print $theme_path; ?>/dist/images/logo__white.png"
+                        alt="<?php print t('@site_name logo',
+                          ['@site_name' => $site_name]); ?>"/>
 
-                  Dette site er en del af Faxe Kommune
-                </a>
-              </div>
-              <!-- End - brand -->
+                    <?php if (!empty($theme_settings['project_branding_text'])) : ?>
+                      <?php print $theme_settings['project_branding_text']; ?>
+                    <?php endif; ?>
+                  </a>
+                </div>
+                <!-- End - brand -->
+              <?php endif; ?>
 
             </div>
           </div>
