@@ -125,6 +125,7 @@ function os2web_spotbox_field_default_field_instances() {
         'manualcrop_styles_list' => array(),
         'manualcrop_styles_mode' => 'include',
         'manualcrop_thumblist' => 0,
+        'progress_indicator' => 'throbber',
       ),
       'type' => 'media_generic',
       'weight' => -3,

@@ -42,17 +42,13 @@ function os2sub_galleri_image_default_styles() {
   $styles['gallery-thumb'] = array(
     'label' => 'Gallery thumb',
     'effects' => array(
-      4 => array(
-        'name' => 'manualcrop_crop_and_scale',
+      1 => array(
+        'name' => 'image_scale_and_crop',
         'data' => array(
-          'width' => 260,
-          'height' => 155,
-          'upscale' => 0,
-          'respectminimum' => 1,
-          'onlyscaleifcrop' => 0,
-          'style_name' => 'gallery-thumb',
+          'width' => 230,
+          'height' => 160,
         ),
-        'weight' => 0,
+        'weight' => 1,
       ),
     ),
   );

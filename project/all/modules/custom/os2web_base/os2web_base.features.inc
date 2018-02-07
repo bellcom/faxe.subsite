@@ -86,14 +86,7 @@ function os2web_base_image_default_styles() {
   $styles['os2sub_small_imagesize'] = array(
     'label' => 'Lille billede',
     'effects' => array(
-      13 => array(
-        'name' => 'manualcrop_reuse',
-        'data' => array(
-          'reuse_crop_style' => 'os2sub_normal_imagesize',
-          'apply_all_effects' => 1,
-        ),
-        'weight' => 0,
-      ),
+      13 => NULL,
       12 => array(
         'name' => 'image_scale_and_crop',
         'data' => array(

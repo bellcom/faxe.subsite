@@ -429,10 +429,9 @@ function os2web_base_field_group_info() {
     'children' => array(
       0 => 'field_os2web_news_page_archive',
       1 => 'field_svendborg_hide_sidebar',
-      2 => 'field_os2web_base_field_contact',
+      2 => 'field_baggrund',
       3 => 'field_os2web_base_field_hidlinks',
       4 => 'field_os2web_base_field_promote',
-      5 => 'field_baggrund',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -577,21 +576,20 @@ function os2web_base_field_group_info() {
   $field_group->mode = 'form';
   $field_group->parent_name = 'group_os2web_base_news_tabs';
   $field_group->data = array(
-    'label' => 'Media og filer',
+    'label' => 'Bilag',
     'weight' => '3',
     'children' => array(
       0 => 'field_os2web_base_field_media',
-      1 => 'field_os2web_base_field_video',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
-      'formatter' => 'closed',
+      'label' => 'Bilag',
       'instance_settings' => array(
-        'description' => '',
-        'classes' => '',
         'required_fields' => 1,
-        'id' => '',
+        'classes' => '',
+        'description' => '',
       ),
+      'formatter' => 'closed',
     ),
   );
   $field_groups['group_os2web_news_group_media|node|os2web_base_news|form'] = $field_group;
@@ -801,13 +799,13 @@ function os2web_base_field_group_info() {
   // Translatables
   // Included for use with string extractors like potx.
   t('Afsnit');
+  t('Bilag');
   t('Billede');
   t('Billeder og filer');
   t('Emneord');
   t('Hentet fra kommunens sagssystem');
   t('Indholdsside');
   t('Indstillinger');
-  t('Media og filer');
   t('News');
   t('Relationer');
   t('Sager og dokumenter');

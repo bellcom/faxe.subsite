@@ -71,28 +71,6 @@ function os2web_base_field_default_field_bases() {
     'type' => 'list_boolean',
   );
 
-  // Exported field_base: 'field_baggrund'.
-  $field_bases['field_baggrund'] = array(
-    'active' => 1,
-    'cardinality' => -1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_baggrund',
-    'indexes' => array(
-      'fid' => array(
-        0 => 'fid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'image',
-    'settings' => array(
-      'default_image' => 0,
-      'uri_scheme' => 'public',
-    ),
-    'translatable' => 0,
-    'type' => 'image',
-  );
-
   // Exported field_base: 'field_harmonika_enheder'.
   $field_bases['field_harmonika_enheder'] = array(
     'active' => 1,
@@ -212,7 +190,6 @@ function os2web_base_field_default_field_bases() {
       'referenceable_types' => array(
         'banner' => 0,
         'media' => 0,
-        'os2sub_event' => 0,
         'os2web_base_contentpage' => 0,
         'os2web_base_gallery' => 0,
         'os2web_base_news' => 0,
@@ -270,14 +247,12 @@ function os2web_base_field_default_field_bases() {
     'settings' => array(
       'referenceable_types' => array(
         'banner' => 'banner',
-        'event_calendar' => 0,
         'media' => 0,
         'os2web_base_contentpage' => 0,
         'os2web_base_gallery' => 0,
         'os2web_base_news' => 0,
         'os2web_base_selfservice_link' => 0,
         'os2web_contact_contact' => 0,
-        'os2web_emply_job' => 0,
         'os2web_spotbox_box' => 0,
         'velkomst' => 0,
         'webform' => 0,
@@ -731,19 +706,15 @@ function os2web_base_field_default_field_bases() {
     'module' => 'node_reference',
     'settings' => array(
       'referenceable_types' => array(
-        'kontaktblok' => 0,
-        'kulturkalender' => 0,
+        'banner' => 0,
         'media' => 'media',
-        'os2bootstrap_carousel' => 0,
         'os2web_base_contentpage' => 'os2web_base_contentpage',
         'os2web_base_gallery' => 0,
         'os2web_base_news' => 'os2web_base_news',
         'os2web_base_selfservice_link' => 0,
-        'os2web_borger_dk_article' => 'os2web_borger_dk_article',
         'os2web_contact_contact' => 0,
         'os2web_spotbox_box' => 0,
-        'panel' => 0,
-        'spotbokse2' => 0,
+        'velkomst' => 0,
         'webform' => 'webform',
       ),
       'view' => array(
@@ -772,19 +743,15 @@ function os2web_base_field_default_field_bases() {
     'module' => 'node_reference',
     'settings' => array(
       'referenceable_types' => array(
-        'keyboard_shortcut' => 0,
-        'kulturkalender' => 0,
+        'banner' => 0,
         'media' => 0,
-        'os2bootstrap_carousel' => 0,
         'os2web_base_contentpage' => 0,
         'os2web_base_gallery' => 0,
         'os2web_base_news' => 0,
         'os2web_base_selfservice_link' => 'os2web_base_selfservice_link',
-        'os2web_borger_dk_article' => 0,
         'os2web_contact_contact' => 0,
-        'os2web_ofir_job' => 0,
         'os2web_spotbox_box' => 0,
-        'panel' => 0,
+        'velkomst' => 0,
         'webform' => 0,
       ),
       'view' => array(
@@ -849,19 +816,15 @@ function os2web_base_field_default_field_bases() {
     'module' => 'node_reference',
     'settings' => array(
       'referenceable_types' => array(
-        'keyboard_shortcut' => 0,
-        'kulturkalender' => 0,
+        'banner' => 0,
         'media' => 0,
-        'os2bootstrap_carousel' => 0,
         'os2web_base_contentpage' => 0,
         'os2web_base_gallery' => 0,
         'os2web_base_news' => 0,
         'os2web_base_selfservice_link' => 0,
-        'os2web_borger_dk_article' => 0,
         'os2web_contact_contact' => 0,
-        'os2web_ofir_job' => 0,
         'os2web_spotbox_box' => 'os2web_spotbox_box',
-        'panel' => 0,
+        'velkomst' => 0,
         'webform' => 0,
       ),
       'view' => array(
@@ -940,28 +903,6 @@ function os2web_base_field_default_field_bases() {
     'type' => 'text_long',
   );
 
-  // Exported field_base: 'field_os2web_base_field_video'.
-  $field_bases['field_os2web_base_field_video'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_os2web_base_field_video',
-    'indexes' => array(
-      'fid' => array(
-        0 => 'fid',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'image',
-    'settings' => array(
-      'default_image' => 0,
-      'uri_scheme' => 'public',
-    ),
-    'translatable' => 0,
-    'type' => 'image',
-  );
-
   // Exported field_base: 'field_os2web_base_field_webform'.
   $field_bases['field_os2web_base_field_webform'] = array(
     'active' => 1,
@@ -978,22 +919,15 @@ function os2web_base_field_default_field_bases() {
     'module' => 'node_reference',
     'settings' => array(
       'referenceable_types' => array(
-        'interne_sider' => 0,
-        'keyboard_shortcut' => 0,
-        'kulturkalender' => 0,
+        'banner' => 0,
         'media' => 0,
-        'os2bootstrap_carousel' => 0,
-        'os2web_acadre_postlists' => 0,
         'os2web_base_contentpage' => 0,
         'os2web_base_gallery' => 0,
         'os2web_base_news' => 0,
         'os2web_base_selfservice_link' => 0,
-        'os2web_borger_dk_article' => 0,
         'os2web_contact_contact' => 0,
-        'os2web_ofir_job' => 0,
         'os2web_spotbox_box' => 0,
-        'panel' => 0,
-        'postliste_import' => 0,
+        'velkomst' => 0,
         'webform' => 'webform',
       ),
       'view' => array(
@@ -1073,31 +1007,6 @@ function os2web_base_field_default_field_bases() {
     ),
     'translatable' => 0,
     'type' => 'link_field',
-  );
-
-  // Exported field_base: 'field_svendborg_hide_contact'.
-  $field_bases['field_svendborg_hide_contact'] = array(
-    'active' => 1,
-    'cardinality' => 1,
-    'deleted' => 0,
-    'entity_types' => array(),
-    'field_name' => 'field_svendborg_hide_contact',
-    'indexes' => array(
-      'value' => array(
-        0 => 'value',
-      ),
-    ),
-    'locked' => 0,
-    'module' => 'list',
-    'settings' => array(
-      'allowed_values' => array(
-        0 => 0,
-        1 => 1,
-      ),
-      'allowed_values_function' => '',
-    ),
-    'translatable' => 0,
-    'type' => 'list_boolean',
   );
 
   // Exported field_base: 'field_vist_navn'.

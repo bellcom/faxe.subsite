@@ -584,7 +584,7 @@ function os2web_base_field_default_field_instances() {
     'bundle' => 'os2web_base_contentpage',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Små tekst afsnit der vises under indholdet nederst påsiden.',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -634,100 +634,13 @@ function os2web_base_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-os2web_base_contentpage-field_baggrund'.
-  $field_instances['node-os2web_base_contentpage-field_baggrund'] = array(
-    'bundle' => 'os2web_base_contentpage',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'backstretch',
-        'settings' => array(
-          'center_x' => 1,
-          'center_y' => 1,
-          'delta' => '',
-          'duration' => 5000,
-          'element' => 'other',
-          'element_other' => '.content',
-          'fade' => 0,
-          'field' => '',
-          'image_style' => 'os2web_cover',
-          'random' => 0,
-        ),
-        'type' => 'backstretch',
-        'weight' => 5,
-      ),
-      'spotbox' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_baggrund',
-    'label' => 'Baggrund',
-    'required' => 0,
-    'settings' => array(
-      'alt_field' => 0,
-      'default_image' => 0,
-      'file_directory' => '',
-      'file_extensions' => 'png gif jpg jpeg',
-      'max_filesize' => '',
-      'max_resolution' => '',
-      'min_resolution' => '',
-      'title_field' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'media',
-      'settings' => array(
-        'allowed_schemes' => array(
-          'oembed' => 0,
-          'public' => 'public',
-        ),
-        'allowed_types' => array(
-          'audio' => 0,
-          'document' => 0,
-          'image' => 'image',
-          'video' => 0,
-        ),
-        'browser_plugins' => array(
-          'media_default--media_browser_1' => 0,
-          'media_default--media_browser_my_files' => 0,
-          'media_internet' => 0,
-          'upload' => 0,
-        ),
-        'manualcrop_crop_info' => 1,
-        'manualcrop_default_crop_area' => 1,
-        'manualcrop_enable' => 1,
-        'manualcrop_inline_crop' => 0,
-        'manualcrop_instant_crop' => FALSE,
-        'manualcrop_instant_preview' => 1,
-        'manualcrop_keyboard' => 1,
-        'manualcrop_maximize_default_crop_area' => 0,
-        'manualcrop_require_cropping' => array(),
-        'manualcrop_styles_list' => array(
-          'os2web_cover' => 'os2web_cover',
-        ),
-        'manualcrop_styles_mode' => 'include',
-        'manualcrop_thumblist' => 0,
-        'progress_indicator' => 'throbber',
-      ),
-      'type' => 'media_generic',
-      'weight' => 0,
-    ),
-  );
-
   // Exported field_instance:
   // 'node-os2web_base_contentpage-field_os2sub_contact_ref'.
   $field_instances['node-os2web_base_contentpage-field_os2sub_contact_ref'] = array(
     'bundle' => 'os2web_base_contentpage',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Kontaktblokke er indhold der først skal oprettes, og derefter kan linkes så de vises på flere sider så de kun skal redigeres et sted.',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -832,7 +745,7 @@ function os2web_base_field_default_field_instances() {
     'bundle' => 'os2web_base_contentpage',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Bannere er indhold der først skal oprettes, og derefter kan linkes så de vises øverst på siden. Det er muligt at tilknytte flere bannere til hver side.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -922,7 +835,7 @@ function os2web_base_field_default_field_instances() {
     'bundle' => 'os2web_base_contentpage',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Eksterne links der vises i siden som en slags menu. Vises sammen med interne unikke links.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -945,6 +858,7 @@ function os2web_base_field_default_field_instances() {
       'absolute_url' => 1,
       'attributes' => array(
         'class' => '',
+        'configurable_class' => 0,
         'configurable_title' => 0,
         'rel' => '',
         'target' => '_blank',
@@ -961,7 +875,7 @@ function os2web_base_field_default_field_instances() {
       ),
       'rel_remove' => 'default',
       'title' => 'required',
-      'title_label_use_field_label' => FALSE,
+      'title_label_use_field_label' => 0,
       'title_maxlength' => 128,
       'title_value' => '',
       'url' => 0,
@@ -974,55 +888,6 @@ function os2web_base_field_default_field_instances() {
       'settings' => array(),
       'type' => 'link_field',
       'weight' => 47,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'node-os2web_base_contentpage-field_os2web_base_field_hidlinks'.
-  $field_instances['node-os2web_base_contentpage-field_os2web_base_field_hidlinks'] = array(
-    'bundle' => 'os2web_base_contentpage',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 14,
-      ),
-      'related_block' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'spotbox' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_os2web_base_field_hidlinks',
-    'label' => 'Skjul automatisk relaterede links',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 56,
     ),
   );
 
@@ -1116,55 +981,6 @@ function os2web_base_field_default_field_instances() {
       ),
       'type' => 'media_generic',
       'weight' => -3,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'node-os2web_base_contentpage-field_os2web_base_field_kle_ref'.
-  $field_instances['node-os2web_base_contentpage-field_os2web_base_field_kle_ref'] = array(
-    'bundle' => 'os2web_base_contentpage',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => 'Opmærk dit indhold med KLs Emneord.
-<br>Se fuld oversigt på <a target="_blank" href="http://www.kle-online.dk">KLE-Online</a>.
-<br>Adskil flere opmærkninger med komma.',
-    'display' => array(
-      'default' => array(
-        'label' => 'inline',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 19,
-      ),
-      'related_block' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'spotbox' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_os2web_base_field_kle_ref',
-    'label' => 'KL Emneord',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'taxonomy',
-      'settings' => array(
-        'autocomplete_path' => 'taxonomy/autocomplete',
-        'content_taxonomy_autocomplete_new_terms' => 'deny',
-        'size' => 60,
-      ),
-      'type' => 'taxonomy_autocomplete',
-      'weight' => 3,
     ),
   );
 
@@ -1405,7 +1221,7 @@ function os2web_base_field_default_field_instances() {
     'bundle' => 'os2web_base_contentpage',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Interne links til andre sider, nyheder osv. der vises som links i siden.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1446,7 +1262,7 @@ function os2web_base_field_default_field_instances() {
     'bundle' => 'os2web_base_contentpage',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Selvbetjening er indhold der først skal oprettes, og derefter kan linkes så de vises i siden. Det er muligt at tilknytte flere Selvbetjeninger til hver side.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1493,7 +1309,7 @@ function os2web_base_field_default_field_instances() {
     'bundle' => 'os2web_base_contentpage',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Spotboxe er indhold der først skal oprettes, og derefter kan linkes så de vises nederst på siden. Det er muligt at tilknytte flere spotboxe til hver side.',
     'display' => array(
       'default' => array(
         'label' => 'above',
@@ -1595,7 +1411,7 @@ function os2web_base_field_default_field_instances() {
     'bundle' => 'os2web_base_contentpage',
     'default_value' => NULL,
     'deleted' => 0,
-    'description' => '',
+    'description' => 'Webforms er formularer. Disse oprettes først som indhold, og formularen kan herefter vælges til indlejring på siden.',
     'display' => array(
       'default' => array(
         'label' => 'hidden',
@@ -1628,49 +1444,6 @@ function os2web_base_field_default_field_instances() {
       ),
       'type' => 'node_reference_autocomplete',
       'weight' => 15,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'node-os2web_base_contentpage-field_svendborg_hide_contact'.
-  $field_instances['node-os2web_base_contentpage-field_svendborg_hide_contact'] = array(
-    'bundle' => 'os2web_base_contentpage',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 11,
-      ),
-      'spotbox' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_svendborg_hide_contact',
-    'label' => 'Skjul kontaktblok',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 57,
     ),
   );
 
@@ -1850,14 +1623,20 @@ function os2web_base_field_default_field_instances() {
     'settings' => array(
       'alt_field' => 1,
       'default_image' => 0,
+      'epsacrop' => array(
+        'styles' => array(
+          'os2sub_banner' => 0,
+          'os2sub_normal_imagesize' => 0,
+          'os2web_spotbox_image' => 0,
+        ),
+      ),
       'file_directory' => 'gallery_images',
       'file_extensions' => 'png gif jpg jpeg',
       'max_filesize' => '',
       'max_resolution' => '5000x5000',
-      'min_resolution' => '',
+      'min_resolution' => '230x160',
       'title_field' => 1,
       'user_register_form' => FALSE,
-      'wysiwyg_insert' => 0,
     ),
     'widget' => array(
       'active' => 1,
@@ -1866,6 +1645,7 @@ function os2web_base_field_default_field_instances() {
         'allowed_schemes' => array(
           'oembed' => 0,
           'public' => 'public',
+          'youtube' => 0,
         ),
         'allowed_types' => array(
           'audio' => 0,
@@ -1878,21 +1658,8 @@ function os2web_base_field_default_field_instances() {
           'media_default--media_browser_my_files' => 0,
           'media_internet' => 0,
           'upload' => 0,
+          'youtube' => 0,
         ),
-        'manualcrop_crop_info' => 1,
-        'manualcrop_default_crop_area' => 1,
-        'manualcrop_enable' => 1,
-        'manualcrop_inline_crop' => 0,
-        'manualcrop_instant_crop' => FALSE,
-        'manualcrop_instant_preview' => 1,
-        'manualcrop_keyboard' => 1,
-        'manualcrop_maximize_default_crop_area' => 0,
-        'manualcrop_require_cropping' => array(),
-        'manualcrop_styles_list' => array(
-          'gallery-thumb' => 'gallery-thumb',
-        ),
-        'manualcrop_styles_mode' => 'include',
-        'manualcrop_thumblist' => 0,
         'progress_indicator' => 'throbber',
       ),
       'type' => 'media_generic',
@@ -1983,96 +1750,6 @@ function os2web_base_field_default_field_instances() {
       ),
       'type' => 'text_textarea_with_summary',
       'weight' => 4,
-    ),
-  );
-
-  // Exported field_instance: 'node-os2web_base_news-field_baggrund'.
-  $field_instances['node-os2web_base_news-field_baggrund'] = array(
-    'bundle' => 'os2web_base_news',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 6,
-      ),
-      'spotbox' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 12,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_baggrund',
-    'label' => 'Baggrund',
-    'required' => 0,
-    'settings' => array(
-      'alt_field' => 0,
-      'default_image' => 0,
-      'epsacrop' => array(
-        'styles' => array(
-          'os2sub_220x130' => 0,
-          'os2sub_300x175' => 0,
-          'os2sub_banner' => 0,
-          'os2sub_normal_imagesize' => 0,
-          'os2sub_small_imagesize' => 0,
-          'os2web_spotbox_image' => 0,
-        ),
-      ),
-      'file_directory' => '',
-      'file_extensions' => 'png gif jpg jpeg',
-      'max_filesize' => '',
-      'max_resolution' => '',
-      'min_resolution' => '1920x1165',
-      'title_field' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'media',
-      'settings' => array(
-        'allowed_schemes' => array(
-          'public' => 'public',
-          'youtube' => 0,
-        ),
-        'allowed_types' => array(
-          'audio' => 0,
-          'document' => 0,
-          'image' => 'image',
-          'video' => 0,
-        ),
-        'browser_plugins' => array(
-          'media_default--media_browser_1' => 'media_default--media_browser_1',
-          'media_default--media_browser_my_files' => 'media_default--media_browser_my_files',
-          'media_internet' => 0,
-          'upload' => 'upload',
-          'youtube' => 0,
-        ),
-        'manualcrop_crop_info' => TRUE,
-        'manualcrop_default_crop_area' => TRUE,
-        'manualcrop_enable' => FALSE,
-        'manualcrop_inline_crop' => FALSE,
-        'manualcrop_instant_crop' => FALSE,
-        'manualcrop_instant_preview' => TRUE,
-        'manualcrop_keyboard' => TRUE,
-        'manualcrop_maximize_default_crop_area' => FALSE,
-        'manualcrop_require_cropping' => array(),
-        'manualcrop_styles_list' => array(),
-        'manualcrop_styles_mode' => 'include',
-        'manualcrop_thumblist' => FALSE,
-        'progress_indicator' => 'throbber',
-      ),
-      'type' => 'media_generic',
-      'weight' => 54,
     ),
   );
 
@@ -2279,70 +1956,6 @@ function os2web_base_field_default_field_instances() {
       ),
       'type' => 'options_onoff',
       'weight' => 51,
-    ),
-  );
-
-  // Exported field_instance:
-  // 'node-os2web_base_news-field_os2web_base_field_kle_ref'.
-  $field_instances['node-os2web_base_news-field_os2web_base_field_kle_ref'] = array(
-    'bundle' => 'os2web_base_news',
-    'default_value' => NULL,
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 14,
-      ),
-      'related_block' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'search_index' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 14,
-      ),
-      'search_result' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 14,
-      ),
-      'spotbox' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 15,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 11,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_os2web_base_field_kle_ref',
-    'label' => 'KL Emneord',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 0,
-      'module' => 'taxonomy',
-      'settings' => array(
-        'autocomplete_path' => 'taxonomy/autocomplete',
-        'size' => 60,
-      ),
-      'type' => 'taxonomy_autocomplete',
-      'weight' => 1,
     ),
   );
 
@@ -3102,126 +2715,6 @@ function os2web_base_field_default_field_instances() {
   );
 
   // Exported field_instance:
-  // 'node-os2web_base_news-field_os2web_base_field_video'.
-  $field_instances['node-os2web_base_news-field_os2web_base_field_video'] = array(
-    'bundle' => 'os2web_base_news',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'owlcarousel_fields',
-        'settings' => array(
-          'image_style' => 'large',
-          'settings_group' => 'owlcarousel_settings_default',
-          'trim_length' => '',
-        ),
-        'type' => 'owlcarousel_formatter',
-        'weight' => 1,
-      ),
-      'search_index' => array(
-        'label' => 'hidden',
-        'module' => 'file_entity',
-        'settings' => array(
-          'file_view_mode' => 'default',
-        ),
-        'type' => 'file_rendered',
-        'weight' => 0,
-      ),
-      'search_result' => array(
-        'label' => 'hidden',
-        'module' => 'file_entity',
-        'settings' => array(
-          'file_view_mode' => 'default',
-        ),
-        'type' => 'file_rendered',
-        'weight' => 0,
-      ),
-      'spotbox' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 8,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_os2web_base_field_video',
-    'label' => 'Video',
-    'required' => 0,
-    'settings' => array(
-      'alt_field' => 0,
-      'alt_field_required' => 1,
-      'default_image' => 0,
-      'epsacrop' => array(
-        'styles' => array(
-          'os2web_spotbox_image' => 0,
-          'svendborg_content_image' => 0,
-          'svendborg_spotbox' => 0,
-        ),
-      ),
-      'file_directory' => '',
-      'file_extensions' => 'png gif jpg jpeg',
-      'focus' => 0,
-      'focus_lock_ratio' => 0,
-      'focus_min_size' => '',
-      'max_filesize' => '',
-      'max_resolution' => '',
-      'min_resolution' => '',
-      'title_field' => 0,
-      'title_field_required' => 1,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'media',
-      'settings' => array(
-        'allowed_schemes' => array(
-          'public' => 'public',
-          'ustream' => 'ustream',
-          'youtube' => 0,
-        ),
-        'allowed_types' => array(
-          'application' => 0,
-          'audio' => 0,
-          'document' => 0,
-          'image' => 0,
-          'video' => 'video',
-        ),
-        'browser_plugins' => array(
-          'media_browser_plus--media_browser_my_files' => 'media_browser_plus--media_browser_my_files',
-          'media_browser_plus--media_browser_thumbnails' => 'media_browser_plus--media_browser_thumbnails',
-          'media_default--media_browser_1' => 'media_default--media_browser_1',
-          'media_default--media_browser_my_files' => 'media_default--media_browser_my_files',
-          'media_internet' => 'media_internet',
-          'upload' => 'upload',
-          'youtube' => 0,
-        ),
-        'manualcrop_crop_info' => TRUE,
-        'manualcrop_default_crop_area' => TRUE,
-        'manualcrop_enable' => FALSE,
-        'manualcrop_inline_crop' => FALSE,
-        'manualcrop_instant_crop' => FALSE,
-        'manualcrop_instant_preview' => TRUE,
-        'manualcrop_keyboard' => TRUE,
-        'manualcrop_maximize_default_crop_area' => FALSE,
-        'manualcrop_require_cropping' => array(),
-        'manualcrop_styles_list' => array(),
-        'manualcrop_styles_mode' => 'include',
-        'manualcrop_thumblist' => FALSE,
-        'progress_indicator' => 'throbber',
-      ),
-      'type' => 'media_generic',
-      'weight' => 7,
-    ),
-  );
-
-  // Exported field_instance:
   // 'node-os2web_base_selfservice_link-field_os2web_base_field_source'.
   $field_instances['node-os2web_base_selfservice_link-field_os2web_base_field_source'] = array(
     'bundle' => 'os2web_base_selfservice_link',
@@ -3427,108 +2920,6 @@ function os2web_base_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance: 'node-webform-field_baggrund'.
-  $field_instances['node-webform-field_baggrund'] = array(
-    'bundle' => 'webform',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'backstretch',
-        'settings' => array(
-          'center_x' => 1,
-          'center_y' => 1,
-          'delta' => '',
-          'duration' => 5000,
-          'element' => 'other',
-          'element_other' => '.content',
-          'fade' => 0,
-          'field' => '',
-          'image_style' => 'os2web_cover',
-          'random' => 0,
-        ),
-        'type' => 'backstretch',
-        'weight' => 1,
-      ),
-      'spotbox' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_baggrund',
-    'label' => 'Baggrund',
-    'required' => 0,
-    'settings' => array(
-      'alt_field' => 0,
-      'default_image' => 0,
-      'epsacrop' => array(
-        'styles' => array(
-          'os2sub_220x130' => 0,
-          'os2sub_300x175' => 0,
-          'os2sub_banner' => 0,
-          'os2sub_normal_imagesize' => 0,
-          'os2sub_small_imagesize' => 0,
-          'os2web_spotbox_image' => 0,
-        ),
-      ),
-      'file_directory' => '',
-      'file_extensions' => 'png gif jpg jpeg',
-      'max_filesize' => '',
-      'max_resolution' => '',
-      'min_resolution' => '',
-      'title_field' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'media',
-      'settings' => array(
-        'allowed_schemes' => array(
-          'public' => 'public',
-          'youtube' => 0,
-        ),
-        'allowed_types' => array(
-          'audio' => 0,
-          'document' => 0,
-          'image' => 'image',
-          'video' => 0,
-        ),
-        'browser_plugins' => array(
-          'media_default--media_browser_1' => 0,
-          'media_default--media_browser_my_files' => 0,
-          'media_internet' => 0,
-          'upload' => 0,
-          'youtube' => 0,
-        ),
-        'manualcrop_crop_info' => TRUE,
-        'manualcrop_default_crop_area' => TRUE,
-        'manualcrop_enable' => FALSE,
-        'manualcrop_inline_crop' => FALSE,
-        'manualcrop_instant_crop' => FALSE,
-        'manualcrop_instant_preview' => TRUE,
-        'manualcrop_keyboard' => TRUE,
-        'manualcrop_maximize_default_crop_area' => FALSE,
-        'manualcrop_require_cropping' => array(),
-        'manualcrop_styles_list' => array(),
-        'manualcrop_styles_mode' => 'include',
-        'manualcrop_thumblist' => FALSE,
-        'progress_indicator' => 'throbber',
-      ),
-      'type' => 'media_generic',
-      'weight' => 44,
-    ),
-  );
-
   // Exported field_instance: 'node-webform-field_os2web_base_banner'.
   $field_instances['node-webform-field_os2web_base_banner'] = array(
     'bundle' => 'webform',
@@ -3571,100 +2962,7 @@ function os2web_base_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'node_reference_autocomplete',
-      'weight' => 46,
-    ),
-  );
-
-  // Exported field_instance: 'node-webform-field_os2web_base_field_image'.
-  $field_instances['node-webform-field_os2web_base_field_image'] = array(
-    'bundle' => 'webform',
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'hidden',
-        'module' => 'image',
-        'settings' => array(
-          'image_link' => '',
-          'image_style' => 'os2sub_normal_imagesize',
-        ),
-        'type' => 'image',
-        'weight' => 0,
-      ),
-      'spotbox' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-      'teaser' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 0,
-      ),
-    ),
-    'entity_type' => 'node',
-    'field_name' => 'field_os2web_base_field_image',
-    'label' => 'Billede',
-    'required' => 0,
-    'settings' => array(
-      'alt_field' => 0,
-      'default_image' => 0,
-      'epsacrop' => array(
-        'styles' => array(
-          'os2sub_220x130' => 0,
-          'os2sub_300x175' => 0,
-          'os2sub_banner' => 0,
-          'svendborg_content_image' => 'svendborg_content_image',
-          'svendborg_spotbox' => 0,
-        ),
-      ),
-      'file_directory' => '',
-      'file_extensions' => 'png gif jpg jpeg',
-      'max_filesize' => '',
-      'max_resolution' => '',
-      'min_resolution' => '',
-      'title_field' => 0,
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'media',
-      'settings' => array(
-        'allowed_schemes' => array(
-          'public' => 'public',
-          'youtube' => 0,
-        ),
-        'allowed_types' => array(
-          'audio' => 0,
-          'document' => 0,
-          'image' => 'image',
-          'video' => 0,
-        ),
-        'browser_plugins' => array(
-          'media_default--media_browser_1' => 'media_default--media_browser_1',
-          'media_default--media_browser_my_files' => 0,
-          'media_internet' => 0,
-          'upload' => 'upload',
-          'youtube' => 0,
-        ),
-        'manualcrop_crop_info' => TRUE,
-        'manualcrop_default_crop_area' => TRUE,
-        'manualcrop_enable' => FALSE,
-        'manualcrop_inline_crop' => FALSE,
-        'manualcrop_instant_crop' => FALSE,
-        'manualcrop_instant_preview' => TRUE,
-        'manualcrop_keyboard' => TRUE,
-        'manualcrop_maximize_default_crop_area' => FALSE,
-        'manualcrop_require_cropping' => array(),
-        'manualcrop_styles_list' => array(),
-        'manualcrop_styles_mode' => 'include',
-        'manualcrop_thumblist' => FALSE,
-        'progress_indicator' => 'throbber',
-      ),
-      'type' => 'media_generic',
-      'weight' => 42,
+      'weight' => 1,
     ),
   );
 
@@ -4931,28 +4229,28 @@ function os2web_base_field_default_field_instances() {
   t('Afsnit');
   t('Afsnit overskrift');
   t('Alternativ visning');
-  t('Baggrund');
   t('Banner');
+  t('Bannere er indhold der først skal oprettes, og derefter kan linkes så de vises øverst på siden. Det er muligt at tilknytte flere bannere til hver side.');
   t('Billede');
   t('Billeder');
   t('Egenavne / stednavne');
   t('Egennavne/stednavne');
+  t('Eksterne links der vises i siden som en slags menu. Vises sammen med interne unikke links.');
   t('Filer');
   t('Forfrem til');
   t('Forældre-menupunkt');
   t('Harmonika enheder');
   t('Indhold');
   t('Indlejret galleri');
+  t('Interne links til andre sider, nyheder osv. der vises som links i siden.');
   t('Intro / Resume (maks 2 linier!)');
   t('KL Emneord');
   t('Kilde');
   t('Kontaktblok');
+  t('Kontaktblokke er indhold der først skal oprettes, og derefter kan linkes så de vises på flere sider så de kun skal redigeres et sted.');
   t('Link');
   t('Logo');
   t('Nedarv højrespalte');
-  t('Opmærk dit indhold med KLs Emneord.
-<br>Se fuld oversigt på <a target="_blank" href="http://www.kle-online.dk">KLE-Online</a>.
-<br>Adskil flere opmærkninger med komma.');
   t('Opmærk dit indhold med dine egne stikord.
 <br>Dette giver mulighed for at sammenkoble relateret indhold i listevisninger mv.
 <br>Adskil flere opmærkninger med komma.');
@@ -4975,22 +4273,24 @@ function os2web_base_field_default_field_instances() {
   t('Resume (maks 2 linier!)');
   t('Resume - lang overskrift');
   t('Selvbetjening');
+  t('Selvbetjening er indhold der først skal oprettes, og derefter kan linkes så de vises i siden. Det er muligt at tilknytte flere Selvbetjeninger til hver side.');
   t('Selvbetjeningslinks');
   t('Skjul automatisk relaterede links');
   t('Skjul højre sidebar');
-  t('Skjul kontaktblok');
   t('Skriv den fuldstændige URL hvis det er et eksternt link. Interne links skrives som systemsti, alternativt søges destinationen frem via Søg funktionen.');
+  t('Små tekst afsnit der vises under indholdet nederst påsiden.');
   t('Source ID');
   t('Spotboxe');
+  t('Spotboxe er indhold der først skal oprettes, og derefter kan linkes så de vises nederst på siden. Det er muligt at tilknytte flere spotboxe til hver side.');
   t('Stikord');
   t('Tekst');
   t('Tilføj medie');
   t('Unikke eksterne links	');
   t('Unikke relaterede links');
-  t('Video');
   t('Vis på portalside');
   t('Vist navn');
   t('Webform');
+  t('Webforms er formularer. Disse oprettes først som indhold, og formularen kan herefter vælges til indlejring på siden.');
 
   return $field_instances;
 }
