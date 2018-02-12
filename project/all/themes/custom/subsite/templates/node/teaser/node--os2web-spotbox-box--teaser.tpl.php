@@ -9,7 +9,7 @@
   ?>
 
   <!-- Begin - teaser -->
-  <a href="<?php print $node_url; ?>"
+  <a href="<?php print $linkit['url']; ?>"
      style="background-image: url('<?php print $image_url; ?>');"
      id="node-<?php print $node->nid; ?>"
      class="<?php print $classes; ?> element-wrapper-link clearfix"<?php print $attributes; ?>>

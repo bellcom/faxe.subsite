@@ -92,6 +92,22 @@ function subsite_preprocess_node(&$variables) {
   }
 }
 
+/**
+ * Implements template_preprocess_node.
+ */
+function subsite_preprocess_node__os2web_spotbox_box(&$variables) {
+  $node = $variables['node'];
+
+  // Linkit
+  $variables['linkit']['title'] = '';
+  $variables['linkit']['url'] = '';
+
+  if ($field = field_get_items('node', $node, 'field_spot_link')) {
+    $variables['linkit']['title'] = $field[0]['title'];
+    $variables['linkit']['url'] = $field[0]['url'];
+  }
+}
+
 /*
  * Implements template_preprocess_taxonomy_term().
  */
