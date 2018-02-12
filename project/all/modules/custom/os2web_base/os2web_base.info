@@ -29,7 +29,6 @@ dependencies[] = mailsystem
 dependencies[] = media
 dependencies[] = menu
 dependencies[] = menu_block
-dependencies[] = menu_position
 dependencies[] = mimemail
 dependencies[] = node
 dependencies[] = node_reference
