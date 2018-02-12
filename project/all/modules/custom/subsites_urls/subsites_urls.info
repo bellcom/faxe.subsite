@@ -1,7 +1,7 @@
 name = Subsites URLs
 description = Subsite
 core = 7.x
-package = Svendborg
+package = OS2Sub
 version = 7.x-1.0
 project = subsites_urls
 dependencies[] = ctools

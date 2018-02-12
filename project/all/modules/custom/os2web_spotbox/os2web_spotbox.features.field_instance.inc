@@ -32,7 +32,7 @@ function os2web_spotbox_field_default_field_instances() {
         'module' => 'image',
         'settings' => array(
           'image_link' => '',
-          'image_style' => 'svendborg_spotbox',
+          'image_style' => 'os2web_spotbox_image',
         ),
         'type' => 'image',
         'weight' => 2,

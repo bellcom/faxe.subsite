@@ -2013,7 +2013,7 @@ function os2web_base_field_default_field_instances() {
           'slideshow_controls_position' => 'after',
           'slideshow_field_collection_image' => '',
           'slideshow_fx' => 'fade',
-          'slideshow_image_style' => 'svendborg_content_image',
+          'slideshow_image_style' => 'os2sub_normal_imagesize',
           'slideshow_link' => '',
           'slideshow_order' => '',
           'slideshow_pager' => 'number',
@@ -2051,7 +2051,7 @@ function os2web_base_field_default_field_instances() {
           'slideshow_controls_position' => 'after',
           'slideshow_field_collection_image' => '',
           'slideshow_fx' => 'fade',
-          'slideshow_image_style' => 'svendborg_content_image',
+          'slideshow_image_style' => 'os2sub_normal_imagesize',
           'slideshow_link' => '',
           'slideshow_order' => '',
           'slideshow_pager' => 'number',
@@ -3801,7 +3801,7 @@ function os2web_base_field_default_field_instances() {
         'module' => 'image',
         'settings' => array(
           'image_link' => '',
-          'image_style' => 'svendborg_content_image',
+          'image_style' => 'os2sub_normal_imagesize',
         ),
         'type' => 'image',
         'weight' => 0,
@@ -3818,8 +3818,7 @@ function os2web_base_field_default_field_instances() {
       'epsacrop' => array(
         'styles' => array(
           'os2web_spotbox_image' => 0,
-          'svendborg_content_image' => 'svendborg_content_image',
-          'svendborg_spotbox' => 0,
+          'os2sub_normal_imagesize' => 'os2sub_normal_imagesize',
         ),
       ),
       'file_directory' => '',
@@ -3937,8 +3936,7 @@ function os2web_base_field_default_field_instances() {
       'epsacrop' => array(
         'styles' => array(
           'os2web_spotbox_image' => 0,
-          'svendborg_content_image' => 0,
-          'svendborg_spotbox' => 0,
+          'os2sub_normal_imagesize' => 0,
         ),
       ),
       'file_directory' => 'subsite/logo',
@@ -4172,43 +4170,7 @@ function os2web_base_field_default_field_instances() {
     ),
   );
 
-  // Exported field_instance:
-  // 'taxonomy_term-os2web_base_tax_site_structure-field_svendborg_hide_sidebar'.
-  $field_instances['taxonomy_term-os2web_base_tax_site_structure-field_svendborg_hide_sidebar'] = array(
-    'bundle' => 'os2web_base_tax_site_structure',
-    'default_value' => array(
-      0 => array(
-        'value' => 0,
-      ),
-    ),
-    'deleted' => 0,
-    'description' => '',
-    'display' => array(
-      'default' => array(
-        'label' => 'above',
-        'settings' => array(),
-        'type' => 'hidden',
-        'weight' => 3,
-      ),
-    ),
-    'entity_type' => 'taxonomy_term',
-    'field_name' => 'field_svendborg_hide_sidebar',
-    'label' => 'Skjul højre sidebar',
-    'required' => 0,
-    'settings' => array(
-      'user_register_form' => FALSE,
-    ),
-    'widget' => array(
-      'active' => 1,
-      'module' => 'options',
-      'settings' => array(
-        'display_label' => 1,
-      ),
-      'type' => 'options_onoff',
-      'weight' => 34,
-    ),
-  );
-
+ 
   // Translatables
   // Included for use with string extractors like potx.
   t('Afsnit');

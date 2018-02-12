@@ -89,7 +89,6 @@ function os2web_base_field_group_info() {
       3 => 'field_os2web_base_field_hidlinks',
       4 => 'field_alternative_display',
       5 => 'field_os2web_base_field_ext_link',
-      6 => 'field_svendborg_hide_sidebar',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -117,11 +116,9 @@ function os2web_base_field_group_info() {
     'label' => 'Indstillinger',
     'weight' => '10',
     'children' => array(
-      0 => 'field_svendborg_hide_sidebar',
       1 => 'field_os2sub_menuheader',
       2 => 'field_os2web_base_field_hidlinks',
-      3 => 'field_svendborg_hide_contact',
-      4 => 'field_os2sub_contact_ref',
+      3 => 'field_os2sub_contact_ref',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -428,10 +425,9 @@ function os2web_base_field_group_info() {
     'weight' => '7',
     'children' => array(
       0 => 'field_os2web_news_page_archive',
-      1 => 'field_svendborg_hide_sidebar',
-      2 => 'field_baggrund',
-      3 => 'field_os2web_base_field_hidlinks',
-      4 => 'field_os2web_base_field_promote',
+      1 => 'field_baggrund',
+      2 => 'field_os2web_base_field_hidlinks',
+      3 => 'field_os2web_base_field_promote',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
