@@ -165,16 +165,6 @@ function os2sub_uses_and_tools_user_default_permissions() {
     'module' => 'system',
   );
 
-  // Exported permission: 'administer all news type'.
-  $permissions['administer all news type'] = array(
-    'name' => 'administer all news type',
-    'roles' => array(
-      'Editor' => 'Editor',
-      'subsiteadmin' => 'subsiteadmin',
-    ),
-    'module' => 'os2web_news_page',
-  );
-
   // Exported permission: 'administer blocks'.
   $permissions['administer blocks'] = array(
     'name' => 'administer blocks',
@@ -1381,16 +1371,6 @@ function os2sub_uses_and_tools_user_default_permissions() {
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'pathauto',
-  );
-
-  // Exported permission: 'promote to all the place'.
-  $permissions['promote to all the place'] = array(
-    'name' => 'promote to all the place',
-    'roles' => array(
-      'Editor' => 'Editor',
-      'subsiteadmin' => 'subsiteadmin',
-    ),
-    'module' => 'os2web_news_page',
   );
 
   // Exported permission: 'revert revisions'.
