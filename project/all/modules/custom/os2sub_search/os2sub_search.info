@@ -9,6 +9,7 @@ dependencies[] = search_config
 dependencies[] = strongarm
 features[ctools][] = strongarm:strongarm:1
 features[features_api][] = api:2
+features[variable][] = content_node_search_config
 features[variable][] = custom_search_advanced_language_da_display
 features[variable][] = custom_search_advanced_language_und_display
 features[variable][] = custom_search_advanced_negative_display
