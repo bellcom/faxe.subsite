@@ -22,7 +22,7 @@ function os2sub_kalender_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 1,
+        'weight' => 2,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -168,7 +168,7 @@ function os2sub_kalender_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 2,
+        'weight' => 3,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -209,13 +209,14 @@ function os2sub_kalender_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'image',
+        'module' => 'owlcarousel_fields',
         'settings' => array(
-          'image_link' => '',
-          'image_style' => 'os2sub_banner',
+          'image_style' => 'os2sub_normal_imagesize',
+          'settings_group' => 'owlcarousel_settings_default',
+          'trim_length' => '',
         ),
-        'type' => 'image',
-        'weight' => 3,
+        'type' => 'owlcarousel_formatter',
+        'weight' => 0,
       ),
       'spotbox' => array(
         'label' => 'above',

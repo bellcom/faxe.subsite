@@ -45,7 +45,7 @@ function os2sub_kalender_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['last'] = 'sidste »';
   $handler->display->display_options['style_plugin'] = 'default';
   $handler->display->display_options['row_plugin'] = 'node';
-  /* Felt: Indhold: Titel */
+  /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -55,7 +55,7 @@ function os2sub_kalender_views_default_views() {
   $handler->display->display_options['fields']['title']['element_type'] = 'h3';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
-  /* Felt: Indhold: Dato */
+  /* Field: Indholdselement: Dato */
   $handler->display->display_options['fields']['event_calendar_date']['id'] = 'event_calendar_date';
   $handler->display->display_options['fields']['event_calendar_date']['table'] = 'field_data_event_calendar_date';
   $handler->display->display_options['fields']['event_calendar_date']['field'] = 'event_calendar_date';
@@ -70,25 +70,25 @@ function os2sub_kalender_views_default_views() {
     'multiple_to' => '',
     'show_remaining_days' => 0,
   );
-  /* Sorteringskriterie: Indhold: Dato -  startdato (event_calendar_date) */
+  /* Sort criterion: Indholdselement: Dato -  start date (event_calendar_date) */
   $handler->display->display_options['sorts']['event_calendar_date_value']['id'] = 'event_calendar_date_value';
   $handler->display->display_options['sorts']['event_calendar_date_value']['table'] = 'field_data_event_calendar_date';
   $handler->display->display_options['sorts']['event_calendar_date_value']['field'] = 'event_calendar_date_value';
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filterkriterie: Indhold: Type */
+  /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'event_calendar' => 'event_calendar',
   );
-  /* Filterkriterie: Indhold: Dato -  startdato (event_calendar_date) */
+  /* Filter criterion: Indholdselement: Dato -  start date (event_calendar_date) */
   $handler->display->display_options['filters']['event_calendar_date_value']['id'] = 'event_calendar_date_value';
   $handler->display->display_options['filters']['event_calendar_date_value']['table'] = 'field_data_event_calendar_date';
   $handler->display->display_options['filters']['event_calendar_date_value']['field'] = 'event_calendar_date_value';
@@ -117,7 +117,7 @@ function os2sub_kalender_views_default_views() {
   $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['arguments'] = FALSE;
-  /* Kontekstuelt filter: Indhold: Nid */
+  /* Contextual filter: Content: Nid */
   $handler->display->display_options['arguments']['nid']['id'] = 'nid';
   $handler->display->display_options['arguments']['nid']['table'] = 'node';
   $handler->display->display_options['arguments']['nid']['field'] = 'nid';
@@ -130,21 +130,21 @@ function os2sub_kalender_views_default_views() {
   $handler->display->display_options['arguments']['nid']['not'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filter criterion: Content: Published */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
   $handler->display->display_options['filters']['status']['value'] = 1;
   $handler->display->display_options['filters']['status']['group'] = 1;
   $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
-  /* Filterkriterie: Indhold: Type */
+  /* Filter criterion: Content: Type */
   $handler->display->display_options['filters']['type']['id'] = 'type';
   $handler->display->display_options['filters']['type']['table'] = 'node';
   $handler->display->display_options['filters']['type']['field'] = 'type';
   $handler->display->display_options['filters']['type']['value'] = array(
     'event_calendar' => 'event_calendar',
   );
-  /* Filterkriterie: Indhold: Dato -  startdato (event_calendar_date) */
+  /* Filter criterion: Indholdselement: Dato -  start date (event_calendar_date) */
   $handler->display->display_options['filters']['event_calendar_date_value']['id'] = 'event_calendar_date_value';
   $handler->display->display_options['filters']['event_calendar_date_value']['table'] = 'field_data_event_calendar_date';
   $handler->display->display_options['filters']['event_calendar_date_value']['field'] = 'event_calendar_date_value';
@@ -172,7 +172,7 @@ function os2sub_kalender_views_default_views() {
   $handler->display->display_options['row_options']['default_field_elements'] = FALSE;
   $handler->display->display_options['defaults']['row_options'] = FALSE;
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Felt: Indhold: Titel */
+  /* Field: Content: Title */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
@@ -182,7 +182,7 @@ function os2sub_kalender_views_default_views() {
   $handler->display->display_options['fields']['title']['element_type'] = 'div';
   $handler->display->display_options['fields']['title']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title']['element_default_classes'] = FALSE;
-  /* Felt: Indhold: Dato */
+  /* Field: Indholdselement: Dato */
   $handler->display->display_options['fields']['event_calendar_date']['id'] = 'event_calendar_date';
   $handler->display->display_options['fields']['event_calendar_date']['table'] = 'field_data_event_calendar_date';
   $handler->display->display_options['fields']['event_calendar_date']['field'] = 'event_calendar_date';
@@ -214,6 +214,7 @@ function os2sub_kalender_views_default_views() {
     t('næste ›'),
     t('sidste »'),
     t('Page'),
+    t('more'),
     t('Content pane'),
     t('Alle'),
     t('View panes'),
