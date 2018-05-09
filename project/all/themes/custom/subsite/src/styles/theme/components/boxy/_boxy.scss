@@ -164,7 +164,6 @@ $lg-boxy-spacing-left-right: $boxy-spacing-left-right;
 
     .menu,
     .node__image,
-    .entity-teaser,
     .entity-list,
     .entity-list-advanced {
       margin-left: (0 - $lg-boxy-spacing-left-right);
@@ -175,6 +174,10 @@ $lg-boxy-spacing-left-right: $boxy-spacing-left-right;
     .entity-list__inner {
       padding-left: $lg-boxy-spacing-left-right;
       padding-right: $lg-boxy-spacing-left-right;
+    }
+    .entity-teaser{
+      margin-left: ($lg-boxy-spacing-left-right);
+      margin-right: ($lg-boxy-spacing-left-right);
     }
   }
 
