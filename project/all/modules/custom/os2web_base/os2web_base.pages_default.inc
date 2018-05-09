@@ -683,6 +683,38 @@ function os2web_base_default_page_manager_handlers() {
   $display->content['new-ee9f71c5-4c22-4d01-b398-0d025e77c923'] = $pane;
   $display->panels['content'][1] = 'new-ee9f71c5-4c22-4d01-b398-0d025e77c923';
   $pane = new stdClass();
+  $pane->pid = 'new-22a25410-54d7-46f1-9b78-da4aafa5e3c4';
+  $pane->panel = 'content';
+  $pane->type = 'entity_field';
+  $pane->subtype = 'node:field_os2web_base_field_media';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'label' => 'hidden',
+    'formatter' => 'file_download_link',
+    'delta_limit' => '0',
+    'delta_offset' => '0',
+    'delta_reversed' => 0,
+    'formatter_settings' => array(
+      'text' => '[file:name]',
+    ),
+    'context' => 'argument_entity_id:node_1',
+    'override_title' => 0,
+    'override_title_text' => '',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '22a25410-54d7-46f1-9b78-da4aafa5e3c4';
+  $display->content['new-22a25410-54d7-46f1-9b78-da4aafa5e3c4'] = $pane;
+  $display->panels['content'][2] = 'new-22a25410-54d7-46f1-9b78-da4aafa5e3c4';
+  $pane = new stdClass();
   $pane->pid = 'new-46ed3288-c141-4997-afe9-79c47a2d3b94';
   $pane->panel = 'sidebar';
   $pane->type = 'menu_tree';
