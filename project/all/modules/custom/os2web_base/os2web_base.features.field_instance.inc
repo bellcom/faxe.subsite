@@ -649,7 +649,7 @@ function os2web_base_field_default_field_instances() {
           'node_reference_view_mode' => 'embedded',
         ),
         'type' => 'node_reference_node',
-        'weight' => 23,
+        'weight' => 5,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -688,7 +688,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 8,
+        'weight' => 7,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -751,7 +751,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 9,
+        'weight' => 8,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -794,7 +794,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'inline',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 20,
+        'weight' => 15,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -841,7 +841,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 12,
+        'weight' => 10,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -998,7 +998,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 21,
+        'weight' => 16,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -1042,8 +1042,11 @@ function os2web_base_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'settings' => array(),
-        'type' => 'hidden',
+        'module' => 'file_entity',
+        'settings' => array(
+          'text' => '[file:name]',
+        ),
+        'type' => 'file_download_link',
         'weight' => 6,
       ),
       'related_block' => array(
@@ -1131,7 +1134,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 22,
+        'weight' => 17,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -1180,7 +1183,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 15,
+        'weight' => 12,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -1227,7 +1230,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 13,
+        'weight' => 11,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -1268,7 +1271,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 16,
+        'weight' => 13,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -1315,7 +1318,7 @@ function os2web_base_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 17,
+        'weight' => 14,
       ),
       'related_block' => array(
         'label' => 'above',
@@ -3817,8 +3820,8 @@ function os2web_base_field_default_field_instances() {
       'default_image' => 0,
       'epsacrop' => array(
         'styles' => array(
-          'os2web_spotbox_image' => 0,
           'os2sub_normal_imagesize' => 'os2sub_normal_imagesize',
+          'os2web_spotbox_image' => 0,
         ),
       ),
       'file_directory' => '',
@@ -3935,8 +3938,8 @@ function os2web_base_field_default_field_instances() {
       'default_image' => 0,
       'epsacrop' => array(
         'styles' => array(
-          'os2web_spotbox_image' => 0,
           'os2sub_normal_imagesize' => 0,
+          'os2web_spotbox_image' => 0,
         ),
       ),
       'file_directory' => 'subsite/logo',
@@ -4170,7 +4173,6 @@ function os2web_base_field_default_field_instances() {
     ),
   );
 
- 
   // Translatables
   // Included for use with string extractors like potx.
   t('Afsnit');
@@ -4223,7 +4225,6 @@ function os2web_base_field_default_field_instances() {
   t('Selvbetjening er indhold der først skal oprettes, og derefter kan linkes så de vises i siden. Det er muligt at tilknytte flere Selvbetjeninger til hver side.');
   t('Selvbetjeningslinks');
   t('Skjul automatisk relaterede links');
-  t('Skjul højre sidebar');
   t('Skriv den fuldstændige URL hvis det er et eksternt link. Interne links skrives som systemsti, alternativt søges destinationen frem via Søg funktionen.');
   t('Små tekst afsnit der vises under indholdet nederst påsiden.');
   t('Source ID');

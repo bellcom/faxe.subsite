@@ -40,7 +40,7 @@
   }
 
   .node__pdf-files {
-
+    margin-top: floor( ( $grid-gutter-width / 2 ) );
     + .node__paragraphs {
       margin-top: floor( ( $grid-gutter-width / 2 ) );
     }
