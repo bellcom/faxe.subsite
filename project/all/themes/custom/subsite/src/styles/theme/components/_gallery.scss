@@ -1,9 +1,9 @@
 // |--------------------------------------------------------------------------
-// | Content page
+// | Gallery
 // |--------------------------------------------------------------------------
 // |
 // | This file contains styles for the following:
-// | - .node-os2web-base-contentpage
+// | - .photoswipe-gallery
 // |
 
 // --------------------------------------------------
@@ -14,42 +14,27 @@
 // Mixins
 // --------------------------------------------------
 
-@mixin node-os2web-base-contentpage-mixin() {}
+@mixin photoswipe-gallery-mixin() {}
 
 // --------------------------------------------------
 // Styling
 // --------------------------------------------------
 
-.node-os2web-base-contentpage {
+.photoswipe-gallery {
 
-  .node__body {
+  .field-items {
+    @include make-row();
 
-    + .node__contact-block,
-    + .node__paragraphs,
-    + .node__pdf-files {
-      margin-top: floor( ( $grid-gutter-width / 2 ) );
-    }
-  }
+    margin-top: -8px;
+    margin-bottom: -8px;
 
-  .node__contact-block {
+    .field-item {
+      padding-top: 8px;
+      padding-bottom: 8px;
 
-    + .node__paragraphs,
-    + .node__pdf-files {
-      margin-top: floor( ( $grid-gutter-width / 2 ) );
-    }
-  }
-
-  .node__pdf-files {
-    margin-top: floor( ( $grid-gutter-width / 2 ) );
-    + .node__paragraphs {
-      margin-top: floor( ( $grid-gutter-width / 2 ) );
-    }
-  }
-
-  .node__paragraphs {
-
-    .accordion {
-      margin: 5px 0;
+      @include make-xs-column(4);
+      @include make-sm-column(3);
+      margin-bottom: ($grid-gutter-width /2);
     }
   }
 }

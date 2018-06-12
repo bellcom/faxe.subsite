@@ -20,8 +20,6 @@
 // Styling
 // --------------------------------------------------
 
-.node {}
-
 .node__image {
   margin-bottom: $grid-gutter-width;
 
@@ -42,6 +40,37 @@
 
   font-size: $font-size-large;
   font-weight: $font-weight-bold;
+}
+
+.node__body {
+
+  + .node__contact-block,
+  + .node__paragraphs,
+  + .node__gallery {
+    margin-top: floor( ( $grid-gutter-width / 2 ) );
+  }
+}
+
+.node__contact-block {
+
+  + .node__paragraphs {
+    margin-top: floor( ( $grid-gutter-width / 2 ) );
+  }
+}
+
+.node__pdf-files {
+  margin-top: floor( ( $grid-gutter-width / 2 ) );
+
+  + .node__paragraphs {
+    margin-top: floor( ( $grid-gutter-width / 2 ) );
+  }
+}
+
+.node__paragraphs {
+
+  .accordion {
+    margin: 5px 0;
+  }
 }
 
 // --------------------------------------------------
