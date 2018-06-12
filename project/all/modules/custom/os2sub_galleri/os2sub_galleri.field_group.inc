@@ -21,9 +21,10 @@ function os2sub_galleri_field_group_info() {
   $field_group->parent_name = 'group_formular';
   $field_group->data = array(
     'label' => 'Billeder',
-    'weight' => '3',
+    'weight' => '5',
     'children' => array(
       0 => 'field_os2web_base_field_photo',
+      1 => 'field_os2web_base_field_lead_img',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
@@ -79,6 +80,8 @@ function os2sub_galleri_field_group_info() {
     'weight' => '4',
     'children' => array(
       0 => 'body',
+      1 => 'field_os2web_base_field_summary',
+      2 => 'title',
     ),
     'format_type' => 'htab',
     'format_settings' => array(
