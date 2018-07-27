@@ -1,0 +1,12 @@
+name = os2sub_news_page
+core = 7.x
+package = OS2Sub
+version = 7.x-1.0
+dependencies[] = entity
+dependencies[] = views
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[menu_position][] = os2web_base_news_menu
+features[views_view][] = os2sub_news
+features_exclude[dependencies][ctools] = ctools
+project path = profiles/os2sub/modules
