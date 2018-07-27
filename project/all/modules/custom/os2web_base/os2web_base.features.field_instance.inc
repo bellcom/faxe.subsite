@@ -2083,7 +2083,7 @@ function os2web_base_field_default_field_instances() {
         'module' => 'image',
         'settings' => array(
           'image_link' => 'content',
-          'image_style' => 'large',
+          'image_style' => 'os2sub_small_imagesize',
         ),
         'type' => 'image',
         'weight' => 0,
