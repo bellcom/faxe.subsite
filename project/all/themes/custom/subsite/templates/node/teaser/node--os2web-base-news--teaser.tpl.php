@@ -18,11 +18,13 @@
       </div>
     <?php endif; ?>
     <?php print render($title_suffix); ?>
-    <?php if ($display_submitted): ?>
-    <div class="submitted">
-      <?php print $submitted; ?>
-    </div>
-    <?php endif; ?>
+      <div class="date-in-parts">
+       <span class="day"><?php  echo date("j.", $node->created); ?></span>
+       <span class="month"><?php echo date("m.", $node->created); ?></span>
+       <span class="year"><?php echo date("Y", $node->created); ?></span>
+       <span class="year"><?php echo date(" - H:", $node->created); ?></span>
+       <span class="year"><?php echo date("i", $node->created); ?></span>
+      </div>
 
       <?php if (isset($content['body'])): ?>
         <!-- Begin - description -->

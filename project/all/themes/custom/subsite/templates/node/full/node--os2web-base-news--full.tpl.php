@@ -16,7 +16,17 @@
     </div>
     <!-- End - heading -->
   <?php endif; ?>
+  <?php if ($submitted) { ?>
 
+   <div class="date-in-parts">
+       <span class="day"><?php  echo date("j.", $node->created); ?></span>
+       <span class="month"><?php echo date("m.", $node->created); ?></span>
+       <span class="year"><?php echo date("Y", $node->created); ?></span>
+       <span class="year"><?php echo date(" - H:", $node->created); ?></span>
+       <span class="year"><?php echo date("i", $node->created); ?></span>
+    </div><!--//date-in-parts -->
+
+  <?php } ?>
   <?php if (isset($content['field_os2web_base_field_summary'])): ?>
     <!-- Begin - intro -->
     <div class="node__intro">
