@@ -797,8 +797,9 @@ function os2web_base_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'mail_system';
   $strongarm->value = array(
-    'default-system' => 'DefaultMailSystem',
+    'default-system' => 'MimeMailSystem',
     'mimemail' => 'MimeMailSystem',
+    'phpmailer' => 'DrupalPHPMailer',
   );
   $export['mail_system'] = $strongarm;
 
@@ -1137,7 +1138,7 @@ function os2web_base_strongarm() {
   $strongarm->disabled = FALSE; /* Edit this to true to make a default strongarm disabled initially */
   $strongarm->api_version = 1;
   $strongarm->name = 'site_mail';
-  $strongarm->value = 'drupal@bellcom.dk';
+  $strongarm->value = 'system@faxe-files.dk';
   $export['site_mail'] = $strongarm;
 
   $strongarm = new stdClass();

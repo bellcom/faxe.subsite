@@ -644,12 +644,9 @@ function os2web_base_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'hidden',
-        'module' => 'node_reference',
-        'settings' => array(
-          'node_reference_view_mode' => 'embedded',
-        ),
-        'type' => 'node_reference_node',
-        'weight' => 5,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 6,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -1047,7 +1044,7 @@ function os2web_base_field_default_field_instances() {
           'text' => '[file:name]',
         ),
         'type' => 'file_download_link',
-        'weight' => 6,
+        'weight' => 5,
       ),
       'related_block' => array(
         'label' => 'above',

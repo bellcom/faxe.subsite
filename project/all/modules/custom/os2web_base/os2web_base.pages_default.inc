@@ -544,7 +544,16 @@ function os2web_base_default_page_manager_handlers() {
     'css_id' => '',
     'css' => '',
     'contexts' => array(),
-    'relationships' => array(),
+    'relationships' => array(
+      0 => array(
+        'identifier' => 'Indholdselement fra Indholdselement (på Indholdselement: Kontaktblok [field_os2sub_contact_ref])',
+        'keyword' => 'kontakt',
+        'name' => 'entity_from_field:field_os2sub_contact_ref-node-node',
+        'delta' => 0,
+        'context' => 'argument_entity_id:node_1',
+        'id' => 1,
+      ),
+    ),
     'name' => '',
     'access' => array(
       'plugins' => array(
@@ -902,6 +911,38 @@ function os2web_base_default_page_manager_handlers() {
   $pane->uuid = '205e6d79-01ef-4a68-9ace-ea9261790bf7';
   $display->content['new-205e6d79-01ef-4a68-9ace-ea9261790bf7'] = $pane;
   $display->panels['sidebar'][7] = 'new-205e6d79-01ef-4a68-9ace-ea9261790bf7';
+  $pane = new stdClass();
+  $pane->pid = 'new-2c983371-2955-42a9-b1d4-25b24cb1b662';
+  $pane->panel = 'sidebar';
+  $pane->type = 'entity_field';
+  $pane->subtype = 'node:field_os2sub_contact_ref';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'label' => 'title',
+    'formatter' => 'node_reference_node',
+    'delta_limit' => 0,
+    'delta_offset' => '0',
+    'delta_reversed' => FALSE,
+    'formatter_settings' => array(
+      'node_reference_view_mode' => 'embedded',
+    ),
+    'context' => 'argument_entity_id:node_1',
+    'override_title' => 1,
+    'override_title_text' => '%kontakt:field_os2web_contact_field_dept',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 8;
+  $pane->locks = array();
+  $pane->uuid = '2c983371-2955-42a9-b1d4-25b24cb1b662';
+  $display->content['new-2c983371-2955-42a9-b1d4-25b24cb1b662'] = $pane;
+  $display->panels['sidebar'][8] = 'new-2c983371-2955-42a9-b1d4-25b24cb1b662';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
