@@ -192,6 +192,14 @@ $lg-logo-font-size: 28px;
   background-color: transparent;
 }
 
+.flexy-header__link {
+  padding: 5px;
+
+  &, &:hover, &:focus {
+    color: $text-color;
+  }
+}
+
 // --------------------------------------------------
 // Variants
 // --------------------------------------------------

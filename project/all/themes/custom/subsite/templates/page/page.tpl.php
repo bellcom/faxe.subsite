@@ -38,6 +38,13 @@
           </nav>
           <!-- End - navigation -->
 
+          <!-- Begin - link -->
+          <a href="/search/node"
+             class="flexy-header__link visible-xs visible-sm">
+            <span class="icon fa fa-search"></span>
+          </a>
+          <!-- End - link -->
+
           <!-- Begin - responsive toggle -->
           <button
               class="flexy-header__sidebar-toggle sidr-toggle--right visible-xs visible-sm">
@@ -125,6 +132,13 @@
             <?php print render($flexy_navigation__primary); ?>
           </nav>
           <!-- End - navigation -->
+
+          <!-- Begin - link -->
+          <a href="/search/node"
+             class="flexy-header__link visible-xs visible-sm">
+            <span class="icon fa fa-search"></span>
+          </a>
+          <!-- End - link -->
 
           <!-- Begin - responsive toggle -->
           <button
