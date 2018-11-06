@@ -205,7 +205,7 @@ install_drupal() {
 
   # Do some drupal setup here. Could also be done in the install profile.
   /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset user_register 0
-  /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset error_level 1
+  /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset error_level 0
   /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset preprocess_css 1
   /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset preprocess_js 1
   #/usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset cache 1
