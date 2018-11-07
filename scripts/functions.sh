@@ -218,11 +218,13 @@ install_drupal() {
 
 set_permissions() {
   debug "Setting correct permissions"
-  /bin/chgrp -R www-data "$MULTISITE/sites/$SITENAME"
-  /bin/chmod -R g+rwX "$MULTISITE/sites/$SITENAME"
-  /bin/chmod g-w "$MULTISITE/sites/$SITENAME" "$MULTISITE/sites/$SITENAME/settings.php"
-  /bin/chown -R www-data "$TMPDIR"
-  /bin/chmod -R g+rwX "$TMPDIR"
+# this is needed to trigger tmp file creation
+  wget -q $SITENAME -O /dev/null
+  /bin/chgrp -R www-data $MULTISITE/sites/$SITENAME
+  /bin/chmod -R g+rwX $MULTISITE/sites/$SITENAME
+  /bin/chmod g-w $MULTISITE/sites/$SITENAME $MULTISITE/sites/$SITENAME/settings.php
+  /bin/chown -R www-data $TMPDIR
+  /bin/chmod -R g+rwX $TMPDIR
 }
 
 add_to_crontab() {
