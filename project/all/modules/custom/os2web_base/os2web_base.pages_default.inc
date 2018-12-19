@@ -760,7 +760,7 @@ function os2web_base_default_page_manager_handlers() {
   $pane->panel = 'sidebar';
   $pane->type = 'entity_field';
   $pane->subtype = 'node:field_os2web_base_field_ext_link';
-  $pane->shown = FALSE;
+  $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
     'label' => 'title',
@@ -790,7 +790,7 @@ function os2web_base_default_page_manager_handlers() {
   $pane->panel = 'sidebar';
   $pane->type = 'entity_field';
   $pane->subtype = 'node:field_os2web_base_field_related';
-  $pane->shown = FALSE;
+  $pane->shown = TRUE;
   $pane->access = array();
   $pane->configuration = array(
     'label' => 'hidden',
