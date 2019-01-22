@@ -54,4 +54,21 @@ jQuery(function($) {
 
         $parent.toggleClass('open');
     });
+
+    // Responsive embeds.
+    function makeIframesResponsive() {
+        var $iframes = jQuery("iframe[src^='//player.vimeo.com'], iframe[src^='https://player.vimeo.com'], iframe[src^='//www.youtube.com'], iframe[src^='https://www.youtube.com']");
+
+        $iframes.each(function (index, item) {
+            var $element = jQuery(this);
+            var $parent = $element.parent();
+
+            if ($parent.hasClass('fluid-width-video-wrapper')) return;
+
+            $element
+                .wrap('<div class="embed-responsive embed-responsive-4by3"></div>')
+                .addClass('embed-responsive-item');
+        });
+    }
+    window.setTimeout(makeIframesResponsive, 500);
 });
