@@ -123,3 +123,21 @@ img {
 
 // No flexbox
 .no-flexbox {}
+
+.related-links {
+  margin-bottom: 0;
+  padding-left: 0;
+  list-style: none;
+    > li {
+    position: relative;
+    display: block;
+      a{
+        position: relative;
+        display: block;
+        padding: 10px 15px;
+        padding-top: 25px;
+        padding-bottom: 25px;
+        font-size: 20px
+      }
+    }
+}
