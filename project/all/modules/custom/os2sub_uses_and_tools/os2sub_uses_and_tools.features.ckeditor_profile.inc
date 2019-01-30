@@ -33,7 +33,7 @@ function os2sub_uses_and_tools_ckeditor_profile_defaults() {
     [\'Source\'],
     [\'Cut\',\'Copy\',\'Paste\',\'PasteText\',\'PasteFromWord\',\'-\',\'SpellChecker\',\'Scayt\'],
     [\'Undo\',\'Redo\',\'Find\',\'Replace\',\'-\',\'SelectAll\'],
-    [\'Media\',\'Flash\',\'Table\',\'HorizontalRule\',\'Smiley\',\'SpecialChar\',\'Iframe\'],
+    [\'Image\',\'Media\',\'Flash\',\'Table\',\'HorizontalRule\',\'Smiley\',\'SpecialChar\',\'Iframe\'],
     \'/\',
     [\'Bold\',\'Italic\',\'Underline\',\'Strike\',\'-\',\'Subscript\',\'Superscript\',\'-\',\'RemoveFormat\'],
     [\'NumberedList\',\'BulletedList\',\'-\',\'Outdent\',\'Indent\',\'Blockquote\',\'CreateDiv\'],
@@ -107,9 +107,26 @@ function os2sub_uses_and_tools_ckeditor_profile_defaults() {
               ),
             ),
           ),
+          'media' => array(
+            'name' => 'media',
+            'desc' => 'Plugin for embedding files using Media CKEditor',
+            'path' => '%base_path%profiles/os2sub/modules/contrib/media_ckeditor/js/plugins/media/',
+            'buttons' => array(
+              'Media' => array(
+                'icon' => 'icons/media.png',
+                'label' => 'Add media',
+              ),
+            ),
+            'default' => 'f',
+          ),
+          'mediaBrowser' => array(
+            'name' => 'mediaBrowser',
+            'desc' => 'Media Browser for File Upload/Browsing',
+            'path' => '/profiles/os2sub/modules/contrib/ckeditor_media/plugins/mediaBrowser/',
+          ),
           'mediaembed' => array(
             'name' => 'mediaembed',
-            'desc' => 'Plugin for inserting Drupal embeded media',
+            'desc' => 'Plugin for embedding HTML snippets',
             'path' => '%plugin_dir%mediaembed/',
             'buttons' => array(
               'MediaEmbed' => array(
