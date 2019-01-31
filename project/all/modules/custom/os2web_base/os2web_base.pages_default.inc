@@ -406,7 +406,7 @@ function os2web_base_default_page_manager_handlers() {
   $pane->panel = 'sidebar';
   $pane->type = 'entity_field';
   $pane->subtype = 'node:field_os2web_base_field_related';
-  $pane->shown = TRUE;
+  $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
     'label' => 'title',
@@ -436,7 +436,7 @@ function os2web_base_default_page_manager_handlers() {
   $pane->panel = 'sidebar';
   $pane->type = 'entity_field';
   $pane->subtype = 'node:field_os2web_base_field_ext_link';
-  $pane->shown = TRUE;
+  $pane->shown = FALSE;
   $pane->access = array();
   $pane->configuration = array(
     'label' => 'title',
@@ -461,6 +461,29 @@ function os2web_base_default_page_manager_handlers() {
   $pane->uuid = '72928d41-013b-4890-8ecf-8777b9f87636';
   $display->content['new-72928d41-013b-4890-8ecf-8777b9f87636'] = $pane;
   $display->panels['sidebar'][3] = 'new-72928d41-013b-4890-8ecf-8777b9f87636';
+  $pane = new stdClass();
+  $pane->pid = 'new-53e1a270-080f-40bb-801b-9d6d8f28cab6';
+  $pane->panel = 'sidebar';
+  $pane->type = 'block';
+  $pane->subtype = 'os2web_related_links-node_related_links_block';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 1,
+    'override_title_text' => 'Læs mere',
+    'override_title_heading' => 'h2',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 4;
+  $pane->locks = array();
+  $pane->uuid = '53e1a270-080f-40bb-801b-9d6d8f28cab6';
+  $display->content['new-53e1a270-080f-40bb-801b-9d6d8f28cab6'] = $pane;
+  $display->panels['sidebar'][4] = 'new-53e1a270-080f-40bb-801b-9d6d8f28cab6';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = 'new-b398e1ac-858e-43e3-872f-2d6f3524454d';
   $handler->conf['display'] = $display;
