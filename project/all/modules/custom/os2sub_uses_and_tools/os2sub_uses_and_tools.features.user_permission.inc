@@ -79,6 +79,16 @@ function os2sub_uses_and_tools_user_default_permissions() {
     'module' => 'contextual',
   );
 
+  // Exported permission: 'access media browser'.
+  $permissions['access media browser'] = array(
+    'name' => 'access media browser',
+    'roles' => array(
+      'Editor' => 'Editor',
+      'subsiteadmin' => 'subsiteadmin',
+    ),
+    'module' => 'media',
+  );
+
   // Exported permission: 'access own webform results'.
   $permissions['access own webform results'] = array(
     'name' => 'access own webform results',
@@ -452,6 +462,7 @@ function os2sub_uses_and_tools_user_default_permissions() {
   $permissions['change own username'] = array(
     'name' => 'change own username',
     'roles' => array(
+      'Editor' => 'Editor',
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'user',
@@ -481,6 +492,7 @@ function os2sub_uses_and_tools_user_default_permissions() {
   $permissions['create media content'] = array(
     'name' => 'create media content',
     'roles' => array(
+      'Editor' => 'Editor',
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'node',
@@ -616,6 +628,7 @@ function os2sub_uses_and_tools_user_default_permissions() {
   $permissions['delete any media content'] = array(
     'name' => 'delete any media content',
     'roles' => array(
+      'Editor' => 'Editor',
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'node',
@@ -725,6 +738,7 @@ function os2sub_uses_and_tools_user_default_permissions() {
   $permissions['delete own media content'] = array(
     'name' => 'delete own media content',
     'roles' => array(
+      'Editor' => 'Editor',
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'node',
@@ -932,7 +946,6 @@ function os2sub_uses_and_tools_user_default_permissions() {
   $permissions['download any document files'] = array(
     'name' => 'download any document files',
     'roles' => array(
-      'Editor' => 'Editor',
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'file_entity',
@@ -1051,6 +1064,7 @@ function os2sub_uses_and_tools_user_default_permissions() {
   $permissions['edit any media content'] = array(
     'name' => 'edit any media content',
     'roles' => array(
+      'Editor' => 'Editor',
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'node',
@@ -1170,6 +1184,7 @@ function os2sub_uses_and_tools_user_default_permissions() {
   $permissions['edit own media content'] = array(
     'name' => 'edit own media content',
     'roles' => array(
+      'Editor' => 'Editor',
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'node',
@@ -1514,6 +1529,7 @@ function os2sub_uses_and_tools_user_default_permissions() {
   $permissions['view scheduled content'] = array(
     'name' => 'view scheduled content',
     'roles' => array(
+      'Editor' => 'Editor',
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'scheduler',
