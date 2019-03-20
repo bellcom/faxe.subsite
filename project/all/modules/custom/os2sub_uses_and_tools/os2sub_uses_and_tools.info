@@ -21,6 +21,7 @@ dependencies[] = linkit
 dependencies[] = locale
 dependencies[] = media
 dependencies[] = media_internet
+dependencies[] = media_wysiwyg
 dependencies[] = menu
 dependencies[] = metatag
 dependencies[] = node
