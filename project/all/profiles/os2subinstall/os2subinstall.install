@@ -45,6 +45,7 @@ function _project_profile_install_tasks__local_settings() {
     'os2sub_frontpage',
     'subsites_urls',
     'os2web_contact',
+    'os2web_related_links'
   ]);
 
   // Disable modules
