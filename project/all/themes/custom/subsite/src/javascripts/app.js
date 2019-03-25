@@ -78,6 +78,6 @@ jQuery(function($) {
 // Make all file links appear in a new window.
 let links = document.querySelectorAll('.node__pdf-files a');
 
-links.each(function(link) {
+links.forEach(function(link) {
     link.setAttribute('target', '_blank');
 });
