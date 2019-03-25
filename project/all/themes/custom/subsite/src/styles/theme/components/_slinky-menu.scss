@@ -20,15 +20,25 @@
 // Styling
 // --------------------------------------------------
 
+
 .slinky-menu {
   color: #fff;
+
+  a {
+    text-transform: uppercase;
+  }
 
   li {
     border-bottom: 1px solid rgba(0, 0, 0, .15);
   }
 
   .back {
-    top: 10px;
+    top: 19px;
+  }
+
+  .title {
+    font-weight: bold;
+    text-decoration: underline;
   }
 
   .next {
@@ -40,6 +50,11 @@
 
       color: #fff;
     }
+  }
+
+  .nolink,
+  .separator {
+    display: none;
   }
 }
 
