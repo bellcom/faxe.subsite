@@ -8,8 +8,8 @@
     "node_modules/flexy-navigation/javascripts/flexy-navigation.js",
     "node_modules/sidr/dist/jquery.sidr.js",
     "node_modules/jquery-accessible-hide-show-aria/jquery-accessible-hide-show-aria.js",
-    "node_modules/jquery-slinky/dist/jquery.slinky.js",
     "node_modules/pace-progress/pace.js",
+    "src/javascripts/custom-slinky.js",
     "src/javascripts/app.js"
   ],
   "styles": [
