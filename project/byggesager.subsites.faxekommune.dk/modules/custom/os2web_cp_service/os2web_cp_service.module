@@ -70,6 +70,19 @@ function os2web_cp_service_page_settings() {
     '#default_value' => variable_get('os2web_cp_service_page_preface', ''),
   );
 
+  $form['os2web_cp_service_debug_info'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Save debug info',
+    '#default_value' => variable_get('os2web_cp_service_debug_info', FALSE),
+  );
+
+  $form['os2web_cp_service_log_file'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Path to debug file',
+    '#description' => 'You can specify path to debug file that can be used to store debug information. If empty default settings for error_log() function will be used.',
+    '#default_value' => variable_get('os2web_cp_service_log_file', FALSE),
+  );
+
   return system_settings_form($form);
 }
 
@@ -242,19 +255,19 @@ function os2web_gf_service_handler($file_id) {
       // CURL for transfer:
       $ch = curl_init($url . '?FileID=' . $file_id . '&FileFormat=Available');
       curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);     
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
       curl_setopt($ch, CURLOPT_USERPWD, "{$username}:{$password}");
       curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_NTLM);
       $data = curl_exec($ch);
       $header = curl_getinfo($ch);
 
-      if(curl_error($ch)) { 
+      if(curl_error($ch)) {
         error_log('curl error' . curl_error($ch));
       }
       # Skifter debug
       #error_log('header log: ' . print_r($header,true));
-      curl_close($ch);     
+      curl_close($ch);
       if ($header['http_code'] === 200) {
         // Load the title to use it as the filename, and for conditions.
         $query = new EntityFieldQuery();
@@ -367,7 +380,7 @@ function os2web_cp_service_alter_configuration($key, $value) {
  */
 function os2web_cp_service_create_case(array $data) {
   watchdog('os2web_cp_service', 'Preparing to create cp case', array());
-  os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Create CP case start');
+  os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Create CP case start');
   // Prepare data.
   $data = array_replace_recursive(os2web_cp_service_default_case(), $data);
 
@@ -379,7 +392,7 @@ function os2web_cp_service_create_case(array $data) {
       ->execute();
   $nids = (isset($result['node']))?array_keys($result['node']) : NULL;
   if(count($nids) > 0) {
-    os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Multiple cases with same id found' . count($nids));
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Multiple cases with same id found' . count($nids));
   }
   $node = new stdClass();
   if (count($nids) > 1) {
@@ -428,18 +441,17 @@ function os2web_cp_service_create_case(array $data) {
   }
   if (strlen($node->title) > 250) {
     $node->title = substr($node->title, 0, 250);
-  os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Title longer than 250 char. Cutting it to 250: ' . $node->title);
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Title longer than 250 char. Cutting it to 250: ' . $node->title);
   }
 
   watchdog('os2web_cp_service', 'Create CP Case: %title', array('%title' => $node->title));
-  os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Create CP Case: ' . $node->title);
+  os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Create CP Case: ' . $node->title);
 
   // Has all fields of a node type "case".
   $node_fields = field_info_instances('node', 'os2web_cp_service_cp_case');
 
   foreach ($node_fields as $field_name => $field) {
     if (!empty($data['fields'][$field['label']]) && $field_name !== 'title') {
-#  os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_info_type: ' . $field_info['type']);
 
       $field_info = field_info_field($field_name);
 
@@ -447,17 +459,17 @@ function os2web_cp_service_create_case(array $data) {
         case 'text':
           if ($field['label'] === 'Sagstitel' && $data['fields']['Sagstype - Sagstype'] === 'EJSAG') {
             $node->{$field_name}[LANGUAGE_NONE][0]['value'] = (string) preg_replace('/\s\(\d{4}\)/', '', $data['fields']['Sagstitel']);
-    os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_info_type: ' . $field['label'] . ' = ' . $data['fields']['Sagstitel']);
+            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_info_type: ' . $field['label'] . ' = ' . $data['fields']['Sagstitel']);
           }
           else {
             $node->{$field_name}[LANGUAGE_NONE][0]['value'] = (string) $data['fields'][$field['label']];
-    os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
+            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
           }
           break;
 
         case 'taxonomy_term_reference':
           $choosen_term = NULL;
-    os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
+          os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
 
           // Search of the term in KLE vocabulary.
           if (strpos($field['label'], 'KL emnenummer') !== FALSE) {
@@ -476,12 +488,12 @@ function os2web_cp_service_create_case(array $data) {
           // If non found, find in every vocabularies.
           // Retrieve the first occurance of the term.
           if (empty($choosen_term)) {
-    os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
+            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
             $choosen_term = array_pop(taxonomy_get_term_by_name((string) $data['fields'][$field['label']], NULL));
           }
 
           if (!empty($choosen_term)) {
-    os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
+            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
             // Note that if its an update of an existing node,
             // it will ńot be resat.
             $node->{$field_name}['und'][0]['tid'] = $term->tid;
@@ -489,7 +501,7 @@ function os2web_cp_service_create_case(array $data) {
           break;
 
         default:
-    os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_default: ' . $field['label'] . ' = ' . print_r($data['fields'],true));
+          os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_default: ' . $field['label'] . ' = ' . print_r($data['fields'],true));
           $node->{$field_name}[LANGUAGE_NONE][0]['value'] = $data['fields'][$field['label']];
           break;
       }
@@ -509,7 +521,7 @@ function os2web_cp_service_create_case(array $data) {
     if (is_array($term)) {
       $term = array_pop($term);
     }
-os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Setting taxonomy trigger: '. $term->name);
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Setting taxonomy trigger: '. $term->name);
     $node->field_os2web_cp_service_rules[LANGUAGE_NONE][]['tid'] = $term->tid;
   }
 
@@ -522,14 +534,13 @@ os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION
     ->execute();
   $doc_nids = (isset($result['node'])) ? array_keys($result['node']) : array();
 
-if(count($doc_nids) > 0) {
-os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Found multiple documents on this case: '. count($doc_nids));
-  error_log('Multiple documents with same ID found' . count($doc_nids));
-}
-else
-{
-os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Found NO documents on this case: '. count($doc_nids));
-}
+  if(count($doc_nids) > 0) {
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Found multiple documents on this case: '. count($doc_nids));
+    error_log('Multiple documents with same ID found' . count($doc_nids));
+  }
+  else {
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Found NO documents on this case: '. count($doc_nids));
+  }
   $doc_nodes = node_load_multiple($doc_nids);
   foreach ($doc_nodes as $doc_nid => $doc_node) {
     // Set reference on case if not exists.
@@ -537,29 +548,29 @@ os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION
     foreach ($node->field_os2web_cp_service_doc_ref[LANGUAGE_NONE] as $doc_ref) {
       if ($doc_ref['target_id'] == $doc_nid) {
         $doc_ref_found = TRUE;
-os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' document references found setting it to: '. $doc_nid);
+        os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' document references found setting it to: '. $doc_nid);
         break;
       }
     }
     if (!$doc_ref_found) {
       $node->field_os2web_cp_service_doc_ref[LANGUAGE_NONE][]['target_id'] = $doc_nid;
-os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' No document references found setting it to: '. $doc_nid);
+      os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' No document references found setting it to: '. $doc_nid);
     }
 
     // Set sagsid on doc.
     $doc_node->field_os2web_cp_service_case_sid[LANGUAGE_NONE][0]['value'] = $data['fields']['SystemID'];
-os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Setting case id to systemid: '. $data['fields']['SystemID']);
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Setting case id to systemid: '. $data['fields']['SystemID']);
     node_save($doc_node);
   }
 
   try {
     node_submit($node);
     node_save($node);
-os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Saving node of case: '. $doc_nid);
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Saving node of case: '. $doc_nid);
     return TRUE;
   }
   catch (Exception $e) {
-os2web_acadre_esdh_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Error hvem saving node: '. print_r($e->getMessage(), 1) . ' Titel: ' . $node->title);
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Error hvem saving node: '. print_r($e->getMessage(), 1) . ' Titel: ' . $node->title);
     return FALSE;
   }
 }
@@ -1245,4 +1256,25 @@ function _os2web_cp_service_count_nodes($type) {
     ->count();
 
   return $query->execute();
+}
+
+/**
+ * Error logging.
+ */
+function os2web_cp_service_log($message) {
+  if (module_exists('os2web_acadre_esdh')) {
+    return os2web_acadre_esdh_log($message);
+  }
+
+  if (variable_get('os2web_cp_service_debug_info', FALSE)) {
+    // Save log messages to a different file.
+    $destination = variable_get('os2web_cp_service_log_file', FALSE);
+    if ($destination) {
+      error_log($message, 3, $destination);
+    }
+    else {
+      // If no other file is specified, save it to the normal php error log.
+      error_log($message);
+    }
+  }
 }
