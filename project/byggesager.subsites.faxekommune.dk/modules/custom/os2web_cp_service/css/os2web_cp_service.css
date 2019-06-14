@@ -1,0 +1,62 @@
+/* os2web_cp_service.css */
+
+.view-os2web-cp-service-cp-case-search .views-exposed-widget{
+    display: block;
+}
+.view-os2web-cp-service-cp-case-search .filter-widgets-wrapper{
+    clear: both;
+    float: none;
+}
+.view-os2web-cp-service-cp-case-search .form-submit{
+    margin: 41px 0 0 10px;
+}
+.view-os2web-cp-service-cp-case-search .views-table caption{
+    text-align: left;
+}
+.view-os2web-cp-service-cp-case-search .view-counter {
+
+}
+.view-os2web-cp-service-cp-case-search .view-counter span {
+    font-weight: bold;
+}
+#edit-search-text,
+#edit-field-os2web-cp-service-date-from-value-datepicker-popup-0,
+#edit-field-os2web-cp-service-date-to-value-datepicker-popup-0,
+#edit-case-id,
+#edit-doc-id,
+#edit-casetype,
+#edit-field-os2web-cp-service-org-unit-value{
+    width: 100%;
+    border: 1px solid #ddd;
+    margin-bottom: 11px;
+    color: #7A7A7A;
+    margin: 11px 0 0;
+    font-size: 20px;
+}
+
+#edit-search-text-wrapper{
+    float: none;
+}
+#edit-search-text{
+    width: 100%;
+}
+#edit-field-os2web-cp-service-date-from-value-datepicker-popup-0,
+#edit-field-os2web-cp-service-date-to-value-datepicker-popup-0{
+    width: 120px;
+    border: 1px solid #ddd;
+    margin-bottom: 11px;
+}
+.view-os2web-cp-service-cp-case-search .ui-datepicker-trigger{
+    margin-left: 15px;
+}
+th.views-field-field-os2web-cp-service-date {
+    white-space: nowrap;
+}
+.os2web_cp_service-ajax-loader {
+    background: url(../images/loading.gif) no-repeat;
+    width: 20px;
+    height: 20px;
+    display: none;
+    vertical-align: bottom;
+    margin: 5px;
+}

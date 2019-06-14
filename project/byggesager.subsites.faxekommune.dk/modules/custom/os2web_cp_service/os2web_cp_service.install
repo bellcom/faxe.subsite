@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file
+ * Implements install hooks
+ */
+
+/**
+ * Imlpements hook_install().
+ */
+function os2web_cp_service_install() {
+  // Quick way to have default approved rules.
+  // $approved_rules = array('Byggesager', 'Emnesager', 'Postliste');
+
+  // $rules_vocabulary = taxonomy_vocabulary_machine_name_load('os2web_cp_service_tax_approved_rules');
+  // foreach ($approved_rules as $name) {
+  //  $term = new stdClass();
+  //  $term->vid = $rules_vocabulary->vid;
+  //  $term->name = $name;
+  //  taxonomy_term_save($term);
+  // }
+}
