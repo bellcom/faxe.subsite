@@ -19,3 +19,82 @@ function os2web_cp_service_install() {
   //  taxonomy_term_save($term);
   // }
 }
+
+/**
+ * Implements hook_update_N().
+ *
+ * Cleanup resets counter field for succesfuly transfered documents.
+ */
+function os2web_cp_service_update_7001() {
+  $nodeQuery = new EntityFieldQuery();
+  $nodes = $nodeQuery->entityCondition('entity_type', 'node')
+    ->fieldCondition('field_os2web_cp_service_deliver', 'value', 1)
+    ->fieldCondition('field_os2web_cp_service_res_c', 'value', 0, '>')
+    ->execute();
+  if (!empty($nodes['node'])) {
+    $nids = [];
+    foreach ($nodes['node'] as $row) {
+      $nids[] = $row->nid;
+    }
+    db_update('field_data_field_os2web_cp_service_res_c')
+      ->fields(array('field_os2web_cp_service_res_c_value' => 0))
+      ->condition('entity_id', $nids, 'IN')
+      ->execute();
+    entity_get_controller('node')->resetCache($nids);
+  }
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Add to tranfsfer queue documents with updated metadata.
+ */
+function os2web_cp_service_update_7002() {
+  $nodeQuery = new EntityFieldQuery();
+  $nodes = $nodeQuery->entityCondition('entity_type', 'node')
+    ->fieldCondition('field_os2web_cp_service_deliver', 'value', 1)
+    ->fieldCondition('field_os2web_cp_service_tr_stat', 'value','Metadata update', 'STARTS_WITH')
+    ->execute();
+  if (!empty($nodes['node'])) {
+    $nids = [];
+    foreach ($nodes['node'] as $row) {
+      $nids[] = $row->nid;
+    }
+    db_update('field_data_field_os2web_cp_service_deliver')
+      ->fields(array('field_os2web_cp_service_deliver_value' => 0))
+      ->condition('entity_id', $nids, 'IN')
+      ->execute();
+    entity_get_controller('node')->resetCache($nids);
+  }
+}
+
+/**
+ * Implements hook_update_N().
+ *
+ * Cleanup combined transfer status message.
+ */
+function os2web_cp_service_update_7003() {
+  $nodeQuery = new EntityFieldQuery();
+  $nodes = $nodeQuery->entityCondition('entity_type', 'node')
+    ->fieldCondition('field_os2web_cp_service_deliver', 'value', 1)
+    ->fieldCondition('field_os2web_cp_service_tr_stat', 'value','combined', 'STARTS_WITH')
+    ->execute();
+  if (!empty($nodes['node'])) {
+    foreach ($nodes['node'] as $row) {
+      $node = node_load($row->nid);
+      $file = field_get_items('node', $node, 'field_os2web_cp_service_file');
+      if (empty($file) || empty(field_get_items('node', $node, 'field_os2web_cp_service_deliver'))) {
+        _os2web_cp_service_reset_transfer_status($node, 'From combined mode. Resetted. To be transferred.');
+        continue;
+      }
+
+      $file_ext = pathinfo($file[0]['uri'], PATHINFO_EXTENSION);
+      $node->field_os2web_cp_service_filetype[LANGUAGE_NONE][0]['value'] = strtoupper($file_ext);
+      $node->field_os2web_cp_service_nontrans[LANGUAGE_NONE][0]['value'] = 0;
+      $node->field_os2web_cp_service_tr_stat[LANGUAGE_NONE][0]['value'] = '';
+      $node->field_os2web_cp_service_fails[LANGUAGE_NONE][0]['value'] = 0;
+      $node->field_os2web_cp_service_res_c[LANGUAGE_NONE][0]['value'] = 0;
+      node_save($node);
+    }
+  }
+}

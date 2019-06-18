@@ -6,6 +6,13 @@
  */
 
 include_once 'os2web_cp_service.features.inc';
+include_once 'includes/cp_service_methods.inc';
+module_load_include('inc', 'os2web_cp_service', 'os2web_cp_service.batch');
+
+define('OS2WEB_CP_SERVICE_FILE_TRANSFER_MODE', 'pull');
+define('OS2WEB_CP_SERVICE_FILE_PATH', 'public://cp-document');
+define('OS2WEB_CP_SERVICE_FILE_TRANSFER_MAX_TRIES', 5);
+define('OS2WEB_CP_SERVICE_FILE_TRANSFER_MAX_RESETS', 5);
 
 /**
  * Implements hook_init().
@@ -52,6 +59,20 @@ function os2web_cp_service_menu() {
     'description' => '',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os2web_cp_service_page_settings'),
+    'access arguments' => array('administer site configuration'),
+  );
+
+  $items['admin/content/acadre_om/reset_transfer_status/%'] = array(
+    'title' => 'Reset transfer_status',
+    'page callback' => '_os2web_cp_service_reset_transfer_status_callback',
+    'page arguments' => array(4),
+    'access arguments' => array('administer site configuration'),
+  );
+
+  $items['admin/content/acadre_om/transfering_queue'] = array(
+    'type' => MENU_CALLBACK,
+    'title' => 'Documents transfer queue',
+    'page callback' => '_os2web_cp_service_transfering_queue',
     'access arguments' => array('administer site configuration'),
   );
 
@@ -236,6 +257,30 @@ function os2web_cp_service_handler() {
  * Callback for the file provider service.
  */
 function os2web_gf_service_handler($file_id) {
+  $file_uri = NULL;
+  $node = _os2web_cp_service_get_cp_document_node_by_file_id($file_id);
+  if (!empty($node)) {
+    $field_os2web_cp_service_file = field_get_items('node', $node, 'field_os2web_cp_service_file');
+  }
+  if (!empty($field_os2web_cp_service_file)) {
+    $field_os2web_cp_service_file = reset($field_os2web_cp_service_file);
+    $file_uri = $field_os2web_cp_service_file['uri'];
+  }
+
+  $file_tranfser_mode = variable_get('os2web_cp_service_file_transfer_mode', OS2WEB_CP_SERVICE_FILE_TRANSFER_MODE);
+
+  // For push tranfser mode redirect user to file or show the error.
+  if ($file_tranfser_mode == 'push') {
+    if (!empty($file_uri)) {
+      drupal_goto(file_create_url($file_uri));
+    }
+    return _os2web_cp_file_error();
+  }
+
+  // For combined transfer mode redirect to file if it exist.
+  if ($file_tranfser_mode == 'combined' && !empty($file_uri)) {
+    drupal_goto(file_create_url($file_uri));
+  }
 
   // Mime Types which are disallowed to be downloaded.
   // People shouldn't be able to download special files.
@@ -248,21 +293,42 @@ function os2web_gf_service_handler($file_id) {
   $case_exceptions = explode(',', variable_get('os2web_cp_service_disallow_mimes_exceptions', ''));
 
   if ($url = variable_get('os2web_cp_service_cp_document_fileurl')) {
-
     $username = variable_get('os2web_cp_service_endpoint_user');
     $password = variable_get('os2web_cp_service_endpoint_password');
     if (!empty($username) && !empty($password)) {
       // CURL for transfer:
       $ch = curl_init($url . '?FileID=' . $file_id . '&FileFormat=Available');
-      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
       curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
       curl_setopt($ch, CURLOPT_USERPWD, "{$username}:{$password}");
       curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_NTLM);
       $data = curl_exec($ch);
+
+      // Load and save file for combined transfer mode.
+      if ($file_tranfser_mode == 'combined') {
+        $uri = _os2web_cp_document_get_file_uri($file_id);
+        if (file_unmanaged_save_data($data, $uri, FILE_EXISTS_ERROR)) {
+          $node = _os2web_cp_service_get_cp_document_node_by_file_id($file_id);
+          $node_wrapper = entity_metadata_wrapper('node', $node);
+
+          // Bind existing file to CP Document node and update transfer status.
+          _os2web_cp_document_bind_file($node_wrapper, $uri);
+          $status_message = 'combined mode transfer';
+          $node_wrapper->field_os2web_cp_service_tr_stat->set($status_message);
+          $node_wrapper->field_os2web_cp_service_res_c->set(0);
+
+          // Save node changes.
+          $node_wrapper->save();
+        }
+        else {
+          error_log('CP Service file saving error' . $file_uri);
+        }
+      }
+
       $header = curl_getinfo($ch);
 
-      if(curl_error($ch)) {
+      if (curl_error($ch)) {
         error_log('curl error' . curl_error($ch));
       }
       # Skifter debug
@@ -272,12 +338,12 @@ function os2web_gf_service_handler($file_id) {
         // Load the title to use it as the filename, and for conditions.
         $query = new EntityFieldQuery();
         $result = $query
-            ->entityCondition('entity_type', 'node')
-            ->propertyCondition('type', 'os2web_cp_service_cp_document')
-            ->propertyCondition('status', 1)
-            ->fieldCondition('field_os2web_cp_service_file_id', 'value', $file_id, '=')
-            ->execute();
-        $nids = (isset($result['node']))?array_keys($result['node']) : NULL;
+          ->entityCondition('entity_type', 'node')
+          ->propertyCondition('type', 'os2web_cp_service_cp_document')
+          ->propertyCondition('status', 1)
+          ->fieldCondition('field_os2web_cp_service_file_id', 'value', $file_id, '=')
+          ->execute();
+        $nids = (isset($result['node'])) ? array_keys($result['node']) : NULL;
 
         $node = node_load(array_pop($nids));
         $case_id = NULL;
@@ -285,10 +351,10 @@ function os2web_gf_service_handler($file_id) {
           $case_id = $node->field_os2web_cp_service_case_id[LANGUAGE_NONE][0]['value'];
         }
 
-	error_log($case_exceptions);
+        error_log($case_exceptions);
 
         if (!in_array($header['content_type'], $disallowed_mimes) || ($case_id && in_array($case_id, $case_exceptions))) {
- 	  error_log('CP document 1');
+          error_log('CP document 1');
           drupal_add_http_header('Content-Type', $header['content_type']);
           drupal_add_http_header('Content-Length', $header['download_content_length']);
           drupal_add_http_header('Cache-Control', 'must-revalidate, post-check=0, pre-check=0');
@@ -314,19 +380,11 @@ function os2web_gf_service_handler($file_id) {
           drupal_exit();
         }
         else {
-	  error_log('CP document 2');
+          error_log('CP document 2');
           // Show a polite message if the file isnt allowed for download.
           // If the message isnt set in config, deliver a access denied page.
           if ($error_message = variable_get('os2web_cp_service_access_denied_message')) {
-            $markup = '<div class="messages error"><ul><li>';
-            $markup .= $error_message;
-            $markup .= '</li></ul></div>';
-
-            $page['region'] = array(
-              '#type' => 'markup',
-              '#markup' => $markup,
-            );
-            return $page;
+            return _os2web_cp_file_error($error_message);
           }
         }
       }
@@ -341,8 +399,19 @@ function os2web_gf_service_handler($file_id) {
   }
 
   // If we come to this line, show an error.
+  return _os2web_cp_file_error();
+}
+
+
+/**
+ * Callback for failed case.
+ */
+function _os2web_cp_file_error($message = '') {
+  if (empty($message)) {
+    $message = t('Det ønskede dokument kunne ikke hentes, hvilket kan skyldes opdatering af løsningen. Prøv venligst igen senere.');
+  }
   $markup = '<div class="messages error"><ul><li>';
-  $markup .= t('Det ønskede dokument kunne ikke hentes, hvilket kan skyldes opdatering af løsningen. Prøv venligst igen senere.');
+  $markup .= $message;
   $markup .= '</li></ul></div>';
 
   $page['region'] = array(
@@ -774,6 +843,13 @@ function os2web_cp_service_create_document(array $data) {
     $node->field_os2web_cp_service_rules[LANGUAGE_NONE][]['tid'] = $term->tid;
   }
 
+  // If file has been delivered, we are going to reset transfering status. To
+  // get it uploaded again.
+  $delivery_status = field_get_items('node', $node, 'field_os2web_cp_service_deliver');
+  if (!empty($delivery_status[0])) {
+    _os2web_cp_service_reset_transfer_status($node, 'Metadata updated. Reseted to transfer.');
+  }
+
   try {
     node_submit($node);
     node_save($node);
@@ -1143,6 +1219,49 @@ function os2web_cp_service_form_os2web_settings_settings_form_alter(&$form, &$fo
     '#description' => 'Tillad brugere at hente ALLE mime typer på angivende sager. Seperer sager med komma.',
     '#default_value' => variable_get('os2web_cp_service_disallow_mimes_exceptions'),
   );
+
+  $form['os2web_cp_config_group']['os2web_cp_service_file_transfer_mode'] = array(
+    '#title' => 'CP Files transfer mode',
+    '#type' => 'radios',
+    '#options' => array(
+      'pull' => 'PULL via HTTP request.',
+      'push' => 'PUSH to Drupal file system. All files stored locally.',
+      'combined' => 'Combined. If file doesn\'t exist, pull it via HTTP request.',
+    ),
+    '#description' => t('CP File transfer mode from Formpipe Output Manager'),
+    '#default_value' => variable_get('os2web_cp_service_file_transfer_mode', OS2WEB_CP_SERVICE_FILE_TRANSFER_MODE),
+  );
+
+  $private_path = drupal_realpath('private://');
+  $form['os2web_cp_config_group']['os2web_cp_service_file_path'] = array(
+    '#title' => 'CP Files path',
+    '#type' => 'textfield',
+    '#description' => t('URI to CP Document files inside with schema. Example: public://cp-document. !public !private', array(
+      '!public' => '</br>public:// = <code>' . drupal_realpath('public://') . '</code>',
+      '!private' => '</br>private:// = <code>' . ($private_path ? $private_path : 'N/A') . '</code>',
+    )),
+    '#default_value' => variable_get('os2web_cp_service_file_path', OS2WEB_CP_SERVICE_FILE_PATH),
+  );
+
+  $form['os2web_cp_config_group']['os2web_cp_service_file_transfer_max_resets'] = array(
+    '#title' => 'Max amount of resets (Resets counter) allowed for CP Document with "failed transfer mode".',
+    '#type' => 'textfield',
+    '#description' => t('If field "Resets counter" on CP Document node less then this value, CP Document is available for ReturnFileTransferRequest method'),
+    '#default_value' => variable_get('os2web_cp_service_file_transfer_max_resets', OS2WEB_CP_SERVICE_FILE_TRANSFER_MAX_RESETS),
+  );
+
+  $form['#submit'][] = 'os2web_cp_service_file_transfer';
+}
+
+/**
+ * Custom submit handler for file_transfer settings.
+ */
+function os2web_cp_service_file_transfer($form, &$form_state) {
+  $values = $form_state['values'];
+
+  if (!empty($values['os2web_cp_service_file_path']) && !file_exists($values['os2web_cp_service_file_path'])) {
+    mkdir(drupal_realpath($values['os2web_cp_service_file_path']));
+  }
 }
 
 /**
@@ -1279,4 +1398,218 @@ function os2web_cp_service_log($message) {
       error_log($message);
     }
   }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function os2web_cp_service_views_pre_render(&$view) {
+  if ($view->name == 'sager_og_dokumenter_importeret_dobbelt') {
+    foreach ($view->result as $r => &$result) {
+      if (!empty($result->field_field_os2web_cp_service_tr_stat)
+        && $result->field_field_os2web_cp_service_tr_stat[0]['raw']['value'] == 'failed transfer status') {
+        $result->field_field_os2web_cp_service_tr_stat[0]['rendered']['#markup'] .= '</br>' . l(t('Reset'),
+            'admin/content/acadre_om/reset_transfer_status/' . $result->nid, array(
+              'query' => array(
+                'destination' => url(current_path(), array(
+                  'query' => drupal_get_query_parameters(),
+                )),
+              ),
+            )
+          );
+      }
+      if (!empty($result->field_field_os2web_cp_service_res_c[0]['raw']['value'])) {
+        $result->field_field_os2web_cp_service_tr_stat[0]['rendered']['#markup'] .= '</br>Amount of resets: ' . format_plural(
+            $result->field_field_os2web_cp_service_res_c[0]['raw']['value'],
+            '1 time',
+            '@count times');
+      }
+    }
+  }
+}
+
+/**
+ * Reset transfer status callback.
+ */
+function _os2web_cp_service_reset_transfer_status_callback($nid) {
+  $destination = 'admin/content/acadre_om';
+  $params = drupal_get_query_parameters();
+  if (!empty($params['destination'])) {
+    $destination = $params['destination'];
+  }
+  
+  $node = node_load($nid);
+  if (empty($node)) {
+    drupal_set_message(t('Node with id @nid not found.',
+      array('@nid' => $nid)));
+    drupal_goto($destination);
+    return;
+  }
+  
+  _os2web_cp_service_reset_transfer_status($node);
+  
+  drupal_set_message(t('Transfer status for node "@title" has been reset',
+    array('@title' => $node->title)));
+  drupal_goto($destination);
+}
+
+/**
+ * Reset transfer status.
+ */
+function _os2web_cp_service_reset_transfer_status(&$node, $status = 'Resetted. To be transferred.') {
+  $node->field_os2web_cp_service_fails[LANGUAGE_NONE][0]['value'] = 0;
+  $node->field_os2web_cp_service_nontrans[LANGUAGE_NONE][0]['value'] = 0;
+  $node->field_os2web_cp_service_deliver[LANGUAGE_NONE][0]['value'] = 0;
+  $node->field_os2web_cp_service_synctime[LANGUAGE_NONE][0]['value'] = time();
+  $node->field_os2web_cp_service_tr_stat[LANGUAGE_NONE][0]['value'] = $status;
+  if (!isset($node->field_os2web_cp_service_res_c[LANGUAGE_NONE][0]['value'])) {
+    $node->field_os2web_cp_service_res_c[LANGUAGE_NONE][0]['value'] = 0;
+  }
+  (int) $node->field_os2web_cp_service_res_c[LANGUAGE_NONE][0]['value']++;
+  node_save($node);
+  $field_os2web_cp_service_file_id = field_get_items('node', $node, 'field_os2web_cp_service_file_id');
+  watchdog('acadre OM', 'CP Document with fid: @fid ' . $status,
+    array('@fid' => $field_os2web_cp_service_file_id[0]['value']),
+    WATCHDOG_NOTICE
+  );
+}
+
+/**
+ * Callback function to build transfer queue.
+ */
+function _os2web_cp_service_transfering_queue() {
+  // Fetch CP Document file_id list.
+  $query = _os2web_cp_service_get_transfer_request_query();;
+  
+  $query->leftJoin('field_data_field_os2web_cp_service_file_id', 'fid', 'fid.entity_id = n.nid');
+  $query->fields('n', array('changed'));
+  $query->fields('n', array('title'));
+  $query->fields('fid', array('field_os2web_cp_service_file_id_value'));
+  $query->fields('fid', array('field_os2web_cp_service_file_id_value'));
+  $query->fields('cpd', array('field_os2web_cp_service_deliver_value'));
+  $query->fields('cpn', array('field_os2web_cp_service_nontrans_value'));
+  $query->fields('cpst', array('field_os2web_cp_service_synctime_value'));
+  $query->fields('cprc', array('field_os2web_cp_service_res_c_value'));
+  
+  $result = $query
+    ->orderBy('n.changed', 'DESC')
+    ->execute()
+    ->fetchAll();
+  $rows = [];
+  foreach ($result as $row) {
+    $row->field_os2web_cp_service_synctime_value = date('Y-m-d H:i:s',
+      $row->field_os2web_cp_service_synctime_value);
+    $row->changed = date('Y-m-d H:i:s', $row->changed);
+    $rows[] = [
+      $row->nid,
+      l($row->title, 'node/' . $row->nid),
+      $row->changed,
+      $row->field_os2web_cp_service_file_id_value,
+      $row->field_os2web_cp_service_synctime_value,
+      $row->field_os2web_cp_service_deliver_value ? 'Yes': 'No',
+      $row->field_os2web_cp_service_nontrans_value ? 'Yes': 'No',
+      $row->field_os2web_cp_service_res_c_value,
+    ];
+  }
+  $output['transfering_queue'] =  array(
+    '#theme' => 'table',
+    '#header' => [
+      'NID',
+      'Document',
+      'Chanded',
+      'File ID',
+      'Sync time',
+      'Delivered',
+      'Not transferable',
+      'Resets counter',
+    ],
+    '#rows' => $rows,
+    '#empty' =>t('Documents transfer queue is empty'),
+  );
+  
+  return $output;
+}
+
+/**
+ * Get nodes to delete .
+ */
+function _os2web_cp_service_delete_nodes_get($type) {
+  $results = &drupal_static(__FUNCTION__ . $type);
+  if (empty($results)) {
+    $cp_types = array(
+      'cases' => 'page_8',
+      'cases-by-field_os2web_base_case_ref' => 'page_4',
+      'cases-by-fc-field_os2web_base_case_ref' => 'page_1',
+      'documents' => 'page_2',
+      'documents-by-field_os2web_base_doc_ref' => 'page_3',
+      'documents-by-field_os2web_base_doc_ref_single' => 'page_7',
+      'documents-by-field_os2web_cp_service_doc_ref' => 'page_5',
+      'documents-by-fc-field_os2web_base_doc_ref' => 'page_6',
+    );
+    
+    if (empty($cp_types[$type])) {
+      print_r('empty type' . "\n");
+      return;
+    }
+    
+    $view = views_get_view('docsnotoncase');
+    
+    if (empty($view->display[$cp_types[$type]])) {
+      print_r('No dispay ' . $cp_types[$type] . ' to fetch nodes.' . "\n");
+      return;
+    }
+    
+    $view->set_display($cp_types[$type]);
+    $view->pre_execute();
+    $view->set_items_per_page('0');
+    $view->execute();
+    
+    $nid_property = 'nid';
+    
+    switch ($type) {
+      case 'documents':
+        $to_exclude = array();
+        foreach (array(
+                   'documents-by-field_os2web_base_doc_ref',
+                   'documents-by-field_os2web_base_doc_ref_single',
+                   'documents-by-field_os2web_cp_service_doc_ref',
+                   'documents-by-fc-field_os2web_base_doc_ref',
+                 ) as $type_exclude) {
+          $to_exclude += _os2web_cp_service_delete_nodes_get($type_exclude);
+        }
+        break;
+      
+      case 'cases':
+        $to_exclude = array();
+        foreach (array(
+                   'cases-by-field_os2web_base_case_ref',
+                   'cases-by-fc-field_os2web_base_case_ref',
+                 ) as $type_exclude) {
+          $to_exclude += _os2web_cp_service_delete_nodes_get($type_exclude);
+        }
+        break;
+      
+      case 'documents-by-fc-field_os2web_base_doc_ref':
+        $nid_property = 'node_field_data_field_os2web_base_doc_ref_nid';
+        break;
+      
+      case 'cases-by-fc-field_os2web_base_case_ref':
+        $nid_property = 'node_field_data_field_os2web_base_case_ref_nid';
+        break;
+    }
+    
+    $results = array();
+    foreach($view->result as $row) {
+      $results[$row->{$nid_property}] = $row->{$nid_property};
+    }
+    
+    if (!empty($to_exclude)) {
+      foreach ($to_exclude as $nid) {
+        if (isset($results[$nid])) {
+          unset($results[$nid]);
+        }
+      }
+    }
+  }
+  return $results;
 }

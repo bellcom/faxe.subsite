@@ -20,6 +20,17 @@ function os2web_cp_service_drush_command() {
     'arguments' => array(),
     'aliases' => array('cp-cl'),
   );
+
+  $items['cp-cleanup-batch'] = array(
+    'description' => 'Cleanup CP nodes which is not refered to Content page.',
+    array(
+      'cp_node_type' => 'Allowed values: documents, cases',
+    ),
+  );
+
+  $items['cp-cleanup-batch-info'] = array(
+    'description' => 'Cleanup CP nodes info which is not refered to Content page',
+  );
   return $items;
 }
 
@@ -85,4 +96,83 @@ function drush_os2web_cp_service_cp_cleanup() {
     node_delete($node->nid);
     drush_log(t('Deleted document: !node', array('!node' => $node->nid)), 'success');
   }
+}
+
+/**
+ * Callback for cp-cleanup-batch drush command.
+ */
+function drush_os2web_cp_service_cp_cleanup_batch($cp_node_type = FALSE) {
+  if (!empty($cp_node_type)) {
+    os2web_cp_service_delete_nodes($cp_node_type);
+  }
+}
+
+/**
+ * Callback for cp-cleanup-info-batch drush command.
+ */
+function drush_os2web_cp_service_cp_cleanup_batch_info() {
+  // Total.
+  foreach (array(
+     'os2web_cp_service_cp_case', 'os2web_cp_service_cp_document') as $type) {
+    $query = new EntityFieldQuery();
+
+    $query->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', $type)
+      ->propertyCondition('status', 1)
+      ->count();
+
+    drush_print(t('Total amount of @cp-type nodes: @count', array(
+      '@count' => $query->execute(),
+      '@cp-type' => $type,
+    )));
+
+  }
+
+  // To delete information.
+  $cp_types = array(
+    'documents',
+    'cases',
+  );
+  foreach ($cp_types as $type) {
+    $results = _os2web_cp_service_delete_nodes_get($type);
+    if (empty($results)) {
+      continue;
+    }
+    $unique_items = array_unique($results);
+    drush_print(t('Found @count CP @type nodes to delete.', array(
+      '@count' => count($unique_items),
+      '@type' => $type,
+    )));
+  }
+
+  // To left information.
+  $cp_types = array(
+    'documents-by-field_os2web_base_doc_ref',
+    'documents-by-field_os2web_base_doc_ref_single',
+    'documents-by-field_os2web_cp_service_doc_ref',
+    'documents-by-fc-field_os2web_base_doc_ref',
+  );
+  $items = array();
+  foreach ($cp_types as $type) {
+    $items += _os2web_cp_service_delete_nodes_get($type);
+  }
+  $unique_items = array_unique($items);
+  drush_print(t('Found @count CP Documents to left. (@cp-types)', array(
+    '@count' => count($unique_items),
+    '@cp-types' => implode(', ', $cp_types),
+  )));
+
+  $cp_types = array(
+    'cases-by-field_os2web_base_case_ref',
+    'cases-by-fc-field_os2web_base_case_ref',
+  );
+  $items = array();
+  foreach ($cp_types as $type) {
+    $items += _os2web_cp_service_delete_nodes_get($type);
+  }
+  $unique_items = array_unique($items);
+  drush_print(t('Found @count CP Cases to left. (@cp-types)', array(
+    '@count' => count($unique_items),
+    '@cp-types' => implode(', ', $cp_types),
+  )));
 }

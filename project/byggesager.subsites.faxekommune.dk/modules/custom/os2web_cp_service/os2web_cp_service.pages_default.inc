@@ -55,68 +55,73 @@ function os2web_cp_service_default_page_manager_handlers() {
   );
   $display->cache = array();
   $display->title = '';
+  $display->uuid = 'f9622c5b-b2d7-490f-8da8-191e70025337';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'os2web_cp_service_cp_case_panel';
   $display->content = array();
   $display->panels = array();
-    $pane = new stdClass();
-    $pane->pid = 'new-1';
-    $pane->panel = 'center';
-    $pane->type = 'custom';
-    $pane->subtype = 'custom';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'admin_title' => 'Gå tilbage',
-      'title' => '',
-      'body' => '<p><a class="button go-back-button os2web_cp_service_button" href="javascript:(!document.referrer)?location.href=\'/aaben-indsigt\':history.go(-1);">Gå tilbage til søgning</a></p>',
-      'format' => 'full_html',
-      'substitute' => 1,
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-1'] = $pane;
-    $display->panels['center'][0] = 'new-1';
-    $pane = new stdClass();
-    $pane->pid = 'new-2';
-    $pane->panel = 'center';
-    $pane->type = 'views';
-    $pane->subtype = 'os2web_cp_service_cp_case_view';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'override_pager_settings' => 0,
-      'use_pager' => 0,
-      'nodes_per_page' => '1',
-      'pager_id' => '0',
-      'offset' => '0',
-      'more_link' => 0,
-      'feed_icons' => 0,
-      'panel_args' => 1,
-      'link_to_view' => 0,
-      'args' => '',
-      'url' => '',
-      'display' => 'page',
-      'context' => array(
-        0 => 'argument_entity_id:node_1.nid',
-      ),
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 1;
-    $pane->locks = array();
-    $display->content['new-2'] = $pane;
-    $display->panels['center'][1] = 'new-2';
+  $pane = new stdClass();
+  $pane->pid = 'new-954e0b3b-3fff-4d1f-835d-d2e759a64f3c';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'Gå tilbage',
+    'title' => '',
+    'body' => '<p><a class="button go-back-button os2web_cp_service_button" href="javascript:(!document.referrer)?location.href=\'/aaben-indsigt\':history.go(-1);">Gå tilbage til søgning</a></p>',
+    'format' => 'full_html',
+    'substitute' => 1,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '954e0b3b-3fff-4d1f-835d-d2e759a64f3c';
+  $display->content['new-954e0b3b-3fff-4d1f-835d-d2e759a64f3c'] = $pane;
+  $display->panels['center'][0] = 'new-954e0b3b-3fff-4d1f-835d-d2e759a64f3c';
+  $pane = new stdClass();
+  $pane->pid = 'new-05853603-f96f-4c30-b441-af278677fecc';
+  $pane->panel = 'center';
+  $pane->type = 'views';
+  $pane->subtype = 'os2web_cp_service_cp_case_view';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_pager_settings' => 0,
+    'use_pager' => 0,
+    'nodes_per_page' => '1',
+    'pager_id' => '0',
+    'offset' => '0',
+    'more_link' => 0,
+    'feed_icons' => 0,
+    'panel_args' => 1,
+    'link_to_view' => 0,
+    'args' => '',
+    'url' => '',
+    'display' => 'page',
+    'context' => array(
+      0 => 'argument_entity_id:node_1.nid',
+    ),
+    'override_title' => 0,
+    'override_title_text' => '',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = '05853603-f96f-4c30-b441-af278677fecc';
+  $display->content['new-05853603-f96f-4c30-b441-af278677fecc'] = $pane;
+  $display->panels['center'][1] = 'new-05853603-f96f-4c30-b441-af278677fecc';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -167,44 +172,48 @@ function os2web_cp_service_default_page_manager_handlers() {
   );
   $display->cache = array();
   $display->title = 'Dokument %node:field_os2web_cp_service_doc_id';
+  $display->uuid = '2c53eb75-27f2-45d3-9506-93691df90631';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'os2web_cp_service_cp_document_panel';
   $display->content = array();
   $display->panels = array();
-    $pane = new stdClass();
-    $pane->pid = 'new-3';
-    $pane->panel = 'center';
-    $pane->type = 'views';
-    $pane->subtype = 'os2web_cp_service_cp_document_view';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'override_pager_settings' => 0,
-      'use_pager' => 0,
-      'nodes_per_page' => '1',
-      'pager_id' => '0',
-      'offset' => '0',
-      'more_link' => 0,
-      'feed_icons' => 0,
-      'panel_args' => 1,
-      'link_to_view' => 0,
-      'args' => '',
-      'url' => '',
-      'display' => 'page',
-      'context' => array(
-        0 => 'argument_entity_id:node_1.nid',
-      ),
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-3'] = $pane;
-    $display->panels['center'][0] = 'new-3';
+  $pane = new stdClass();
+  $pane->pid = 'new-4e839ac3-f243-4985-9fad-3c50ab37bfdf';
+  $pane->panel = 'center';
+  $pane->type = 'views';
+  $pane->subtype = 'os2web_cp_service_cp_document_view';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_pager_settings' => 0,
+    'use_pager' => 0,
+    'nodes_per_page' => '1',
+    'pager_id' => '0',
+    'offset' => '0',
+    'more_link' => 0,
+    'feed_icons' => 0,
+    'panel_args' => 1,
+    'link_to_view' => 0,
+    'args' => '',
+    'url' => '',
+    'display' => 'page',
+    'context' => array(
+      0 => 'argument_entity_id:node_1.nid',
+    ),
+    'override_title' => 0,
+    'override_title_text' => '',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = '4e839ac3-f243-4985-9fad-3c50ab37bfdf';
+  $display->content['new-4e839ac3-f243-4985-9fad-3c50ab37bfdf'] = $pane;
+  $display->panels['center'][0] = 'new-4e839ac3-f243-4985-9fad-3c50ab37bfdf';
   $display->hide_title = PANELS_TITLE_FIXED;
   $display->title_pane = '0';
   $handler->conf['display'] = $display;
@@ -218,7 +227,7 @@ function os2web_cp_service_default_page_manager_handlers() {
  */
 function os2web_cp_service_default_page_manager_pages() {
   $page = new stdClass();
-  $page->disabled = FALSE; /* Edit this to true to make a default page disabled initially */
+  $page->disabled = TRUE; /* Edit this to true to make a default page disabled initially */
   $page->api_version = 1;
   $page->name = 'os2web_cp_service_cp_case_search_panel';
   $page->task = 'page';
@@ -264,73 +273,79 @@ function os2web_cp_service_default_page_manager_pages() {
   );
   $display->cache = array();
   $display->title = 'Åben Indsigt';
+  $display->uuid = 'b5519720-1699-4791-9923-07ef8329c4ab';
+  $display->storage_type = 'page_manager';
+  $display->storage_id = 'os2web_cp_service_cp_case_search_panel_context';
   $display->content = array();
   $display->panels = array();
-    $pane = new stdClass();
-    $pane->pid = 'new-1';
-    $pane->panel = 'center';
-    $pane->type = 'custom';
-    $pane->subtype = 'custom';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'admin_title' => 'Beskrivende tekst',
-      'title' => '',
-      'body' => '<p>Søg i sagssystemet efter sager og dokumenter. Du kan søge efter specifikke ord i en angiven tidsinterval. Sagerne på det tekniske område findes elektronisk fra 2008 og frem.</p><p>Vær opmærksom på at der er en forsinkelse på minimum et døgn fra journalisering til publicering. Udtages et dokument af den automatiske sikkerhedskontrol, for at undgå publicering af person følsomme data, vil forsinkelsen være længere.</p>',
-      'format' => 'filtered_html',
-      'substitute' => TRUE,
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 0;
-    $pane->locks = array();
-    $display->content['new-1'] = $pane;
-    $display->panels['center'][0] = 'new-1';
-    $pane = new stdClass();
-    $pane->pid = 'new-2';
-    $pane->panel = 'center';
-    $pane->type = 'block';
-    $pane->subtype = 'os2web_cp_service-os2web_cp_service_counter';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array(
-      'override_title' => 0,
-      'override_title_text' => '',
-    );
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 1;
-    $pane->locks = array();
-    $display->content['new-2'] = $pane;
-    $display->panels['center'][1] = 'new-2';
-    $pane = new stdClass();
-    $pane->pid = 'new-3';
-    $pane->panel = 'center';
-    $pane->type = 'views_panes';
-    $pane->subtype = 'os2web_cp_service_cp_case_search-panel_pane_1';
-    $pane->shown = TRUE;
-    $pane->access = array();
-    $pane->configuration = array();
-    $pane->cache = array();
-    $pane->style = array(
-      'settings' => NULL,
-    );
-    $pane->css = array();
-    $pane->extras = array();
-    $pane->position = 2;
-    $pane->locks = array();
-    $display->content['new-3'] = $pane;
-    $display->panels['center'][2] = 'new-3';
+  $pane = new stdClass();
+  $pane->pid = 'new-e07e705a-9a57-4eb5-be4f-439352c5058b';
+  $pane->panel = 'center';
+  $pane->type = 'custom';
+  $pane->subtype = 'custom';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'admin_title' => 'Beskrivende tekst',
+    'title' => '',
+    'body' => '<p>Søg i sagssystemet efter sager og dokumenter. Du kan søge efter specifikke ord i en angiven tidsinterval. Sagerne på det tekniske område findes elektronisk fra 2008 og frem.</p><p>Vær opmærksom på at der er en forsinkelse på minimum et døgn fra journalisering til publicering. Udtages et dokument af den automatiske sikkerhedskontrol, for at undgå publicering af person følsomme data, vil forsinkelsen være længere.</p>',
+    'format' => 'filtered_html',
+    'substitute' => TRUE,
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 0;
+  $pane->locks = array();
+  $pane->uuid = 'e07e705a-9a57-4eb5-be4f-439352c5058b';
+  $display->content['new-e07e705a-9a57-4eb5-be4f-439352c5058b'] = $pane;
+  $display->panels['center'][0] = 'new-e07e705a-9a57-4eb5-be4f-439352c5058b';
+  $pane = new stdClass();
+  $pane->pid = 'new-d6f31248-e006-48ab-ab18-5ca2995f4951';
+  $pane->panel = 'center';
+  $pane->type = 'block';
+  $pane->subtype = 'os2web_cp_service-os2web_cp_service_counter';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array(
+    'override_title' => 0,
+    'override_title_text' => '',
+  );
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 1;
+  $pane->locks = array();
+  $pane->uuid = 'd6f31248-e006-48ab-ab18-5ca2995f4951';
+  $display->content['new-d6f31248-e006-48ab-ab18-5ca2995f4951'] = $pane;
+  $display->panels['center'][1] = 'new-d6f31248-e006-48ab-ab18-5ca2995f4951';
+  $pane = new stdClass();
+  $pane->pid = 'new-8ae9faae-0dfe-4779-93e1-a2c37cce7cb7';
+  $pane->panel = 'center';
+  $pane->type = 'views_panes';
+  $pane->subtype = 'os2web_cp_service_cp_case_search-panel_pane_1';
+  $pane->shown = TRUE;
+  $pane->access = array();
+  $pane->configuration = array();
+  $pane->cache = array();
+  $pane->style = array(
+    'settings' => NULL,
+  );
+  $pane->css = array();
+  $pane->extras = array();
+  $pane->position = 2;
+  $pane->locks = array();
+  $pane->uuid = '8ae9faae-0dfe-4779-93e1-a2c37cce7cb7';
+  $display->content['new-8ae9faae-0dfe-4779-93e1-a2c37cce7cb7'] = $pane;
+  $display->panels['center'][2] = 'new-8ae9faae-0dfe-4779-93e1-a2c37cce7cb7';
   $display->hide_title = PANELS_TITLE_FIXED;
-  $display->title_pane = 'new-3';
+  $display->title_pane = '0';
   $handler->conf['display'] = $display;
   $page->default_handlers[$handler->name] = $handler;
   $pages['os2web_cp_service_cp_case_search_panel'] = $page;
