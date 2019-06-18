@@ -1,0 +1,11 @@
+name = OS2Web Nemid Login
+core = 7.x
+package = OS2Web
+version = 7.x-1.0
+
+dependencies[] = features
+dependencies[] = nemlogin
+dependencies[] = text
+features[features_api][] = api:2
+features[field_base][] = field_os2web_user_pid
+features[field_instance][] = user-user-field_os2web_user_pid
