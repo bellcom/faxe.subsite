@@ -116,6 +116,7 @@ function os2web_esdh_provider_ctools_plugin_type() {
   $plugins['cm'] = array(
     'cache' => TRUE,
     'required methods' => array(
+      'get_import_list',
       'get_document',
       'get_document_file',
       'get_case_docs',

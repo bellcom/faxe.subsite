@@ -1,0 +1,14 @@
+name = OS2Web SBSYS ESDH CP import
+description = OS2Web SBSYS Content Publishing import for ESDH system.
+
+package = OS2Web - ESDH
+core = 7.x
+version = 7.x-1.0-beta1
+
+dependencies[] = os2web_esdh_provider
+dependencies[] = os2web_cp_service
+dependencies[] = ctools
+dependencies[] = features
+features[features_api][] = api:1
+
+files[] = plugins/cp/os2web_sbsys_esdh_cases_import.inc
