@@ -11,16 +11,9 @@
 function os2web_sbsys_esdh_cases_import_form() {
   $form = array();
 
-  $form['run_import'] = array(
-    '#type' => 'submit',
-    '#value' => t('Run import'),
-  );
-
   $form['group'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Extended options.'),
-    '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
+    '#title' => t('OS2Web SBSYS ESDH CP import settings'),
   );
 
   $form['group']['force'] = array(
@@ -34,6 +27,63 @@ function os2web_sbsys_esdh_cases_import_form() {
     '#type' => 'textfield',
     '#title' => t('Focused case id'),
     '#description' => t('This settings can be used to reimport specific document.'),
+  );
+
+  $form['actions']['run_import'] = array(
+    '#type' => 'submit',
+    '#value' => t('Run import'),
+  );
+
+  if (!variable_get('os2web_sbsys_esdh_cases_import_queue_enabled', FALSE)) {
+    return $form;
+  }
+
+  $queue_header = array(
+    t('Type:'),
+    t('Id:'),
+    t('Force'));
+  $queue_rows = array();
+  $query = db_select('queue', 'q')
+    ->fields('q', array('item_id', 'data', 'created'))
+    ->condition('q.name', OS2WEB_SBSYS_ESDH_CASES_IMPORT_QUEUE_NAME)
+    ->extend('PagerDefault')
+    ->limit(25)
+    ->execute();
+
+  foreach ($query as $record) {
+    $data = unserialize($record->data);
+    switch ($data['callback']) {
+      case 'os2web_sbsys_esdh_cases_import_case':
+        $queue_rows[] = array(
+          'Case',
+          $data['args']['case']['id'],
+          $data['force'],
+        );
+        break;
+
+      case 'os2web_sbsys_esdh_cases_import_document':
+        $queue_rows[] = array(
+          'Document',
+          $data['args']['document']['Id'],
+          $data['force'],
+        );
+        break;
+    }
+  }
+
+  $form['group']['queue_status'] = array(
+    '#prefix' => '<h3> In queue</h3>',
+    '#markup' => theme('table', array(
+      'header' => $queue_header,
+      'rows' => $queue_rows,
+      'empty' => t('Import queue is empty'),
+    )),
+  );
+
+  $form['actions']['delete_queue'] = array(
+    '#type' => 'submit',
+    '#value' => t('Delete queue'),
+    '#submit' => array('os2web_sbsys_esdh_cases_import_form_delete_queue'),
   );
 
   return $form;
@@ -71,7 +121,7 @@ function os2web_sbsys_esdh_cases_import_form_confirm($form, &$form_state) {
     $msg = t('<p>Importing case with id !focus <br/>', array('!focus' => $id));
   }
   else {
-    $msg = t('<p>Importing all meetings.<br/>');
+    $msg = t('<p>Importing all cases and documents.<br/>');
   }
   if ($force) {
     $msg .= t('All imported cases and docuemnt nodes will be re-imported, detroying existing data and importing new.<br/>');
@@ -98,7 +148,7 @@ function os2web_sbsys_esdh_cases_import_form_confirm_submit($form, &$form_state)
     drupal_set_message(t('ERROR: No valid CM importer plugin active!'), 'error');
     return;
   }
-  
+
   $force = $form_state['values']['_import_force'] == 1;
   $focus = array_map('trim', explode(',', $form_state['values']['_import_focus_id']));
   if (count($focus) === 1 && $focus[0] === '') {
@@ -111,17 +161,67 @@ function os2web_sbsys_esdh_cases_import_form_confirm_submit($form, &$form_state)
     drupal_set_message('There is no cases found', 'warning');
     return;
   }
-  
-  foreach ($cases as $case) {
-    if (empty($focus) || in_array($case['id'], $focus)) {
-      $batch['operations'][] = array(
-        '_os2web_sbsys_esdh_cases_import_case',
-        array($case, $force));
-      
-      
-    }
+
+  $destination = 'admin/config/os2web/esdh_provider/sbsys_cases_import';
+  if (variable_get('os2web_sbsys_esdh_cases_import_queue_enabled', FALSE)) {
+    os2web_sbsys_esdh_cases_import_queue_refresh($cases, $force);
+    drupal_goto($destination);
   }
-  
-  batch_set($batch);
-  batch_process('admin/config/os2web/esdh_provider/sbsys_cases_import');
+  else {
+    $batch = array(
+      'title' => 'SBSYS Case Publishing import',
+      'operations' => array(),
+      'init_message' => t('Scanner filer'),
+    );
+
+    foreach ($cases as $case) {
+      if (empty($focus) || in_array($case['id'], $focus)) {
+        $batch['operations'][] = array(
+          'os2web_sbsys_esdh_cases_import_case',
+          array($case, $force));
+
+        $documents = os2web_esdh_provider_invoke('cm', 'get_case_docs', $case['uri']);
+        foreach ($documents as $document) {
+          $batch['operations'][] = array(
+            'os2web_sbsys_esdh_cases_import_document',
+            array($document, dirname($case['uri']), $force));
+        }
+      }
+    }
+    batch_set($batch);
+    batch_process($destination);
+  }
+}
+
+/**
+ * Submit handler for deleteing queue items.
+ */
+function os2web_sbsys_esdh_cases_import_form_delete_queue($form, &$form_state) {
+  drupal_goto('admin/config/os2web/esdh_provider/sbsys_cases_import/delete/confirm');
+}
+
+/**
+ * Delete queue confirmation form.
+ */
+function os2web_sbsys_esdh_cases_import_form_delete_queue_confirm_form($form, &$form_state) {
+  return confirm_form(
+    $form,
+    t('Delete all items from import queue.'),
+    isset($_GET['destination']) ? $_GET['destination'] : "admin/config/os2web/esdh_provider/sbsys_cases_import",
+    t('You are going to delete all items from SBSYS ESDH CP import queue.'),
+    t('Delete'),
+    t('Cancel'));
+}
+
+/**
+ * Submit handler for deleting queue items.
+ */
+function os2web_sbsys_esdh_cases_import_form_delete_queue_confirm_form_submit() {
+  // Empty queue.
+  db_delete('queue')
+    ->condition('name', OS2WEB_SBSYS_ESDH_CASES_IMPORT_QUEUE_NAME)
+    ->execute();
+
+  drupal_set_message(t('Deleted queue'));
+  drupal_goto('admin/config/os2web/esdh_provider/sbsys_cases_import');
 }

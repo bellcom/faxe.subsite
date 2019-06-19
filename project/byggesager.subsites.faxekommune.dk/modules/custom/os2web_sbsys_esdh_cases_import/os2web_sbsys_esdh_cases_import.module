@@ -6,12 +6,11 @@
  */
 
 define('OS2WEB_SBSYS_ESDH_CASES_IMPORT_DIR', 'public://sbsys/cp');
+define('OS2WEB_SBSYS_ESDH_CASES_IMPORT_QUEUE_NAME', 'sbsys_esdh_cases_import');
 
-function os2web_sbsys_esdh_cases_import_fixed_case_field_values() {
-  return array(
-    'Sagstype - Sagstype' => 'BYGGESAG',
-  );
-}
+module_load_include('inc', 'os2web_sbsys_esdh_cases_import', 'os2web_sbsys_esdh_cases_import.process');
+module_load_include('inc', 'os2web_sbsys_esdh_cases_import', 'os2web_sbsys_esdh_cases_import.features');
+module_load_include('inc', 'os2web_sbsys_esdh_cases_import', 'os2web_sbsys_esdh_cases_import.queue');
 
 /**
  * Implements hook_ctools_plugin_directory().
@@ -29,22 +28,32 @@ function os2web_sbsys_esdh_cases_import_ctools_plugin_directory($module, $plugin
  */
 function os2web_sbsys_esdh_cases_import_menu() {
   $items['admin/config/os2web/esdh_provider/sbsys_cases_import'] = array(
-    'title' => 'SBSYS Cases import',
+    'title' => 'SBSYS Cases import status',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os2web_sbsys_esdh_cases_import_form'),
     'access arguments' => array('administer os2web'),
     'type' => MENU_LOCAL_ACTION,
     'file' => 'os2web_sbsys_esdh_cases_import.admin.inc',
   );
+
   $items['admin/config/os2web/esdh_provider/sbsys_cases_import/confirm'] = array(
-    'title' => 'SBSYS Cases import',
+    'title' => 'SBSYS Cases import confirm',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os2web_sbsys_esdh_cases_import_form_confirm'),
     'access arguments' => array('administer os2web'),
-    'type' => MENU_LOCAL_ACTION,
+    'type' => MENU_CALLBACK,
     'file' => 'os2web_sbsys_esdh_cases_import.admin.inc',
   );
-  
+
+  $items['admin/config/os2web/esdh_provider/sbsys_cases_import/delete/confirm'] = array(
+    'title' => 'SBSYS Cases delete import queue confirmation form',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2web_sbsys_esdh_cases_import_form_delete_queue_confirm_form'),
+    'access arguments' => array('administer os2web'),
+    'type' => MENU_CALLBACK,
+    'file' => 'os2web_sbsys_esdh_cases_import.admin.inc',
+  );
+
   return $items;
 }
 
@@ -66,136 +75,127 @@ function os2web_sbsys_esdh_cases_import_form_os2web_settings_settings_form_alter
     '#description' => 'Path with schema where SBSYS ESDH will publish files. Example: ' . OS2WEB_SBSYS_ESDH_CASES_IMPORT_DIR,
     '#default_value' => variable_get('os2web_sbsys_esdh_cases_import_path', OS2WEB_SBSYS_ESDH_CASES_IMPORT_DIR),
   );
-//
-//  // Case fields mapping.
-//  $form['sbsys-cases-import']['os2web_sbsys_esdh_cases_import_case_fields_mapping'] = array(
-//    '#type' => 'fieldset',
-//    '#title' => 'Case fields mapping',
-//    '#tree' => TRUE,
-//    '#collapsible' => TRUE,
-//    '#collapsed' => empty(variable_get('os2web_sbsys_esdh_cases_import_case_fields_mapping')),
-//  );
-//
-//  $case_fields_mapping = variable_get('os2web_sbsys_esdh_cases_import_case_fields_mapping', array());
-//
-//  // Get default keys.
-//  if (empty($case_fields_mapping)) {
-//    $case_fields_mapping = _os2web_sbsys_esdh_cases_import_get_case_default_mapping_keys();
-//  }
-//
-//  // Remove key with fixed values.
-//  $case_fields_mapping = array_diff_key($case_fields_mapping, array_flip(array_keys(os2web_sbsys_esdh_cases_import_fixed_case_field_values())));
-//
-//  foreach ($case_fields_mapping as $mapping_key => $mapping_value) {
-//    $form['sbsys-cases-import']['os2web_sbsys_esdh_cases_import_case_fields_mapping'][$mapping_key] = array(
-//      '#type' => 'textfield',
-//      '#title' => $mapping_key,
-//      '#default_value' => $mapping_value,
-//    );
-//  }
-//
-//  // Document fields mapping.
-//  $form['sbsys-cases-import']['os2web_sbsys_esdh_cases_import_document_fields_mapping'] = array(
-//    '#type' => 'fieldset',
-//    '#title' => 'Documents fields mapping',
-//    '#tree' => TRUE,
-//    '#collapsible' => TRUE,
-//    '#collapsed' => empty(variable_get('os2web_sbsys_esdh_cases_import_document_fields_mapping')),
-//  );
-//
-//  $document_fields_mapping = variable_get('os2web_sbsys_esdh_cases_import_document_fields_mapping', array());
-//  if (empty($document_fields_mapping)) {
-//    $default_document = os2web_cp_service_default_document();
-//    $document_fields_mapping = $default_document['fields'];
-//  }
-//  foreach ($document_fields_mapping as $mapping_key => $mapping_value) {
-//    $form['sbsys-cases-import']['os2web_sbsys_esdh_cases_import_document_fields_mapping'][$mapping_key] = array(
-//      '#type' => 'textfield',
-//      '#title' => $mapping_key,
-//      '#default_value' => $mapping_value,
-//    );
-//  }
-}
 
-/**
- * Loads the JSONPath library.
- *
- * @return bool
- *   Result of loading library.
- */
-function _os2web_sbsys_esdh_cases_import_load_json_path_library() {
-  if (function_exists('jsonPath')) {
-    return TRUE;
-  }
-  
-  $libraries_path = module_exists('libraries') ? libraries_get_path('jsonpath') : FALSE;
-  if ($libraries_path && is_dir($libraries_path)) {
-    $path = $libraries_path;
-  }
-  elseif (is_dir(DRUPAL_ROOT . '/sites/all/libraries/jsonpath')) {
-    $path = DRUPAL_ROOT . '/sites/all/libraries/jsonpath';
-  }
-  else {
-    return FALSE;
-  }
-
-  $files = glob($path . '/jsonpath*.php');
-  if (empty($files)) {
-    return FALSE;
-  }
-
-  require_once reset($files);
-  return function_exists('jsonPath');
-}
-
-/**
- * Imports cases.
- *
- * @param $case
- * @param bool $force
- */
-function _os2web_sbsys_esdh_cases_import_case($case, $force = FALSE) {
-  $case_data = os2web_esdh_provider_invoke('cm', 'get_case_data', $case['uri']);
-
-  // Return with errors reporting.
-  if (!empty($case_data['errors'])) {
-    if (drupal_is_cli()) {
-      watchdog('os2web_sbsys_esdh_cases_import', implode("\n", $case_data['errors']), array(), WATCHDOG_WARNING);
-    }
-    else {
-      drupal_set_message(implode("\n", $case_data['errors']), 'error');
-    }
-    return;
-  }
-  
-  $existing_case = os2web_esdh_provider_invoke('cm', 'lookup_case', $case['id']);
-  if (empty($existing_case) || $force) {
-    $case_fields_mapping = _os2web_sbsys_esdh_cases_import_get_case_default_mapping_keys();
-    $publication = array(
-      'fields' => os2web_sbsys_esdh_cases_import_fixed_case_field_values(),
-    );
-    foreach ($case_fields_mapping as $field_name => $field_mapping) {
-      $value = jsonPath($case_data['data'], $field_mapping);
-      if (isset($value[0]) && !empty(trim($value[0]))) {
-        $publication['fields'][$field_name] = $value[0];
-      }
-    }
-    os2web_cp_service_create_case($publication);
-  }
-}
-
-function _os2web_sbsys_esdh_cases_import_get_case_default_mapping_keys() {
-  $mapping_keys = array(
-    'Sagstitel' => 'Titel',
-    'SagsID' => 'Id',
-    'SystemID' => 'Id',
-    'Sagsnummer' => 'Sagsnummer',
-    'Matrikel' => 'Matrikler[0].Id',
-    'Ejendomsnummer' => 'Ejendomme[0].EjendomsNummer',
-    'Sagsstatus - Sagstypebetegnelse' => 'Sagsstatus',
-    'Sagsbehandler - BrugerID' => 'Sagsbehandler[0].Id',
-    'Sagsbehandler - Brugernavn' => 'Sagsbehandler[0].Navn',
+  $form['sbsys-cases-import']['os2web_sbsys_esdh_cases_import_queue_enabled'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use Queue API for import'),
+    '#default_value' => variable_get('os2web_sbsys_esdh_cases_import_queue_enabled', FALSE),
   );
 
-  return $mapping_keys;
+  // Case fields mapping.
+  $case_mapping_list = variable_get('os2web_sbsys_esdh_cases_import_case_mapping_list', array());
+  $form['sbsys-cases-import']['case-wrapper'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Case fields mapping'),
+    '#collapsible' => TRUE,
+    '#collapsed' => empty($case_mapping_list),
+  );
+  $case_defaults = os2web_sbsys_esdh_cases_import_default_case();
+  $field_keys = array_keys($case_defaults['fields']);
+  $form['sbsys-cases-import']['case-wrapper']['os2web_sbsys_esdh_cases_import_case_mapping_list'] = array(
+    '#title' => t('Mapping list'),
+    '#type' => 'checkboxes',
+    '#options' => array_combine($field_keys, $field_keys),
+    '#default_value' => $case_mapping_list,
+    '#multiple' => TRUE,
+    '#size' => 5,
+    '#prefix' => '<div style="height: 200px; overflow-y: scroll">',
+    '#suffix' => '</div>',
+  );
+  
+  $form['sbsys-cases-import']['case-wrapper']['os2web_sbsys_esdh_cases_import_case_fields_mapping'] = array(
+    '#type' => 'container',
+    '#tree' => TRUE,
+  );
+
+  // Get mapping keys without fixed values.
+  $case_fields_mapping = array_diff_key(
+    variable_get('os2web_sbsys_esdh_cases_import_case_fields_mapping', array()),
+    array_flip(array_keys(os2web_sbsys_esdh_cases_import_fixed_case_field_values()))
+  );
+
+  foreach (array_filter($case_mapping_list) as $mapping_key) {
+    $form['sbsys-cases-import']['case-wrapper']['os2web_sbsys_esdh_cases_import_case_fields_mapping'][$mapping_key] = array(
+      '#type' => 'textfield',
+      '#title' => $mapping_key,
+      '#default_value' => empty($case_fields_mapping[$mapping_key]) ? '' : $case_fields_mapping[$mapping_key],
+      '#description' => t('Specify jsonPath expression for key "!key".', array('!key' => $mapping_key)),
+    );
+  }
+
+  // Documents fields mapping.
+  $document_mapping_list = variable_get('os2web_sbsys_esdh_cases_import_document_mapping_list', array());
+  $form['sbsys-cases-import']['document-wrapper'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Document fields mapping'),
+    '#collapsible' => TRUE,
+    '#collapsed' => empty($document_mapping_list),
+  );
+  $document_defaults = os2web_sbsys_esdh_cases_import_default_document();
+  $field_keys = array_keys($document_defaults['fields']);
+  $form['sbsys-cases-import']['document-wrapper']['os2web_sbsys_esdh_cases_import_document_mapping_list'] = array(
+    '#title' => t('Mapping list'),
+    '#type' => 'checkboxes',
+    '#options' => array_combine($field_keys, $field_keys),
+    '#default_value' => $document_mapping_list,
+    '#multiple' => TRUE,
+    '#size' => 5,
+    '#prefix' => '<div style="height: 200px; overflow-y: scroll">',
+    '#suffix' => '</div>',
+  );
+  
+  $form['sbsys-cases-import']['document-wrapper']['os2web_sbsys_esdh_cases_import_document_fields_mapping'] = array(
+    '#type' => 'container',
+    '#tree' => TRUE,
+  );
+
+  // Get mapping keys without fixed values.
+  $document_fields_mapping = array_diff_key(
+    variable_get('os2web_sbsys_esdh_cases_import_document_fields_mapping', array()),
+    array_flip(array_keys(os2web_sbsys_esdh_cases_import_fixed_document_field_values()))
+  );
+
+  foreach (array_filter($document_mapping_list) as $mapping_key) {
+    $form['sbsys-cases-import']['document-wrapper']['os2web_sbsys_esdh_cases_import_document_fields_mapping'][$mapping_key] = array(
+      '#type' => 'textfield',
+      '#title' => $mapping_key,
+      '#default_value' => empty($document_fields_mapping[$mapping_key]) ? '' : $document_fields_mapping[$mapping_key],
+    );
+  }
+  
+  array_unshift($form['#submit'], 'os2web_sbsys_esdh_cases_import_form_mapping_submit');
+}
+
+/**
+ * Custom submit handler to cleanup empty values from mapping settings.
+ */
+function os2web_sbsys_esdh_cases_import_form_mapping_submit (&$form, &$form_state) {
+  $cleanup_values = array(
+    'os2web_sbsys_esdh_cases_import_case_mapping_list',
+    'os2web_sbsys_esdh_cases_import_case_fields_mapping',
+    'os2web_sbsys_esdh_cases_import_document_mapping_list',
+    'os2web_sbsys_esdh_cases_import_document_fields_mapping',
+  );
+  foreach ($cleanup_values as $value_key) {
+    if (!empty($form_state['values'][$value_key]) && is_array($form_state['values'][$value_key])) {
+      $form_state['values'][$value_key] = array_filter($form_state['values'][$value_key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_cron_queue_info().
+ */
+function os2web_sbsys_esdh_cases_import_cron_queue_info() {
+  // If the external queue handler is enabled, don't let
+  // drupals cron impor the meetings.
+  if (!variable_get('os2web_sbsys_esdh_cases_import_queue_enabled', FALSE)) {
+    return array();
+  }
+
+  $queues[OS2WEB_SBSYS_ESDH_CASES_IMPORT_QUEUE_NAME] = array(
+    'worker callback' => 'os2web_sbsys_esdh_cases_import_cron_queue_worker',
+    'time' => 30,
+  );
+  return $queues;
 }

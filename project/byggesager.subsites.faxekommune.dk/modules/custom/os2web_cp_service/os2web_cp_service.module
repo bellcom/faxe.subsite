@@ -896,7 +896,7 @@ function os2web_cp_service_create_document(array $data) {
       }
     }
   }
-  return TRUE;
+  return $node;
 }
 
 /**

@@ -9,6 +9,11 @@ dependencies[] = os2web_esdh_provider
 dependencies[] = os2web_cp_service
 dependencies[] = ctools
 dependencies[] = features
-features[features_api][] = api:1
-
+dependencies[] = strongarm
+features[ctools][] = strongarm:strongarm:1
+features[features_api][] = api:2
+features[variable][] = os2web_sbsys_esdh_cases_import_case_fields_mapping
+features[variable][] = os2web_sbsys_esdh_cases_import_case_mapping_list
+features[variable][] = os2web_sbsys_esdh_cases_import_document_fields_mapping
+features[variable][] = os2web_sbsys_esdh_cases_import_document_mapping_list
 files[] = plugins/cp/os2web_sbsys_esdh_cases_import.inc

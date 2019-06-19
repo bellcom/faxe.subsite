@@ -40,38 +40,32 @@ function os2web_sbsys_esdh_cases_import_cm_get_import_list() {
   $uris = array();
   $errors = array();
 
-  if (!_os2web_sbsys_esdh_cases_import_load_json_path_library()) {
-    $errors[] = t('jsonPath library not found.');
-    return $uris;
-  }
-  
-  $dir = variable_get('os2web_sbsys_esdh_cases_import_path', OS2WEB_SBSYS_ESDH_CASES_IMPORT_DIR);
-  foreach (file_scan_directory($dir, '/\.json$/i', array('recurse' => TRUE)) as $json_file) {
-    $case_data = os2web_sbsys_esdh_cases_import_cm_get_case_data($json_file->uri);
-    if (!empty($case_data['errors'])) {
-      $errors += $case_data['errors'];
-    }
-    $manifest = $case_data['data'];
+  if (os2web_sbsys_esdh_cases_import_load_json_path_library()) {
+    $dir = variable_get('os2web_sbsys_esdh_cases_import_path', OS2WEB_SBSYS_ESDH_CASES_IMPORT_DIR);
+    foreach (file_scan_directory($dir, '/\.json$/i', array('recurse' => TRUE)) as $json_file) {
+      $case_data = os2web_sbsys_esdh_cases_import_cm_get_case_data($json_file->uri);
+      if (!is_array($case_data) || empty($case_data)) {
+        $errors[] = t('JSON input is not array or empty.', array(
+          '@file' => $json_file->uri,
+        ));
+        continue;
+      }
     
-    if (!is_array($manifest) || empty($manifest)) {
-      $errors[] = t('JSON input is not array or empty.', array(
-        '@file' => $json_file->uri,
-      ));
-      continue;
+      $case_id = jsonPath($case_data, 'Id');
+      if (empty($case_id)) {
+        $errors[] = t('Case id is empty.', array(
+          '@file' => $json_file->uri,
+        ));
+        continue;
+      }
+      $case_id = (string) $case_id[0];
+      $uris[] = array('id' => $case_id, 'uri' => $json_file->uri);
     }
-  
-    $case_id = jsonPath($manifest, 'Id');
-    if (empty($case_id)) {
-      $errors[] = t('Case id is empty.', array(
-        '@file' => $json_file->uri,
-      ));
-      continue;
-    }
-    $case_id = (string) $case_id[0];
-    $uris[] = array('id' => $case_id, 'uri' => $json_file->uri);
-  
   }
-  
+  else {
+    $errors[] = t('jsonPath library not found.');
+  }
+
   if (!empty($errors)) {
     if (drupal_is_cli()) {
       watchdog('os2web_sbsys_esdh_cases_import', implode("\n", $errors), array(), WATCHDOG_WARNING);
@@ -85,51 +79,137 @@ function os2web_sbsys_esdh_cases_import_cm_get_import_list() {
 }
 
 /**
- * Implements 'get_document' method.
+ * Gets document data by specific id.
+ *
+ * @param array $file_data
+ *   File data array.
+ * @param string $document_id
+ *   Document id to fetch.
+ *
+ * @return array|null
+ *   Array with document data, NULL is document not found.
  */
-function os2web_sbsys_esdh_cases_import_cm_get_document() {
-
-}
-
-/**
- * Implements 'get_document_file' method.
- */
-function os2web_sbsys_esdh_cases_import_cm_get_document_file() {
-
-}
-
-/**
- * Implements 'get_case_docs' method.
- */
-function os2web_sbsys_esdh_cases_import_cm_get_case_docs() {
-
-}
-
-/**
- * Implements 'get_case_data' method.
- */
-function os2web_sbsys_esdh_cases_import_cm_get_case_data($uri) {
-  $errors = array();
-  $manifest = NULL;
-  if (_os2web_sbsys_esdh_cases_import_load_json_path_library()) {
-    $json = file_get_contents(drupal_realpath($uri));
-    $manifest = json_decode($json, TRUE);
-  
-    if (json_last_error() != JSON_ERROR_NONE) {
-      $errors[] = t('There was an error decoding the JSON input for file @file. Error message: @error_message.', array(
-        '@file' => $uri,
-        '@error_message' => json_last_error_msg(),
-      ));
+function os2web_sbsys_esdh_cases_import_cm_get_document($case_uri, $document_id) {
+  foreach (os2web_sbsys_esdh_cases_import_cm_get_case_docs($case_uri) as $document) {
+    if ($document['Id'] == $document_id) {
+      return $document;
     }
   }
-  return array('data' => $manifest, 'errors' => $errors);
+  return NULL;
 }
 
 /**
- * Implements 'lookup_doc' method.
+ * Get document file uri.
+ *
+ * @param array $file_data
+ *   File data array.
+ * @param string $src_path_uri
+ *   Path to file sources.
+ *
+ * @return string
+ *   Document file URI.
  */
-function os2web_sbsys_esdh_cases_import_cm_lookup_doc() {
+function os2web_sbsys_esdh_cases_import_cm_get_document_file($document, $src_path_uri) {
+  if (os2web_sbsys_esdh_cases_import_load_json_path_library()) {
+    $file = jsonPath($document, 'Filer[0].0');
+    if (!empty($file[0]['Filnavn'])) {
+      $file_name = $file[0]['Filnavn'] . $file[0]['Filendelse'];
+      $file_uri = $src_path_uri . DIRECTORY_SEPARATOR . $file_name;
+      if (file_exists($file_uri) && file_valid_uri($file_uri)) {
+        return $file_uri;
+      }
+      else {
+        $error_msg = t('File "@file_uri" not found in file system.', array('@file_uri' => $file_uri));
+      }
+    }
+    else {
+      $error_msg = t('Error with parsing files in document @id.', array('@id' => $document['Id']));
+    }
+  }
+  else {
+    $error_msg = t('jsonPath library not found.');
+  }
 
+  if (!empty($error_msg)) {
+    if (drupal_is_cli()) {
+      watchdog('os2web_sbsys_esdh_cases_import', $error_msg, array(), WATCHDOG_WARNING);
+    }
+    else {
+      drupal_set_message($error_msg, 'error');
+    }
+  }
+
+  return NULL;
+}
+
+/**
+ * Gets import documents data from file.
+ *
+ * @param string $case_uri
+ *   File uri with case data.
+ *
+ * @return array
+ *   Array with documents data and errors found during parsing.
+ */
+function os2web_sbsys_esdh_cases_import_cm_get_case_docs($case_uri) {
+  $case_data = os2web_sbsys_esdh_cases_import_cm_get_case_data($case_uri);
+  return empty($case_data['Dokumenter']) ? array() :  $case_data['Dokumenter'];
+}
+
+/**
+ * Gets import case data from file.
+ *
+ * @param string $case_uri
+ *   File uri with case data.
+ *
+ * @return array
+ *   Array with case data and errors found during parsing.
+ */
+function os2web_sbsys_esdh_cases_import_cm_get_case_data($case_uri) {
+  $case_data = &drupal_static(__FUNCTION__ . $case_uri);
+  if (!empty($case_data)) {
+    return $case_data;
+  }
+
+  if (os2web_sbsys_esdh_cases_import_load_json_path_library()) {
+    $json = file_get_contents(drupal_realpath($case_uri));
+    $case_data = json_decode($json, TRUE);
+
+    if (json_last_error() != JSON_ERROR_NONE) {
+      $error_msg = t('There was an error decoding the JSON input for file @file. Error message: @error_message.', array(
+        '@file' => $case_uri,
+        '@error_message' => json_last_error_msg(),
+      ));
+
+      if (drupal_is_cli()) {
+        watchdog('os2web_sbsys_esdh_cases_import', $error_msg, array(), WATCHDOG_ERROR);
+      }
+      else {
+        drupal_set_message($error_msg, 'error');
+      }
+    }
+  }
+
+  return $case_data;
+}
+
+/**
+ * Looks up document with specific id in database.
+ *
+ * @param string $document_id
+ *   Document id to look up.
+ *
+ * @return array|null
+ *   Array with found nids, NULL if no nodes found.
+ */
+function os2web_sbsys_esdh_cases_import_cm_lookup_doc($document_id) {
+  $query = new EntityFieldQuery();
+  $result = $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'os2web_cp_service_cp_document')
+    ->fieldCondition('field_os2web_cp_service_sysid', 'value', $document_id, '=')
+    ->execute();
+  return (isset($result['node'])) ? array_keys($result['node']) : NULL;
 }
 
 /**
@@ -139,16 +219,15 @@ function os2web_sbsys_esdh_cases_import_cm_lookup_doc() {
  *   Case id.
  *
  * @return array|null
- *   Loaded case nodes.
+ *   Array with found nids, NULL if no nodes found.
  */
 function os2web_sbsys_esdh_cases_import_cm_lookup_case($case_id) {
-  
   $query = new EntityFieldQuery();
   $result = $query
     ->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', 'os2web_cp_service_cp_case')
     ->fieldCondition('field_os2web_cp_service_sysid', 'value', $case_id, '=')
     ->execute();
-  
-  return (isset($result['node'])) ? node_load_multiple(array_keys($result['node'])) : NULL;
+
+  return (isset($result['node'])) ? array_keys($result['node']) : NULL;
 }
