@@ -520,7 +520,7 @@ function os2web_cp_service_create_case(array $data) {
   $node_fields = field_info_instances('node', 'os2web_cp_service_cp_case');
 
   foreach ($node_fields as $field_name => $field) {
-    if (!empty($data['fields'][$field['label']]) && $field_name !== 'title') {
+    if (isset($data['fields'][$field['label']]) && $field_name !== 'title') {
 
       $field_info = field_info_field($field_name);
 
@@ -636,7 +636,7 @@ function os2web_cp_service_create_case(array $data) {
     node_submit($node);
     node_save($node);
     os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Saving node of case: '. $doc_nid);
-    return TRUE;
+    return $node;
   }
   catch (Exception $e) {
     os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Error hvem saving node: '. print_r($e->getMessage(), 1) . ' Titel: ' . $node->title);
@@ -811,7 +811,7 @@ function os2web_cp_service_create_document(array $data) {
   // Has all fields of a node type "document".
   $node_fields = field_info_instances('node', 'os2web_cp_service_cp_document');
   foreach ($node_fields as $field_name => $field) {
-    if (!empty($data['fields'][$field['label']]) && $field_name !== 'title') {
+    if (isset($data['fields'][$field['label']]) && $field_name !== 'title') {
 
       $field_info = field_info_field($field_name);
 
@@ -846,7 +846,7 @@ function os2web_cp_service_create_document(array $data) {
   // If file has been delivered, we are going to reset transfering status. To
   // get it uploaded again.
   $delivery_status = field_get_items('node', $node, 'field_os2web_cp_service_deliver');
-  if (!empty($delivery_status[0])) {
+  if (!empty($delivery_status[0]['value'])) {
     _os2web_cp_service_reset_transfer_status($node, 'Metadata updated. Reseted to transfer.');
   }
 
@@ -855,9 +855,11 @@ function os2web_cp_service_create_document(array $data) {
     node_save($node);
 
     // Trigger a cache reload by calling the URL for the node.
-    $cache_trigger = curl_init(url('dok/' . $node->field_os2web_cp_service_doc_id[LANGUAGE_NONE][0]['value'], array('absolute' => TRUE)));
+    $cache_trigger = curl_init(url('node/' . $node->nid, array('absolute' => TRUE)));
     // Stop the call after 1 sec. Dont care about the response.
     curl_setopt($cache_trigger, CURLOPT_TIMEOUT, 1);
+    // Do not print curl response.
+    curl_setopt($cache_trigger, CURLOPT_RETURNTRANSFER, 1);
     curl_exec($cache_trigger);
     curl_close($cache_trigger);
   }
@@ -1031,6 +1033,10 @@ function os2web_cp_service_field_formatter_info() {
         'base_url' => 'os2web/service/gf/v1/!id',
       ),
     ),
+    'os2web_cp_service_case_link' => array(
+      'label' => t('OS2Web CP Case link'),
+      'field types' => array('text'),
+    ),
   );
 }
 
@@ -1038,6 +1044,10 @@ function os2web_cp_service_field_formatter_info() {
  * Implements hook_field_formatter_settings_form().
  */
 function os2web_cp_service_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  if (empty($instance['display'][$view_mode]['type']) ||
+    $instance['display'][$view_mode]['type'] != 'os2web_cp_service_file_formatter') {
+    return array();
+  }
   $display = $instance['display'][$view_mode];
   $element = array();
   $element['base_url'] = array(
@@ -1065,16 +1075,33 @@ function os2web_cp_service_field_formatter_settings_summary($field, $instance, $
  * Implements hook_field_formatter_view().
  */
 function os2web_cp_service_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  if ($display['type'] != 'os2web_cp_service_file_formatter') {
-    return;
+  if ($display['type'] == 'os2web_cp_service_case_link'
+    && $field['field_name'] == 'field_os2web_cp_service_case_id') {
+    $element = array();
+    foreach ($items as $delta => $item) {
+      $query = new EntityFieldQuery();
+      $result = $query
+        ->entityCondition('entity_type', 'node')
+        ->entityCondition('bundle', 'os2web_cp_service_cp_case')
+        ->fieldCondition('field_os2web_cp_service_case_id', 'value', $item['value'], '=')
+        ->execute();
+      if (!empty($result['node'])) {
+        $nids = array_keys($result['node']);
+        $element[$delta]['#markup'] = l($item['value'], 'node/' . $nids[0]);
+      }
+    }
   }
-  $base_url = $display['settings']['base_url'];
-  $element = array();
-  foreach ($items as $delta => $item) {
-    $file_id = $item['value'];
-    $url = format_string($base_url, array('!id' => $file_id));
-    $element[$delta]['#markup'] = l(t('Download'), $url);
+
+  if ($display['type'] == 'os2web_cp_service_file_formatter') {
+    $base_url = $display['settings']['base_url'];
+    $element = array();
+    foreach ($items as $delta => $item) {
+      $file_id = $item['value'];
+      $url = format_string($base_url, array('!id' => $file_id));
+      $element[$delta]['#markup'] = l(t('Download'), $url);
+    }
   }
+
   return $element;
 }
 
@@ -1437,7 +1464,7 @@ function _os2web_cp_service_reset_transfer_status_callback($nid) {
   if (!empty($params['destination'])) {
     $destination = $params['destination'];
   }
-  
+
   $node = node_load($nid);
   if (empty($node)) {
     drupal_set_message(t('Node with id @nid not found.',
@@ -1445,9 +1472,9 @@ function _os2web_cp_service_reset_transfer_status_callback($nid) {
     drupal_goto($destination);
     return;
   }
-  
+
   _os2web_cp_service_reset_transfer_status($node);
-  
+
   drupal_set_message(t('Transfer status for node "@title" has been reset',
     array('@title' => $node->title)));
   drupal_goto($destination);
@@ -1480,7 +1507,7 @@ function _os2web_cp_service_reset_transfer_status(&$node, $status = 'Resetted. T
 function _os2web_cp_service_transfering_queue() {
   // Fetch CP Document file_id list.
   $query = _os2web_cp_service_get_transfer_request_query();;
-  
+
   $query->leftJoin('field_data_field_os2web_cp_service_file_id', 'fid', 'fid.entity_id = n.nid');
   $query->fields('n', array('changed'));
   $query->fields('n', array('title'));
@@ -1490,7 +1517,7 @@ function _os2web_cp_service_transfering_queue() {
   $query->fields('cpn', array('field_os2web_cp_service_nontrans_value'));
   $query->fields('cpst', array('field_os2web_cp_service_synctime_value'));
   $query->fields('cprc', array('field_os2web_cp_service_res_c_value'));
-  
+
   $result = $query
     ->orderBy('n.changed', 'DESC')
     ->execute()
@@ -1526,7 +1553,7 @@ function _os2web_cp_service_transfering_queue() {
     '#rows' => $rows,
     '#empty' =>t('Documents transfer queue is empty'),
   );
-  
+
   return $output;
 }
 
@@ -1546,26 +1573,26 @@ function _os2web_cp_service_delete_nodes_get($type) {
       'documents-by-field_os2web_cp_service_doc_ref' => 'page_5',
       'documents-by-fc-field_os2web_base_doc_ref' => 'page_6',
     );
-    
+
     if (empty($cp_types[$type])) {
       print_r('empty type' . "\n");
       return;
     }
-    
+
     $view = views_get_view('docsnotoncase');
-    
+
     if (empty($view->display[$cp_types[$type]])) {
       print_r('No dispay ' . $cp_types[$type] . ' to fetch nodes.' . "\n");
       return;
     }
-    
+
     $view->set_display($cp_types[$type]);
     $view->pre_execute();
     $view->set_items_per_page('0');
     $view->execute();
-    
+
     $nid_property = 'nid';
-    
+
     switch ($type) {
       case 'documents':
         $to_exclude = array();
@@ -1578,7 +1605,7 @@ function _os2web_cp_service_delete_nodes_get($type) {
           $to_exclude += _os2web_cp_service_delete_nodes_get($type_exclude);
         }
         break;
-      
+
       case 'cases':
         $to_exclude = array();
         foreach (array(
@@ -1588,21 +1615,21 @@ function _os2web_cp_service_delete_nodes_get($type) {
           $to_exclude += _os2web_cp_service_delete_nodes_get($type_exclude);
         }
         break;
-      
+
       case 'documents-by-fc-field_os2web_base_doc_ref':
         $nid_property = 'node_field_data_field_os2web_base_doc_ref_nid';
         break;
-      
+
       case 'cases-by-fc-field_os2web_base_case_ref':
         $nid_property = 'node_field_data_field_os2web_base_case_ref_nid';
         break;
     }
-    
+
     $results = array();
     foreach($view->result as $row) {
       $results[$row->{$nid_property}] = $row->{$nid_property};
     }
-    
+
     if (!empty($to_exclude)) {
       foreach ($to_exclude as $nid) {
         if (isset($results[$nid])) {
