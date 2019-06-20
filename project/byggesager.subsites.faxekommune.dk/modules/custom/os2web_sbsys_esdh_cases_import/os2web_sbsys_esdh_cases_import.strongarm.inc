@@ -24,6 +24,7 @@ function os2web_sbsys_esdh_cases_import_strongarm() {
     'Sagsstatus - Sagstypebetegnelse' => 'Sagsstatus',
     'Sagsbehandler - BrugerID' => 'Sagsbehandler[0].Id',
     'Sagsbehandler - Brugernavn' => 'Sagsbehandler[0].Navn',
+    'Sagsdato' => 'Oprettet',
   );
   $export['os2web_sbsys_esdh_cases_import_case_fields_mapping'] = $strongarm;
 
@@ -41,6 +42,7 @@ function os2web_sbsys_esdh_cases_import_strongarm() {
     'Sagsstatus - Sagstypebetegnelse' => 'Sagsstatus - Sagstypebetegnelse',
     'Sagsbehandler - BrugerID' => 'Sagsbehandler - BrugerID',
     'Sagsbehandler - Brugernavn' => 'Sagsbehandler - Brugernavn',
+    'Sagsdato' => 'Sagsdato',
   );
   $export['os2web_sbsys_esdh_cases_import_case_mapping_list'] = $strongarm;
 
@@ -49,6 +51,7 @@ function os2web_sbsys_esdh_cases_import_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'os2web_sbsys_esdh_cases_import_document_fields_mapping';
   $strongarm->value = array(
+    'Dokumentdato' => 'Registreringer[0].Oprettet',
     'SystemID' => 'Id',
     'Sag SystemID' => 'Registreringer[0].Sag.Id',
     'SagsID' => 'Registreringer[0].Sag.Sagsnummer',
@@ -64,6 +67,7 @@ function os2web_sbsys_esdh_cases_import_strongarm() {
   $strongarm->api_version = 1;
   $strongarm->name = 'os2web_sbsys_esdh_cases_import_document_mapping_list';
   $strongarm->value = array(
+    'Dokumentdato' => 'Dokumentdato',
     'SystemID' => 'SystemID',
     'Sag SystemID' => 'Sag SystemID',
     'SagsID' => 'SagsID',

@@ -125,6 +125,7 @@ function os2web_sbsys_esdh_cases_import_case($case, $force = FALSE) {
   foreach ($case_fields_mapping as $field_name => $field_mapping) {
     $value = jsonPath($case_data, $field_mapping);
     if (isset($value[0]) && !empty(trim($value[0]))) {
+      os2web_sbsys_esdh_cases_import_case_data_preprocess($field_name, $value[0]);
       $publication['fields'][$field_name] = $value[0];
     }
   }
@@ -177,6 +178,7 @@ function os2web_sbsys_esdh_cases_import_document($document, $src_path_uri, $forc
   foreach ($document_fields_mapping as $field_name => $field_mapping) {
     $value = jsonPath($document, $field_mapping);
     if (isset($value[0]) && !empty(trim($value[0]))) {
+      os2web_sbsys_esdh_cases_import_document_data_preprocess($field_name, $value[0]);
       $publication['fields'][$field_name] = $value[0];
     }
   }
@@ -186,4 +188,26 @@ function os2web_sbsys_esdh_cases_import_document($document, $src_path_uri, $forc
   _os2web_cp_document_bind_file($node_wrapper, $file_uri);
   $node_wrapper->save();
   lock_release($lock);
+}
+
+/**
+ * Preprocessing case import data.
+ */
+function os2web_sbsys_esdh_cases_import_case_data_preprocess($key, &$value) {
+  switch ($key) {
+    case 'Sagsdato':
+      $value = format_date(strtotime($value), 'custom', 'Y-m-d H:i:s', 'UTC');
+      break;
+  }
+}
+
+/**
+ * Preprocessing document import data.
+ */
+function os2web_sbsys_esdh_cases_import_document_data_preprocess($key, &$value) {
+  switch ($key) {
+    case 'Dokumentdato':
+      $value = format_date(strtotime($value), 'custom', 'Y-m-d H:i:s', 'UTC');
+      break;
+  }
 }
