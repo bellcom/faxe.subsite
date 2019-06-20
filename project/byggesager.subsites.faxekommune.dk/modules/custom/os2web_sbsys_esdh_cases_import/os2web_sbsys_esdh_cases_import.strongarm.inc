@@ -51,11 +51,11 @@ function os2web_sbsys_esdh_cases_import_strongarm() {
   $strongarm->value = array(
     'SystemID' => 'Id',
     'Sag SystemID' => 'Registreringer[0].Sag.Id',
-    'FilID' => 'Filer[0].0.Id',
     'SagsID' => 'Registreringer[0].Sag.Sagsnummer',
     'Dokumenttitel' => 'Registreringer[0].Titel',
     'Indholdsbeskrivelse' => 'Registreringer[0].Beskrivelse',
     'Dokumenttype - Dokumenttype' => 'Type',
+    'Indhold - FileID' => 'Filer[0].Id',
   );
   $export['os2web_sbsys_esdh_cases_import_document_fields_mapping'] = $strongarm;
 
@@ -66,12 +66,11 @@ function os2web_sbsys_esdh_cases_import_strongarm() {
   $strongarm->value = array(
     'SystemID' => 'SystemID',
     'Sag SystemID' => 'Sag SystemID',
-    'FilID' => 'FilID',
     'SagsID' => 'SagsID',
-    'Journalnummer' => 'Journalnummer',
     'Dokumenttitel' => 'Dokumenttitel',
     'Indholdsbeskrivelse' => 'Indholdsbeskrivelse',
     'Dokumenttype - Dokumenttype' => 'Dokumenttype - Dokumenttype',
+    'Indhold - FileID' => 'Indhold - FileID',
   );
   $export['os2web_sbsys_esdh_cases_import_document_mapping_list'] = $strongarm;
 

@@ -1,15 +1,15 @@
 <?php
-
 /**
  * @file
- * This module implements SBSYS ESDH backend for use in os2web
+ * Code for the OS2Web SBSYS ESDH CP import feature.
  */
+
+include_once 'os2web_sbsys_esdh_cases_import.features.inc';
 
 define('OS2WEB_SBSYS_ESDH_CASES_IMPORT_DIR', 'public://sbsys/cp');
 define('OS2WEB_SBSYS_ESDH_CASES_IMPORT_QUEUE_NAME', 'sbsys_esdh_cases_import');
 
 module_load_include('inc', 'os2web_sbsys_esdh_cases_import', 'os2web_sbsys_esdh_cases_import.process');
-module_load_include('inc', 'os2web_sbsys_esdh_cases_import', 'os2web_sbsys_esdh_cases_import.features');
 module_load_include('inc', 'os2web_sbsys_esdh_cases_import', 'os2web_sbsys_esdh_cases_import.queue');
 
 /**
