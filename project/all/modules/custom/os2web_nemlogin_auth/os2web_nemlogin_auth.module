@@ -1,0 +1,55 @@
+<?php
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Adds nemid login link.
+ */
+function os2web_nemlogin_auth_form_user_login_alter(&$form, &$form_state, $form_id) {
+  if (module_exists('nemlogin')) {
+    // Attempt to fetch PID from session.
+    $nemlogin_object = nemlogin_get_plugin_object();
+
+    $pid = !empty($nemlogin_object) ? $nemlogin_object->fetchValue('pid') : NULL;
+
+    if ($pid) {
+      // Find a member with PID
+      $query = new EntityFieldQuery();
+      $query->entityCondition('entity_type', 'user')
+        ->fieldCondition('field_os2web_user_pid', 'value', $pid);
+      $results = $query->execute();
+
+      // Member is found ? Login member
+      if (!empty($results['user'])) {
+        $user = reset($results['user']);
+
+        $form_state = array();
+        $form_state['uid'] = $user->uid;
+        user_login_submit(array(), $form_state);
+        drupal_goto();
+      }
+
+      // Member not found, save PID into session to be used in
+      // os2web_nemid_login_user_login.
+      $_SESSION['os2web_nemlogin_auth_pid'] = $pid;
+    }
+
+    $form['actions']['nemid_login_link'] = array(
+      '#markup' => nemlogin_link('Login med Nemlogin', NULL, array('attributes' => array('class' => array('btn', 'btn-secondary')))),
+    );
+  }
+}
+
+/**
+ * Implements hook_user_login().
+ *
+ * If user logs in with PID saved in the session, that PID will be saved in
+ * Drupal account.
+ */
+function os2web_nemlogin_auth_user_login(&$edit, $account) {
+  if (!empty($_SESSION['os2web_nemlogin_auth_pid'])) {
+    $pid = $_SESSION['os2web_nemlogin_auth_pid'];
+    unset($_SESSION['os2web_nemlogin_auth_pid']);
+    $account->field_os2web_user_pid['und'][0]['value'] = $pid;
+    user_save($account);
+  }
+}
