@@ -67,6 +67,24 @@ $lg-boxy-spacing-left-right: $boxy-spacing-left-right;
 // Variants
 // --------------------------------------------------
 
+.boxy--data-table {
+
+  .boxy__heading,
+  .boxy__body {
+    background-color: $body-bg;
+  }
+
+  .field-label-inline {
+    display: flex;
+
+    padding: 4px 0;
+
+    .field-label {
+      flex-grow: 1;
+    }
+  }
+}
+
 // --------------------------------------------------
 // Responsive
 // --------------------------------------------------
