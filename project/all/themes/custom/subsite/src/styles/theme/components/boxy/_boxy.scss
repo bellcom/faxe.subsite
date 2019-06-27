@@ -75,12 +75,17 @@ $lg-boxy-spacing-left-right: $boxy-spacing-left-right;
   }
 
   .field-label-inline {
-    display: flex;
+    padding: 10px 0;
 
-    padding: 4px 0;
+    .field-label,
+    .field-items {
+      display: block;
 
-    .field-label {
-      flex-grow: 1;
+      float: none;
+    }
+
+    .field-items {
+      float: none;
     }
   }
 }
@@ -96,7 +101,26 @@ $lg-boxy-spacing-left-right: $boxy-spacing-left-right;
 @media #{$breakpoint-mobile-only} {}
 
 // Tablet - and up
-@media #{$breakpoint-tablet-and-up} {}
+@media #{$breakpoint-tablet-and-up} {
+
+  .boxy--data-table {
+
+    .field-label-inline {
+      display: flex;
+
+      padding: 4px 0;
+
+      .field-label,
+      .field-items {
+        display: inline-block;
+      }
+
+      .field-label {
+        flex-grow: 1;
+      }
+    }
+  }
+}
 
 // Tablet - only
 @media #{$breakpoint-tablet-only} {
