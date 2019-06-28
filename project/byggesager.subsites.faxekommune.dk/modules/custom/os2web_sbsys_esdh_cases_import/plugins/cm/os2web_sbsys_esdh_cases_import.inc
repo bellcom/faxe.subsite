@@ -153,7 +153,16 @@ function os2web_sbsys_esdh_cases_import_cm_get_document_file($document, $src_pat
  */
 function os2web_sbsys_esdh_cases_import_cm_get_case_docs($case_uri) {
   $case_data = os2web_sbsys_esdh_cases_import_cm_get_case_data($case_uri);
-  return empty($case_data['Dokumenter']) ? array() :  $case_data['Dokumenter'];
+  $documents_data = empty($case_data['Dokumenter']) ? array() :  $case_data['Dokumenter'];
+
+  // Workaround for documents to get last change timestamp.
+  foreach ($documents_data as &$document_data) {
+    if (empty($case_data['LastChange'])) {
+      continue;
+    }
+    $document_data['CaseLastChange'] = $case_data['LastChange'];
+  }
+  return $documents_data;
 }
 
 /**
@@ -198,17 +207,24 @@ function os2web_sbsys_esdh_cases_import_cm_get_case_data($case_uri) {
  *
  * @param string $document_id
  *   Document id to look up.
+ * @param string $document_changed_date
+ *   Document changed date.
  *
  * @return array|null
  *   Array with found nids, NULL if no nodes found.
  */
-function os2web_sbsys_esdh_cases_import_cm_lookup_doc($document_id) {
+function os2web_sbsys_esdh_cases_import_cm_lookup_doc($document_id, $document_changed_date = NULL) {
   $query = new EntityFieldQuery();
-  $result = $query
+  $query
     ->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', 'os2web_cp_service_cp_document')
-    ->fieldCondition('field_os2web_cp_service_sysid', 'value', $document_id, '=')
-    ->execute();
+    ->fieldCondition('field_os2web_cp_service_sysid', 'value', $document_id, '=');
+
+  if ($document_changed_date) {
+    $document_changed_date = format_date(strtotime($document_changed_date), 'custom', 'Y-m-d H:i:s', 'UTC');
+    $query->fieldCondition('field_os2web_cp_service_edited', 'value', $document_changed_date);
+  }
+  $result = $query->execute();
   return (isset($result['node'])) ? array_keys($result['node']) : NULL;
 }
 
@@ -217,17 +233,23 @@ function os2web_sbsys_esdh_cases_import_cm_lookup_doc($document_id) {
  *
  * @param string $case_id
  *   Case id.
+ * @param string $case_changed_date
+ *   Case changed date.
  *
  * @return array|null
  *   Array with found nids, NULL if no nodes found.
  */
-function os2web_sbsys_esdh_cases_import_cm_lookup_case($case_id) {
+function os2web_sbsys_esdh_cases_import_cm_lookup_case($case_id, $case_changed_date = NULL) {
   $query = new EntityFieldQuery();
-  $result = $query
-    ->entityCondition('entity_type', 'node')
+  $query->entityCondition('entity_type', 'node')
     ->entityCondition('bundle', 'os2web_cp_service_cp_case')
-    ->fieldCondition('field_os2web_cp_service_sysid', 'value', $case_id, '=')
-    ->execute();
+    ->fieldCondition('field_os2web_cp_service_sysid', 'value', $case_id, '=');
+
+  if ($case_changed_date) {
+    $case_changed_date = format_date(strtotime($case_changed_date), 'custom', 'Y-m-d H:i:s', 'UTC');
+    $query->fieldCondition('field_os2web_cp_service_edited', 'value', $case_changed_date);
+  }
+  $result = $query->execute();
 
   return (isset($result['node'])) ? array_keys($result['node']) : NULL;
 }

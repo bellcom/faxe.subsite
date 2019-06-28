@@ -76,6 +76,20 @@ function os2web_sbsys_esdh_cases_import_form_os2web_settings_settings_form_alter
     '#default_value' => variable_get('os2web_sbsys_esdh_cases_import_path', OS2WEB_SBSYS_ESDH_CASES_IMPORT_DIR),
   );
 
+  $form['sbsys-cases-import']['os2web_sbsys_esdh_cases_changed_value_path'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Last changed case timestamp mapping.',
+    '#description' => 'jsonPath value for mapping last changed case timestamp',
+    '#default_value' => variable_get('os2web_sbsys_esdh_cases_changed_value_path'),
+  );
+
+  $form['sbsys-cases-import']['os2web_sbsys_esdh_document_changed_value_path'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Last changed document timestamp mapping.',
+    '#description' => 'jsonPath value for mapping last changed document timestamp',
+    '#default_value' => variable_get('os2web_sbsys_esdh_document_changed_value_path'),
+  );
+
   $form['sbsys-cases-import']['os2web_sbsys_esdh_cases_import_queue_enabled'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use Queue API for import'),

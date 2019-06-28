@@ -19,24 +19,22 @@ function os2web_sbsys_esdh_cases_import_queue_refresh ($cases = array(), $force 
 
   $queue = DrupalQueue::get(OS2WEB_SBSYS_ESDH_CASES_IMPORT_QUEUE_NAME);
   foreach ($cases as $case) {
-    if (empty($focus) || in_array($case['id'], $focus)) {
+    $queue->createItem(array(
+      'callback' => 'os2web_sbsys_esdh_cases_import_case',
+      'args' => array('case' => $case, 'force' => $force,
+      ),
+    ));
+
+    $documents = os2web_esdh_provider_invoke('cm', 'get_case_docs', $case['uri']);
+    foreach ($documents as $document) {
       $queue->createItem(array(
-        'callback' => 'os2web_sbsys_esdh_cases_import_case',
-        'args' => array('case' => $case, 'force' => $force,
+        'callback' => 'os2web_sbsys_esdh_cases_import_document',
+        'args' => array(
+          'document' => $document,
+          'src_path' => dirname($case['uri']),
+          'force' => $force,
         ),
       ));
-
-      $documents = os2web_esdh_provider_invoke('cm', 'get_case_docs', $case['uri']);
-      foreach ($documents as $document) {
-        $queue->createItem(array(
-          'callback' => 'os2web_sbsys_esdh_cases_import_document',
-          'args' => array(
-            'document' => $document,
-            'src_path' => dirname($case['uri']),
-            'force' => $force,
-          ),
-        ));
-      }
     }
   }
 }

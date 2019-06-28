@@ -18,15 +18,8 @@ function os2web_sbsys_esdh_cases_import_form() {
 
   $form['group']['force'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Force recreation of nodes'),
+    '#title' => t('Force refreshing data for cases and documents'),
     '#default_value' => FALSE,
-    '#description' => t('WARNING: This will destroy existing nodes and replace with freshly imported. All node-id\s will change'),
-  );
-
-  $form['group']['focus'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Focused case id'),
-    '#description' => t('This settings can be used to reimport specific document.'),
   );
 
   $form['actions']['run_import'] = array(
@@ -95,7 +88,6 @@ function os2web_sbsys_esdh_cases_import_form() {
 function os2web_sbsys_esdh_cases_import_form_submit($form, &$form_state) {
   drupal_goto('admin/config/os2web/esdh_provider/sbsys_cases_import/confirm', array(
     'query' => array(
-      'import_focus_id' => $form_state['values']['focus'],
       'import_force' => $form_state['values']['force'],
     ),
   ));
@@ -106,25 +98,15 @@ function os2web_sbsys_esdh_cases_import_form_submit($form, &$form_state) {
  */
 function os2web_sbsys_esdh_cases_import_form_confirm($form, &$form_state) {
   $params = drupal_get_query_parameters();
-  $id = $params['import_focus_id'];
   $force = (int) $params['import_force'];
-  $form['_import_focus_id'] = array(
-    '#type' => 'hidden',
-    '#value' => $id,
-  );
   $form['_import_force'] = array(
     '#type' => 'hidden',
     '#value' => $force,
   );
 
-  if ($id > 0) {
-    $msg = t('<p>Importing case with id !focus <br/>', array('!focus' => $id));
-  }
-  else {
-    $msg = t('<p>Importing all cases and documents.<br/>');
-  }
+  $msg = t('<p>Importing cases and documents.<br/>');
   if ($force) {
-    $msg .= t('All imported cases and docuemnt nodes will be re-imported, detroying existing data and importing new.<br/>');
+    $msg .= t('All imported cases and document nodes will be re-imported, detroying existing data and importing new.<br/>');
   }
   else {
     $msg .= t('Only new nodes will be imported, existing data is preserved.</p>');
@@ -150,11 +132,6 @@ function os2web_sbsys_esdh_cases_import_form_confirm_submit($form, &$form_state)
   }
 
   $force = $form_state['values']['_import_force'] == 1;
-  $focus = array_map('trim', explode(',', $form_state['values']['_import_focus_id']));
-  if (count($focus) === 1 && $focus[0] === '') {
-    $focus = array();
-  }
-
   $cases = os2web_esdh_provider_invoke('cm', 'get_import_list');
   
   if (empty($cases)) {
@@ -175,17 +152,15 @@ function os2web_sbsys_esdh_cases_import_form_confirm_submit($form, &$form_state)
     );
 
     foreach ($cases as $case) {
-      if (empty($focus) || in_array($case['id'], $focus)) {
-        $batch['operations'][] = array(
-          'os2web_sbsys_esdh_cases_import_case',
-          array($case, $force));
+      $batch['operations'][] = array(
+        'os2web_sbsys_esdh_cases_import_case',
+        array($case, $force));
 
-        $documents = os2web_esdh_provider_invoke('cm', 'get_case_docs', $case['uri']);
-        foreach ($documents as $document) {
-          $batch['operations'][] = array(
-            'os2web_sbsys_esdh_cases_import_document',
-            array($document, dirname($case['uri']), $force));
-        }
+      $documents = os2web_esdh_provider_invoke('cm', 'get_case_docs', $case['uri']);
+      foreach ($documents as $document) {
+        $batch['operations'][] = array(
+          'os2web_sbsys_esdh_cases_import_document',
+          array($document, dirname($case['uri']), $force));
       }
     }
     batch_set($batch);

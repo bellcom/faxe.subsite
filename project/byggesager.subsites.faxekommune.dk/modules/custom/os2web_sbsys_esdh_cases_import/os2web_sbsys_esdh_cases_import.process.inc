@@ -105,11 +105,13 @@ function os2web_sbsys_esdh_cases_import_case($case, $force = FALSE) {
     return;
   }
 
-  if ($force) {
-    $existing_case = os2web_esdh_provider_invoke('cm', 'lookup_case', $case['id']);
-    foreach ($existing_case as $case_id) {
-      node_delete($case_id);
-    }
+  $case_changed_date = jsonPath($case_data, variable_get('os2web_sbsys_esdh_cases_changed_value_path'));
+  $case_changed_date = empty($case_changed_date[0]) ? NULL : $case_changed_date[0];
+  $existing_case = os2web_esdh_provider_invoke('cm', 'lookup_case', $case['id'], $case_changed_date);
+
+  if (!empty($existing_case) && !$force) {
+    lock_release($lock);
+    return;
   }
 
   $case_fields_mapping = variable_get('os2web_sbsys_esdh_cases_import_case_fields_mapping', array());
@@ -149,13 +151,16 @@ function os2web_sbsys_esdh_cases_import_document($document, $src_path_uri, $forc
     return;
   }
 
-  if ($force) {
-    $existing_documents = os2web_esdh_provider_invoke('cm', 'lookup_doc', $document['Id']);
-    foreach ($existing_documents as $document_id) {
-      // @TODO Original files will be deleted together with node stores fields.
-      // Need to find a way how to store original files.
-      node_delete($document_id);
-    }
+  if (!os2web_sbsys_esdh_cases_import_load_json_path_library()) {
+    return;
+  }
+
+  $document_changed_date = jsonPath($document, variable_get('os2web_sbsys_esdh_document_changed_value_path'));
+  $document_changed_date = empty($document_changed_date[0]) ? NULL : $document_changed_date[0];
+  $existing_documents = os2web_esdh_provider_invoke('cm', 'lookup_doc', $document['Id'], $document_changed_date);
+  if (!empty($existing_documents) && !$force) {
+    lock_release($lock);
+    return;
   }
 
   $document_fields_mapping = variable_get('os2web_sbsys_esdh_cases_import_document_fields_mapping', array());
@@ -196,6 +201,7 @@ function os2web_sbsys_esdh_cases_import_document($document, $src_path_uri, $forc
 function os2web_sbsys_esdh_cases_import_case_data_preprocess($key, &$value) {
   switch ($key) {
     case 'Sagsdato':
+    case 'Redigeringsdato':
       $value = format_date(strtotime($value), 'custom', 'Y-m-d H:i:s', 'UTC');
       break;
   }
@@ -207,6 +213,7 @@ function os2web_sbsys_esdh_cases_import_case_data_preprocess($key, &$value) {
 function os2web_sbsys_esdh_cases_import_document_data_preprocess($key, &$value) {
   switch ($key) {
     case 'Dokumentdato':
+    case 'Redigeringsdato':
       $value = format_date(strtotime($value), 'custom', 'Y-m-d H:i:s', 'UTC');
       break;
   }
