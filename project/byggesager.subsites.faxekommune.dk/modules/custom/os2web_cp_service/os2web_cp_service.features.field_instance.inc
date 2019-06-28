@@ -109,7 +109,7 @@ function os2web_cp_service_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 16,
+      'weight' => 15,
     ),
   );
 
@@ -469,7 +469,7 @@ function os2web_cp_service_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 17,
+      'weight' => 16,
     ),
   );
 
@@ -543,7 +543,69 @@ function os2web_cp_service_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 11,
+      'weight' => 10,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-os2web_cp_service_cp_case-field_os2web_cp_service_edited'.
+  $field_instances['node-os2web_cp_service_cp_case-field_os2web_cp_service_edited'] = array(
+    'bundle' => 'os2web_cp_service_cp_case',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => FALSE,
+        ),
+        'type' => 'date_default',
+        'weight' => 28,
+      ),
+      'spotbox' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_cp_service_edited',
+    'label' => 'Redigeringsdato',
+    'required' => 0,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'same',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'd.m.Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'no_fieldset' => 0,
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 9,
     ),
   );
 
@@ -608,7 +670,7 @@ function os2web_cp_service_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 18,
+      'weight' => 17,
     ),
   );
 
@@ -759,7 +821,7 @@ function os2web_cp_service_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 13,
+      'weight' => 12,
     ),
   );
 
@@ -826,7 +888,7 @@ function os2web_cp_service_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 15,
+      'weight' => 14,
     ),
   );
 
@@ -888,7 +950,7 @@ function os2web_cp_service_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 20,
+      'weight' => 18,
     ),
   );
 
@@ -1080,7 +1142,7 @@ function os2web_cp_service_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 14,
+      'weight' => 13,
     ),
   );
 
@@ -1145,7 +1207,7 @@ function os2web_cp_service_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 12,
+      'weight' => 11,
     ),
   );
 
@@ -1219,7 +1281,7 @@ function os2web_cp_service_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_text',
-      'weight' => 21,
+      'weight' => 19,
     ),
   );
 
@@ -1831,7 +1893,7 @@ function os2web_cp_service_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_os2web_cp_service_edited',
-    'label' => 'RedigeringsDato',
+    'label' => 'Redigeringsdato',
     'required' => 0,
     'settings' => array(
       'default_value' => 'now',
@@ -1848,6 +1910,7 @@ function os2web_cp_service_field_default_field_instances() {
         'input_format' => 'Y-m-d H:i:s',
         'input_format_custom' => '',
         'label_position' => 'above',
+        'no_fieldset' => 0,
         'text_parts' => array(),
         'year_range' => '-3:+3',
       ),
@@ -2726,7 +2789,7 @@ function os2web_cp_service_field_default_field_instances() {
   t('Journalnummer');
   t('KL emnenummer - KL emnenummer og beskrivelse');
   t('Non transferable');
-  t('RedigeringsDato');
+  t('Redigeringsdato');
   t('Resets counter');
   t('Sag SystemID');
   t('SagsID');
