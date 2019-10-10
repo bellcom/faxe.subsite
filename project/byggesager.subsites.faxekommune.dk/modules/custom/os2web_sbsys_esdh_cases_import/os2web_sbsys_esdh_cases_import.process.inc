@@ -165,8 +165,8 @@ function os2web_sbsys_esdh_cases_import_document($document, $src_path_uri, $forc
 
   $document_fields_mapping = variable_get('os2web_sbsys_esdh_cases_import_document_fields_mapping', array());
 
-  $file_uri = os2web_esdh_provider_invoke('cm', 'get_document_file', $document, $src_path_uri);
-  if (empty($file_uri)) {
+  $document_files_uri = os2web_esdh_provider_invoke('cm', 'get_document_files', $document, $src_path_uri);
+  if (empty($document_files_uri)) {
     lock_release($lock);
     return;
   }
@@ -190,7 +190,9 @@ function os2web_sbsys_esdh_cases_import_document($document, $src_path_uri, $forc
 
   $node = os2web_cp_service_create_document($publication);
   $node_wrapper = entity_metadata_wrapper('node', $node);
-  _os2web_cp_document_bind_file($node_wrapper, $file_uri);
+  foreach ($document_files_uri as $file_uri) {
+    _os2web_cp_document_bind_file($node_wrapper, $file_uri);
+  }
   $node_wrapper->save();
   lock_release($lock);
 }
@@ -202,6 +204,8 @@ function os2web_sbsys_esdh_cases_import_case_data_preprocess($key, &$value) {
   switch ($key) {
     case 'Sagsdato':
     case 'Redigeringsdato':
+    case 'Oprettelsesdato':
+    case 'StatusRedigeringsdato':
       $value = format_date(strtotime($value), 'custom', 'Y-m-d H:i:s', 'UTC');
       break;
   }
@@ -214,6 +218,8 @@ function os2web_sbsys_esdh_cases_import_document_data_preprocess($key, &$value) 
   switch ($key) {
     case 'Dokumentdato':
     case 'Redigeringsdato':
+    case 'Oprettelsesdato':
+    case 'StatusRedigeringsdato':
       $value = format_date(strtotime($value), 'custom', 'Y-m-d H:i:s', 'UTC');
       break;
   }

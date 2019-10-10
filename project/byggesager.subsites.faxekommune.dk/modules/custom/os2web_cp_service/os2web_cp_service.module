@@ -469,7 +469,8 @@ function os2web_cp_service_create_case(array $data) {
       node_delete_multiple($nids);
     }
   }
-  else {
+
+  if (!empty($nids)) {
     $node = node_load(array_pop($nids));
   }
 
@@ -605,7 +606,6 @@ function os2web_cp_service_create_case(array $data) {
 
   if(count($doc_nids) > 0) {
     os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Found multiple documents on this case: '. count($doc_nids));
-    error_log('Multiple documents with same ID found' . count($doc_nids));
   }
   else {
     os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Found NO documents on this case: '. count($doc_nids));
@@ -683,6 +683,7 @@ function os2web_cp_service_default_case() {
       'Sagsdato' => NULL,
       'Oprettelsesdato' => NULL,
       'Redigeringsdato' => NULL,
+      'StatusRedigeringsdato' => NULL,
       'Sidste dokument' => NULL,
       'Afslutningsdato' => NULL,
       'Kassationsdato' => NULL,
@@ -778,7 +779,8 @@ function os2web_cp_service_create_document(array $data) {
       node_delete_multiple($nids);
     }
   }
-  else {
+
+  if (!empty($nids)) {
     $node = node_load(array_pop($nids));
   }
 
@@ -877,18 +879,17 @@ function os2web_cp_service_create_document(array $data) {
       ->execute();
   if (!empty($result['node'])) {
     $nids = array_keys($result['node']);
-
-    error_log('Error: update references on cases.');
-
     foreach ($nids as $nid) {
       $cnode = node_load($nid);
       if (!empty($cnode)) {
         $node->field_os2web_cp_service_case_id[LANGUAGE_NONE][]['value'] = $cnode->field_os2web_cp_service_case_id[LANGUAGE_NONE][0]['value'];
         node_save($node);
         $is_missing = TRUE;
-        foreach ($cnode->field_os2web_cp_service_doc_ref[LANGUAGE_NONE] as $value) {
-          if ($value['target_id'] == $node->nid) {
-            $is_missing = FALSE;
+        if (!empty($cnode->field_os2web_cp_service_doc_ref[LANGUAGE_NONE])) {
+          foreach ($cnode->field_os2web_cp_service_doc_ref[LANGUAGE_NONE] as $value) {
+            if ($value['target_id'] == $node->nid) {
+              $is_missing = FALSE;
+            }
           }
         }
         if ($is_missing) {
@@ -915,6 +916,7 @@ function os2web_cp_service_default_document() {
       'Dokumentdato' => NULL,
       'Oprettelsesdato' => NULL,
       'Redigeringsdato' => NULL,
+      'StatusRedigeringsdato' => NULL,
       'Dokumentfrist' => NULL,
       'FilRedigeringsdato' => NULL,
       'SystemID' => NULL,

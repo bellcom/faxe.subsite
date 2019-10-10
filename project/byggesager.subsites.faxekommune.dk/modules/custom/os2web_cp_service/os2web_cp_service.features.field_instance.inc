@@ -109,7 +109,7 @@ function os2web_cp_service_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 15,
+      'weight' => 17,
     ),
   );
 
@@ -333,6 +333,68 @@ function os2web_cp_service_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-os2web_cp_service_cp_case-field_os2web_cp_service_created'.
+  $field_instances['node-os2web_cp_service_cp_case-field_os2web_cp_service_created'] = array(
+    'bundle' => 'os2web_cp_service_cp_case',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => FALSE,
+        ),
+        'type' => 'date_default',
+        'weight' => 29,
+      ),
+      'spotbox' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_cp_service_created',
+    'label' => ' Oprettelsesdato',
+    'required' => 0,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'same',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'd.m.Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'no_fieldset' => 0,
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 9,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-os2web_cp_service_cp_case-field_os2web_cp_service_date'.
   $field_instances['node-os2web_cp_service_cp_case-field_os2web_cp_service_date'] = array(
     'bundle' => 'os2web_cp_service_cp_case',
@@ -469,7 +531,7 @@ function os2web_cp_service_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 16,
+      'weight' => 18,
     ),
   );
 
@@ -543,7 +605,7 @@ function os2web_cp_service_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'entityreference_autocomplete',
-      'weight' => 10,
+      'weight' => 12,
     ),
   );
 
@@ -605,7 +667,7 @@ function os2web_cp_service_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_popup',
-      'weight' => 9,
+      'weight' => 11,
     ),
   );
 
@@ -670,7 +732,7 @@ function os2web_cp_service_field_default_field_instances() {
       'module' => 'number',
       'settings' => array(),
       'type' => 'number',
-      'weight' => 17,
+      'weight' => 19,
     ),
   );
 
@@ -821,7 +883,7 @@ function os2web_cp_service_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 12,
+      'weight' => 14,
     ),
   );
 
@@ -888,7 +950,7 @@ function os2web_cp_service_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'taxonomy_autocomplete',
-      'weight' => 14,
+      'weight' => 16,
     ),
   );
 
@@ -950,7 +1012,7 @@ function os2web_cp_service_field_default_field_instances() {
         'display_label' => 0,
       ),
       'type' => 'options_onoff',
-      'weight' => 18,
+      'weight' => 20,
     ),
   );
 
@@ -1142,7 +1204,69 @@ function os2web_cp_service_field_default_field_instances() {
       'module' => 'options',
       'settings' => array(),
       'type' => 'options_buttons',
-      'weight' => 13,
+      'weight' => 15,
+    ),
+  );
+
+  // Exported field_instance:
+  // 'node-os2web_cp_service_cp_case-field_os2web_cp_service_st_edit'.
+  $field_instances['node-os2web_cp_service_cp_case-field_os2web_cp_service_st_edit'] = array(
+    'bundle' => 'os2web_cp_service_cp_case',
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'date',
+        'settings' => array(
+          'format_type' => 'long',
+          'fromto' => 'both',
+          'multiple_from' => '',
+          'multiple_number' => '',
+          'multiple_to' => '',
+          'show_remaining_days' => FALSE,
+        ),
+        'type' => 'date_default',
+        'weight' => 30,
+      ),
+      'spotbox' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_cp_service_st_edit',
+    'label' => 'StatusRedigeringsdato',
+    'required' => 0,
+    'settings' => array(
+      'default_value' => 'now',
+      'default_value2' => 'same',
+      'default_value_code' => '',
+      'default_value_code2' => '',
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'date',
+      'settings' => array(
+        'increment' => 15,
+        'input_format' => 'd.m.Y - H:i:s',
+        'input_format_custom' => '',
+        'label_position' => 'above',
+        'no_fieldset' => 0,
+        'text_parts' => array(),
+        'year_range' => '-3:+3',
+      ),
+      'type' => 'date_popup',
+      'weight' => 10,
     ),
   );
 
@@ -1207,7 +1331,7 @@ function os2web_cp_service_field_default_field_instances() {
         'size' => 60,
       ),
       'type' => 'text_textfield',
-      'weight' => 11,
+      'weight' => 13,
     ),
   );
 
@@ -1281,7 +1405,7 @@ function os2web_cp_service_field_default_field_instances() {
         'year_range' => '-3:+3',
       ),
       'type' => 'date_text',
-      'weight' => 19,
+      'weight' => 21,
     ),
   );
 
@@ -2774,6 +2898,7 @@ function os2web_cp_service_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t(' Oprettelsesdato');
   t('Delivered status');
   t('DokumentID');
   t('Dokumentdato');
@@ -2800,6 +2925,7 @@ function os2web_cp_service_field_default_field_instances() {
   t('Sagsstatus - Sagstypebetegnelse');
   t('Sagstitel');
   t('Sagstype - Sagstype');
+  t('StatusRedigeringsdato');
   t('Sync timestamp');
   t('Synchronization fails');
   t('SystemID');

@@ -99,47 +99,83 @@ function os2web_sbsys_esdh_cases_import_cm_get_document($case_uri, $document_id)
 }
 
 /**
- * Get document file uri.
+ * Gets array with files uri from document.
  *
- * @param array $file_data
+ * @param array $document
  *   File data array.
  * @param string $src_path_uri
  *   Path to file sources.
  *
- * @return string
- *   Document file URI.
+ * @return array
+ *   Array with document file URIs.
  */
-function os2web_sbsys_esdh_cases_import_cm_get_document_file($document, $src_path_uri) {
+function os2web_sbsys_esdh_cases_import_cm_get_document_files($document, $src_path_uri) {
+  $document_files = array();
+  $error_msgs = array();
   if (os2web_sbsys_esdh_cases_import_load_json_path_library()) {
-    $file = jsonPath($document, 'Filer[0].0');
-    if (!empty($file[0]['Filnavn'])) {
-      $file_name = $file[0]['Filnavn'] . $file[0]['Filendelse'];
-      $file_uri = $src_path_uri . DIRECTORY_SEPARATOR . $file_name;
-      if (file_exists($file_uri) && file_valid_uri($file_uri)) {
-        return $file_uri;
+    $file_jsonpath = variable_get('os2web_sbsys_esdh_cases_import_document_files_jsonpath', OS2WEB_SBSYS_ESDH_CASES_IMPORT_DOCUMENT_FILES_JSONPATH);
+    $files = jsonPath($document, $file_jsonpath);
+    if (!empty($files[0][0]['Filnavn'])) {
+      $files_limit = OS2WEB_SBSYS_ESDH_CASES_IMPORT_DOCUMENT_FILES_LIMIT;
+      if (!empty((integer) variable_get('os2web_sbsys_esdh_cases_import_document_files_limit'))
+        && (integer) variable_get('os2web_sbsys_esdh_cases_import_document_files_limit') < $files_limit) {
+        $files_limit = (integer) variable_get('os2web_sbsys_esdh_cases_import_document_files_limit');
       }
-      else {
-        $error_msg = t('File "@file_uri" not found in file system.', array('@file_uri' => $file_uri));
-      }
+      $i = 0;
+      do {
+        $file_row = $files[0][$i];
+        $allowed_file_types = explode(',', strtolower(variable_get('os2web_sbsys_esdh_cases_import_document_allowed_types', OS2WEB_SBSYS_ESDH_CASES_IMPORT_DOCUMENT_ALLOWED_TYPES)));
+        $allowed_file_types = array_map('trim', $allowed_file_types);
+        if (empty($file_row['Filnavn'])
+          || empty($file_row['Filendelse'])
+          || !in_array(strtolower(substr($file_row['Filendelse'], 1)), $allowed_file_types)
+        ) {
+          $i++;
+          continue;
+        }
+
+        $file_name = $file_row['Filnavn'] . $file_row['Filendelse'];
+        $file_uri = $src_path_uri . DIRECTORY_SEPARATOR . $file_name;
+        if (file_exists($file_uri) && file_valid_uri($file_uri)) {
+          $document_files[] = $file_uri;
+        }
+        else {
+          // Make a try with adjusted filename.
+          $file_uri_adjusted = $src_path_uri . DIRECTORY_SEPARATOR . str_replace(' ', '_', $file_name);
+          if (file_exists($file_uri_adjusted) && file_valid_uri($file_uri_adjusted)) {
+            $document_files[] = $file_uri_adjusted;
+          }
+          else {
+            $error_msgs[] = t('File "@file_uri" not found in file system.', array('@file_uri' => $file_uri));
+          }
+        }
+        $i++;
+      } while (count($files[0]) > $i && count($document_files) < $files_limit);
     }
     else {
-      $error_msg = t('Error with parsing files in document @id.', array('@id' => $document['Id']));
+      $error_msgs[] = t('Error with parsing files in document @id.', array('@id' => $document['Id']));
     }
   }
   else {
-    $error_msg = t('jsonPath library not found.');
+    $error_msgs[] = t('jsonPath library not found.');
   }
 
-  if (!empty($error_msg)) {
-    if (drupal_is_cli()) {
-      watchdog('os2web_sbsys_esdh_cases_import', $error_msg, array(), WATCHDOG_WARNING);
-    }
-    else {
-      drupal_set_message($error_msg, 'error');
+  if (!empty($error_msgs)) {
+    foreach ($error_msgs as $error_msg) {
+      if (drupal_is_cli()) {
+        watchdog('os2web_sbsys_esdh_cases_import', $error_msg, array(), WATCHDOG_WARNING);
+      }
+      else {
+        drupal_set_message($error_msg, 'error');
+      }
     }
   }
 
-  return NULL;
+  if (empty($document_files)) {
+    watchdog('os2web_sbsys_esdh_cases_import', t('Document @id doesn\'t have files that can be imported.', array('@id' => $document['Id'])), array(), WATCHDOG_NOTICE);
+  }
+
+  return $document_files;
 }
 
 /**
@@ -156,11 +192,14 @@ function os2web_sbsys_esdh_cases_import_cm_get_case_docs($case_uri) {
   $documents_data = empty($case_data['Dokumenter']) ? array() :  $case_data['Dokumenter'];
 
   // Workaround for documents to get last change timestamp.
-  foreach ($documents_data as &$document_data) {
-    if (empty($case_data['LastChange'])) {
-      continue;
+  $cases_changed_value_path = variable_get('os2web_sbsys_esdh_cases_changed_value_path');
+  if (!empty($cases_changed_value_path)) {
+    foreach ($documents_data as &$document_data) {
+      if (empty($case_data[$cases_changed_value_path])) {
+        continue;
+      }
+      $document_data['Case' . $cases_changed_value_path] = $case_data[$cases_changed_value_path];
     }
-    $document_data['CaseLastChange'] = $case_data['LastChange'];
   }
   return $documents_data;
 }

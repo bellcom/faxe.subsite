@@ -118,7 +118,7 @@ function os2web_esdh_provider_ctools_plugin_type() {
     'required methods' => array(
       'get_import_list',
       'get_document',
-      'get_document_file',
+      'get_document_files',
       'get_case_docs',
       'get_case_data',
       'lookup_doc',
