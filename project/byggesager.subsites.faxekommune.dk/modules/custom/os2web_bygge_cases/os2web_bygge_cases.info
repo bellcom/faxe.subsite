@@ -1,0 +1,6 @@
+name = "OS2Web Bygge Cases"
+description = "Handles functionality related to Bygge cases."
+core = "7.x"
+
+dependencies[] = os2web_nemlogin_auth
+dependencies[] = session_expire

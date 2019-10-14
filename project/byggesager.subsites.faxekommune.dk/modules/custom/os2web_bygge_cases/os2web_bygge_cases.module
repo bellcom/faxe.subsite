@@ -3,8 +3,8 @@
 /**
  * Implements hook_block_info().
  */
-function os2web_bygger_cases_block_info() {
-  $blocks['os2web_bygger_cases_menu'] = array(
+function os2web_bygge_cases_block_info() {
+  $blocks['os2web_bygge_cases_menu'] = array(
     // info: The name of the block.
     'info' => t('NemID login block'),
     'cache' =>  DRUPAL_NO_CACHE,
@@ -16,10 +16,10 @@ function os2web_bygger_cases_block_info() {
 /**
  * Implements hook_block_view().
  */
-function os2web_bygger_cases_block_view($delta = '') {
+function os2web_bygge_cases_block_view($delta = '') {
   // The $delta parameter tells us which block is being requested.
   switch ($delta) {
-    case 'os2web_bygger_cases_menu':
+    case 'os2web_bygge_cases_menu':
       if ($pid = os2web_nemlogin_auth_get_pid()) {
         $output = t('Logged in with NemID, click <a href="@login_url">here</a> to logout', array('@login_url' => url('os2web_nemlogin_logout')));
         $output .= ' PID: ' . $pid;
@@ -37,13 +37,4 @@ function os2web_bygger_cases_block_view($delta = '') {
   }
 
   return $block;
-}
-
-
-function os2web_bygger_cases_preprocess_page(&$variables) {
-  print_r('os2web_bygger_cases_preprocess_page');
-
-  if (os2web_nemlogin_auth_get_pid()) {
-    print_r(os2web_nemlogin_auth_get_pid());
-  }
 }
