@@ -1,0 +1,6 @@
+name = "OS2Web Bygger Cases"
+description = "TODO."
+core = "7.x"
+
+dependencies[] = os2web_nemlogin_auth
+dependencies[] = session_expire

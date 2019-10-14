@@ -1,4 +1,20 @@
 <?php
+
+/**
+ * Implements hook_menu().
+ */
+function os2web_nemlogin_auth_menu() {
+  $items['os2web_nemlogin_logout'] = array(
+    'title' => 'OS2Web NemLogin Auth logout',
+    'description' => 'Delete the PID stored in session',
+    'page callback' => 'os2web_nemlogin_auth_logout',
+    'access arguments' => array('access content'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
 /**
  * Implements hook_form_FORM_ID_alter().
  *
@@ -46,10 +62,59 @@ function os2web_nemlogin_auth_form_user_login_alter(&$form, &$form_state, $form_
  * Drupal account.
  */
 function os2web_nemlogin_auth_user_login(&$edit, $account) {
-  if (!empty($_SESSION['os2web_nemlogin_auth_pid'])) {
-    $pid = $_SESSION['os2web_nemlogin_auth_pid'];
-    unset($_SESSION['os2web_nemlogin_auth_pid']);
+  if ($pid = os2web_nemlogin_auth_get_pid()) {
+    os2web_nemlogin_auth_unset_pid();
     $account->field_os2web_user_pid['und'][0]['value'] = $pid;
     user_save($account);
   }
+}
+
+/**
+ * Deletes the PID from a session and redirects to front page.
+ *
+ * If the NemLogin plugin is still not destroyed, it will be destroyed.
+ *
+ * @see os2web_nemlogin_auth_unset_pid.
+ */
+function os2web_nemlogin_auth_logout() {
+  os2web_nemlogin_auth_unset_pid();
+
+  $nemlogin_object = nemlogin_get_plugin_object();
+  if ($nemlogin_object) {
+    $nemlogin_object->logout();
+  }
+
+  drupal_goto();
+}
+
+/**
+ * Fetches the stored PID from a sessions
+ *
+ * @return string|NULL
+ *   PID if it can be found,
+ *   FALSE otherwise.
+ */
+function os2web_nemlogin_auth_get_pid() {
+  // Try fetching from session variable.
+  if (!empty($_SESSION['os2web_nemlogin_auth_pid'])) {
+    $pid = $_SESSION['os2web_nemlogin_auth_pid'];
+    return $pid;
+  }
+  else {
+    // There is a chance, PID has not been stored in the session yet,
+    // Attempt to fetch PID nemlogin plugin.
+    $nemlogin_object = nemlogin_get_plugin_object();
+    $pid = !empty($nemlogin_object) ? $nemlogin_object->fetchValue('pid') : NULL;
+    if ($pid) {
+      $_SESSION['os2web_nemlogin_auth_pid'] = $pid;
+      return $pid;
+    }
+  }
+}
+
+/**
+ * Removing the stored PID from a session.
+ */
+function os2web_nemlogin_auth_unset_pid() {
+  unset($_SESSION['os2web_nemlogin_auth_pid']);
 }
