@@ -286,11 +286,6 @@ function nemlogin_get_plugin_object($nemlogin_plugin_id = NULL) {
 function nemlogin_link($login_text = NULL, $logout_text = NULL, array $options = array()) {
   $login_text = isset($login_text) ? $login_text : t('Login with Nemlogin');
   $logout_text = isset($logout_text) ? $logout_text : t('Logout with Nemlogin');
-  $options += array('absolute' => TRUE);
-
-  if (empty($options['query']['destination'])) {
-    $options['query']['destination'] = ltrim(request_uri(), '/');
-  }
 
   $nemlogin_object = nemlogin_get_plugin_object();
   if (empty($nemlogin_object)) {
@@ -304,6 +299,44 @@ function nemlogin_link($login_text = NULL, $logout_text = NULL, array $options =
   }
 
   return $nemlogin_object->isAuthenticated()
-    ? l($logout_text, 'nemlogin/logout', $options)
-    : l($login_text, 'nemlogin/login', $options);
+    ? l($logout_text, nemlogin_get_logout_url($options))
+    : l($login_text, nemlogin_get_login_url($options));
+}
+
+/**
+ * Generates a NemID login URL.
+ *
+ * @param array $options
+ *   Link options @see l().
+ *
+ * @return string
+ *   Generated login URL.
+ */
+function nemlogin_get_login_url(array $options = array()) {
+  $options += array('absolute' => TRUE);
+
+  if (empty($options['query']['destination'])) {
+    $options['query']['destination'] = ltrim(request_uri(), '/');
+  }
+
+  return url('nemlogin/login', $options);
+}
+
+/**
+ * Generates a NemID logout URL.
+ *
+ * @param array $options
+ *   Link options @see l().
+ *
+ * @return string
+ *   Generated login URL.
+ */
+function nemlogin_get_logout_url(array $options = array()) {
+  $options += array('absolute' => TRUE);
+
+  if (empty($options['query']['destination'])) {
+    $options['query']['destination'] = ltrim(request_uri(), '/');
+  }
+
+  return url('nemlogin/logout', $options);
 }
