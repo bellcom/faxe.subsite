@@ -155,7 +155,11 @@ function os2web_cp_service_page_document_table($date) {
     if ($field = field_get_items('node', $node, 'field_os2web_cp_service_case_id')) {
       $case_number = $field[0]['value'];
 
-      $case_name = os2web_cp_service_get_case_name($case_number);
+      $case_name = '';
+      if ($case = _os2web_cp_service_get_cp_document_node_by_case_id($case_number)) {
+        $case_name = $case->title;
+      }
+
     }
 
     if ($field = field_get_items('node', $node, 'field_os2web_cp_service_file_id')) {
@@ -179,23 +183,6 @@ function os2web_cp_service_page_document_table($date) {
   $variables['rows'] = $rows;
 
   return theme('table', $variables);
-}
-
-/**
- * Get the title of a case, by it's id.
- */
-function os2web_cp_service_get_case_name($case_number) {
-  $query = new EntityFieldQuery();
-  $query->entityCondition('entity_type', 'node')
-    ->entityCondition('bundle', 'os2web_cp_service_cp_case')
-    ->fieldCondition('field_os2web_cp_service_case_id', 'value', $case_number);
-  $result = $query->execute();
-
-  if ($result['node']) {
-    $node = node_load(key($result['node']));
-    return $node->title;
-  }
-  return '';
 }
 
 /**

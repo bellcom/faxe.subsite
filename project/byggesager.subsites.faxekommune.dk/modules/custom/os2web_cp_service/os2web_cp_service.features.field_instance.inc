@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2web_cp_service.features.field_instance.inc
@@ -23,7 +24,7 @@ function os2web_cp_service_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 22,
+        'weight' => 12,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -278,7 +279,7 @@ function os2web_cp_service_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 6,
+        'weight' => 3,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -351,7 +352,7 @@ function os2web_cp_service_field_default_field_instances() {
           'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
-        'weight' => 29,
+        'weight' => 18,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -413,7 +414,7 @@ function os2web_cp_service_field_default_field_instances() {
           'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
-        'weight' => 10,
+        'weight' => 6,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -490,7 +491,7 @@ function os2web_cp_service_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 23,
+        'weight' => 13,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -551,7 +552,7 @@ function os2web_cp_service_field_default_field_instances() {
           'link' => FALSE,
         ),
         'type' => 'entityreference_label',
-        'weight' => 14,
+        'weight' => 7,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -628,7 +629,7 @@ function os2web_cp_service_field_default_field_instances() {
           'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
-        'weight' => 28,
+        'weight' => 17,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -689,7 +690,7 @@ function os2web_cp_service_field_default_field_instances() {
           'thousand_separator' => '',
         ),
         'type' => 'number_integer',
-        'weight' => 27,
+        'weight' => 16,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -748,7 +749,7 @@ function os2web_cp_service_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 3,
+        'weight' => 21,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -813,7 +814,7 @@ function os2web_cp_service_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 19,
+        'weight' => 9,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -900,7 +901,7 @@ function os2web_cp_service_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 21,
+        'weight' => 11,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -971,7 +972,7 @@ function os2web_cp_service_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 25,
+        'weight' => 14,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -1029,7 +1030,7 @@ function os2web_cp_service_field_default_field_instances() {
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 9,
+        'weight' => 5,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -1082,6 +1083,79 @@ function os2web_cp_service_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-os2web_cp_service_cp_case-field_os2web_cp_service_pid_nr'.
+  $field_instances['node-os2web_cp_service_cp_case-field_os2web_cp_service_pid_nr'] = array(
+    'bundle' => 'os2web_cp_service_cp_case',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 20,
+      ),
+      'spotbox' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_cp_service_pid_nr',
+    'label' => 'PID Nr',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => -10,
+            ),
+            'full_html' => array(
+              'weight' => -9,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
+      'linkit' => array(
+        'button_text' => 'Søg',
+        'enable' => 0,
+        'profile' => '',
+      ),
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 24,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-os2web_cp_service_cp_case-field_os2web_cp_service_property'.
   $field_instances['node-os2web_cp_service_cp_case-field_os2web_cp_service_property'] = array(
     'bundle' => 'os2web_cp_service_cp_case',
@@ -1094,7 +1168,7 @@ function os2web_cp_service_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 8,
+        'weight' => 4,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -1159,7 +1233,7 @@ function os2web_cp_service_field_default_field_instances() {
         'module' => 'taxonomy',
         'settings' => array(),
         'type' => 'taxonomy_term_reference_link',
-        'weight' => 20,
+        'weight' => 10,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -1227,7 +1301,7 @@ function os2web_cp_service_field_default_field_instances() {
           'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
-        'weight' => 30,
+        'weight' => 19,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -1283,7 +1357,7 @@ function os2web_cp_service_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 17,
+        'weight' => 8,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -1354,7 +1428,7 @@ function os2web_cp_service_field_default_field_instances() {
           'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
-        'weight' => 26,
+        'weight' => 15,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -2914,6 +2988,7 @@ function os2web_cp_service_field_default_field_instances() {
   t('Journalnummer');
   t('KL emnenummer - KL emnenummer og beskrivelse');
   t('Non transferable');
+  t('PID Nr');
   t('Redigeringsdato');
   t('Resets counter');
   t('Sag SystemID');

@@ -248,3 +248,28 @@ function _os2web_cp_document_get_file_uri($file_id) {
   $os2web_cp_service_file_path = variable_get('os2web_cp_service_file_path', OS2WEB_CP_SERVICE_FILE_PATH);
   return $os2web_cp_service_file_path . DIRECTORY_SEPARATOR . $file_id . '.pdf';
 }
+
+/**
+ * Helper function to get case.
+ *
+ * @param $case_number
+ *   Number of the case.
+ *
+ * @return mixed|NULL
+ *   Found node or NULL.
+ */
+function _os2web_cp_service_get_cp_document_node_by_case_id($case_number) {
+  $node = NULL;
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'os2web_cp_service_cp_case')
+    ->fieldCondition('field_os2web_cp_service_case_id', 'value', $case_number);
+  $result = $query->execute();
+
+  if ($result['node']) {
+    $node = node_load(key($result['node']));
+  }
+
+  return $node;
+}

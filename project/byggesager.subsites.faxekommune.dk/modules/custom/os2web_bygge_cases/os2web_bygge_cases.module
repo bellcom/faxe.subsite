@@ -17,6 +17,8 @@ function os2web_bygge_cases_block_info() {
  * Implements hook_block_view().
  */
 function os2web_bygge_cases_block_view($delta = '') {
+  $block = array();
+
   // The $delta parameter tells us which block is being requested.
   switch ($delta) {
     case 'os2web_bygge_cases_menu':
@@ -37,4 +39,58 @@ function os2web_bygge_cases_block_view($delta = '') {
   }
 
   return $block;
+}
+
+/**
+ * Implements hook_node_access().
+ */
+function os2web_bygge_cases_node_access($node, $op, $account) {
+  if ($op == 'view') {
+    $type = is_string($node) ? $node : $node->type;
+    if ($type == 'os2web_cp_service_cp_case') {
+      $field_os2web_cp_service_pid_nr = field_get_items('node', $node, 'field_os2web_cp_service_pid_nr');
+
+      // Doing check only if limit PID are set.
+      if (!empty($field_os2web_cp_service_pid_nr)) {
+        $pid = os2web_nemlogin_auth_get_pid();
+
+        // PID not present, denying access.
+        if (!$pid) {
+          return NODE_ACCESS_DENY;
+        }
+
+        // If match is found, not restricting the access.
+        foreach ($field_os2web_cp_service_pid_nr as $pid_nr) {
+          if ($pid_nr['value'] == $pid) {
+            return NODE_ACCESS_IGNORE;
+          }
+        }
+
+        // No match is found, denying access.
+        return NODE_ACCESS_DENY;
+      }
+
+      return NODE_ACCESS_IGNORE;
+    }
+    elseif ($type == 'os2web_cp_service_cp_document') {
+      $case_id = NULL;
+
+      // Letting parent case decide the access permission.
+      $field_os2web_cp_service_case_id = field_get_items('node', $node, 'field_os2web_cp_service_case_id');
+      if (is_array($field_os2web_cp_service_case_id)) {
+        $case_id = $field_os2web_cp_service_case_id[0]['value'];
+      }
+
+      if ($case_id) {
+        $case = _os2web_cp_service_get_cp_document_node_by_case_id($case_id);
+        if ($case) {
+          if (!node_access($op, $case, $account)) {
+            return NODE_ACCESS_DENY;
+          }
+        }
+      }
+    }
+  }
+
+  return NODE_ACCESS_IGNORE;
 }
