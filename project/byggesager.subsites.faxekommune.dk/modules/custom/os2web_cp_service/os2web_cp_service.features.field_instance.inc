@@ -369,7 +369,7 @@ function os2web_cp_service_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_os2web_cp_service_created',
-    'label' => ' Oprettelsesdato',
+    'label' => 'Oprettelsesdato',
     'required' => 0,
     'settings' => array(
       'default_value' => 'now',
@@ -956,6 +956,80 @@ function os2web_cp_service_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-os2web_cp_service_cp_case-field_os2web_cp_service_matrikul'.
+  $field_instances['node-os2web_cp_service_cp_case-field_os2web_cp_service_matrikul'] = array(
+    'bundle' => 'os2web_cp_service_cp_case',
+    'default_value' => NULL,
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'text',
+        'settings' => array(),
+        'type' => 'text_default',
+        'weight' => 22,
+      ),
+      'spotbox' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_cp_service_matrikul',
+    'label' => 'Matrikel',
+    'required' => 0,
+    'settings' => array(
+      'better_formats' => array(
+        'allowed_formats' => array(
+          'filtered_html' => 'filtered_html',
+          'full_html' => 'full_html',
+          'plain_text' => 'plain_text',
+        ),
+        'allowed_formats_toggle' => 0,
+        'default_order_toggle' => 0,
+        'default_order_wrapper' => array(
+          'formats' => array(
+            'filtered_html' => array(
+              'weight' => -10,
+            ),
+            'full_html' => array(
+              'weight' => -9,
+            ),
+            'plain_text' => array(
+              'weight' => 10,
+            ),
+          ),
+        ),
+      ),
+      'linkit' => array(
+        'button_text' => 'Search',
+        'enable' => 0,
+        'profile' => '',
+      ),
+      'text_processing' => 0,
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'text',
+      'settings' => array(
+        'size' => 60,
+      ),
+      'type' => 'text_textfield',
+      'weight' => 25,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-os2web_cp_service_cp_case-field_os2web_cp_service_nontrans'.
   $field_instances['node-os2web_cp_service_cp_case-field_os2web_cp_service_nontrans'] = array(
     'bundle' => 'os2web_cp_service_cp_case',
@@ -1111,7 +1185,7 @@ function os2web_cp_service_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_os2web_cp_service_pid_nr',
-    'label' => 'PID Nr',
+    'label' => 'CPR',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
@@ -2972,7 +3046,7 @@ function os2web_cp_service_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
-  t(' Oprettelsesdato');
+  t('CPR');
   t('Delivered status');
   t('DokumentID');
   t('Dokumentdato');
@@ -2987,8 +3061,9 @@ function os2web_cp_service_field_default_field_instances() {
   t('Internal field stores additional information about transfer status and errors.');
   t('Journalnummer');
   t('KL emnenummer - KL emnenummer og beskrivelse');
+  t('Matrikel');
   t('Non transferable');
-  t('PID Nr');
+  t('Oprettelsesdato');
   t('Redigeringsdato');
   t('Resets counter');
   t('Sag SystemID');
