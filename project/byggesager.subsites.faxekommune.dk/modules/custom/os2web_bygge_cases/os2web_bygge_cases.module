@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * @file
+ * Code for the OS2Web Bygge Cases feature.
+ */
+
+include_once 'os2web_bygge_cases.features.inc';
+
+/**
  * Implements hook_block_info().
  */
 function os2web_bygge_cases_block_info() {
