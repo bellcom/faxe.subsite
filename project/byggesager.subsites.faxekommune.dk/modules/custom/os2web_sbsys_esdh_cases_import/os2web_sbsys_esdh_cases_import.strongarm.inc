@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2web_sbsys_esdh_cases_import.strongarm.inc
@@ -26,7 +27,8 @@ function os2web_sbsys_esdh_cases_import_strongarm() {
     'SystemID' => 'Id',
     'Sagsnummer' => 'Sagsnummer',
     'Sagstitel' => 'Titel',
-    'Matrikel' => 'Matrikler[0].Id',
+    'CPR' => 'Personer[0].CprNummer',
+    'Matrikel' => 'Matrikler[0].MatrikelNummer',
     'Ejendomsnummer' => 'Ejendomme[0].EjendomsNummer',
     'Sagsstatus - Sagstypebetegnelse' => 'Sagsstatus',
     'Sagsbehandler - BrugerID' => 'Sagsbehandler[0].Id',
@@ -46,6 +48,7 @@ function os2web_sbsys_esdh_cases_import_strongarm() {
     'SystemID' => 'SystemID',
     'Sagsnummer' => 'Sagsnummer',
     'Sagstitel' => 'Sagstitel',
+    'CPR' => 'CPR',
     'Matrikel' => 'Matrikel',
     'Ejendomsnummer' => 'Ejendomsnummer',
     'Sagsstatus - Sagstypebetegnelse' => 'Sagsstatus - Sagstypebetegnelse',
