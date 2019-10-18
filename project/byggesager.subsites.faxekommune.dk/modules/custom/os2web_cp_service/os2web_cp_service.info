@@ -15,6 +15,7 @@ dependencies[] = file
 dependencies[] = geocoder
 dependencies[] = geofield
 dependencies[] = leaflet
+dependencies[] = leaflet_widget
 dependencies[] = list
 dependencies[] = media
 dependencies[] = menu
