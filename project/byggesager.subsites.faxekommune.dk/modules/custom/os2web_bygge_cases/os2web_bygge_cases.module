@@ -129,3 +129,12 @@ function os2web_bygge_cases_views_query_alter(&$view, &$query) {
     }
   }
 }
+
+/**
+ * Implements hook_preprocess_node().
+ */
+function os2web_bygge_cases_preprocess_node(&$variables) {
+  if ($variables['type'] == 'os2web_cp_service_cp_case') {
+    $variables['content']['#cp_case_documents'] = views_embed_view('os2web_cp_service_cp_case_view', 'attachment_1', $variables['nid']);
+  }
+}

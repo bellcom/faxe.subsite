@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2web_cp_service.pages_default.inc
@@ -11,7 +12,7 @@ function os2web_cp_service_default_page_manager_handlers() {
   $export = array();
 
   $handler = new stdClass();
-  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->disabled = TRUE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'os2web_cp_service_cp_case_panel';
   $handler->task = 'node_view';
@@ -128,7 +129,7 @@ function os2web_cp_service_default_page_manager_handlers() {
   $export['os2web_cp_service_cp_case_panel'] = $handler;
 
   $handler = new stdClass();
-  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->disabled = TRUE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'os2web_cp_service_cp_document_panel';
   $handler->task = 'node_view';

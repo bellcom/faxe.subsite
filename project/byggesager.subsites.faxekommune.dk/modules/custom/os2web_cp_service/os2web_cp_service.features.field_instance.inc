@@ -15,16 +15,16 @@ function os2web_cp_service_field_default_field_instances() {
   // 'node-os2web_cp_service_cp_case-field_os2web_cp_service_address'.
   $field_instances['node-os2web_cp_service_cp_case-field_os2web_cp_service_address'] = array(
     'bundle' => 'os2web_cp_service_cp_case',
-    'default_value' => NULL,
+    'default_value' => array(),
     'deleted' => 0,
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 12,
+        'weight' => 13,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -59,46 +59,35 @@ function os2web_cp_service_field_default_field_instances() {
     ),
     'entity_type' => 'node',
     'field_name' => 'field_os2web_cp_service_address',
-    'label' => 'Sagstitel',
+    'label' => 'Adresse',
     'required' => 0,
     'settings' => array(
       'better_formats' => array(
         'allowed_formats' => array(
-          'blokindhold' => 'blokindhold',
           'filtered_html' => 'filtered_html',
           'full_html' => 'full_html',
-          'php_code' => 'php_code',
           'plain_text' => 'plain_text',
-          'raw' => 'raw',
         ),
         'allowed_formats_toggle' => 0,
         'default_order_toggle' => 0,
         'default_order_wrapper' => array(
           'formats' => array(
-            'blokindhold' => array(
-              'weight' => -7,
-            ),
             'filtered_html' => array(
               'weight' => -10,
             ),
             'full_html' => array(
               'weight' => -9,
             ),
-            'php_code' => array(
-              'weight' => -6,
-            ),
             'plain_text' => array(
               'weight' => -8,
-            ),
-            'raw' => array(
-              'weight' => 0,
             ),
           ),
         ),
       ),
       'linkit' => array(
+        'button_text' => 'Search',
         'enable' => 0,
-        'insert_plugin' => '',
+        'profile' => '',
       ),
       'text_processing' => 0,
       'user_register_form' => FALSE,
@@ -127,7 +116,7 @@ function os2web_cp_service_field_default_field_instances() {
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 0,
+        'weight' => 1,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -275,11 +264,11 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 3,
+        'weight' => 7,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -341,7 +330,7 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'date',
         'settings' => array(
           'format_type' => 'long',
@@ -352,7 +341,7 @@ function os2web_cp_service_field_default_field_instances() {
           'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
-        'weight' => 18,
+        'weight' => 5,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -403,7 +392,7 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'date',
         'settings' => array(
           'format_type' => 'long',
@@ -414,7 +403,7 @@ function os2web_cp_service_field_default_field_instances() {
           'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
-        'weight' => 6,
+        'weight' => 10,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -487,11 +476,11 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 13,
+        'weight' => 4,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -545,14 +534,10 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
-        'module' => 'entityreference',
-        'settings' => array(
-          'bypass_access' => FALSE,
-          'link' => FALSE,
-        ),
-        'type' => 'entityreference_label',
-        'weight' => 7,
+        'label' => 'inline',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 15,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -618,7 +603,7 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'date',
         'settings' => array(
           'format_type' => 'long',
@@ -629,7 +614,7 @@ function os2web_cp_service_field_default_field_instances() {
           'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
-        'weight' => 17,
+        'weight' => 11,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -682,15 +667,9 @@ function os2web_cp_service_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'number',
-        'settings' => array(
-          'decimal_separator' => '.',
-          'prefix_suffix' => TRUE,
-          'scale' => 0,
-          'thousand_separator' => '',
-        ),
-        'type' => 'number_integer',
-        'weight' => 16,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 20,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -749,7 +728,7 @@ function os2web_cp_service_field_default_field_instances() {
         'label' => 'hidden',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 21,
+        'weight' => 23,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -802,6 +781,121 @@ function os2web_cp_service_field_default_field_instances() {
   );
 
   // Exported field_instance:
+  // 'node-os2web_cp_service_cp_case-field_os2web_cp_service_geomap'.
+  $field_instances['node-os2web_cp_service_cp_case-field_os2web_cp_service_geomap'] = array(
+    'bundle' => 'os2web_cp_service_cp_case',
+    'default_value' => array(),
+    'deleted' => 0,
+    'description' => '',
+    'display' => array(
+      'default' => array(
+        'label' => 'above',
+        'module' => 'leaflet',
+        'settings' => array(
+          'height' => 400,
+          'icon' => array(
+            'html' => '',
+            'htmlClass' => '',
+            'iconAnchor' => array(
+              'x' => '',
+              'y' => '',
+            ),
+            'iconImageStyle' => '',
+            'iconSize' => array(
+              'x' => '',
+              'y' => '',
+            ),
+            'iconType' => 'marker',
+            'iconUrl' => '',
+            'popupAnchor' => array(
+              'x' => '',
+              'y' => '',
+            ),
+            'shadowAnchor' => array(
+              'x' => '',
+              'y' => '',
+            ),
+            'shadowUrl' => '',
+          ),
+          'leaflet_map' => 'OSM Mapnik',
+          'popup' => array(
+            'show' => 0,
+            'text' => '',
+          ),
+          'vector_display' => array(
+            'clickable' => 0,
+            'color' => '',
+            'dashArray' => '',
+            'fill' => 0,
+            'fillColor' => '',
+            'fillOpacity' => '',
+            'opacity' => '',
+            'stroke' => 0,
+            'stroke_override' => 0,
+            'weight' => '',
+          ),
+          'zoom' => array(
+            'initialZoom' => -1,
+            'maxZoom' => -1,
+            'minZoom' => 1,
+            'scrollWheelZoom' => 1,
+          ),
+        ),
+        'type' => 'geofield_leaflet',
+        'weight' => 14,
+      ),
+      'spotbox' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+      'teaser' => array(
+        'label' => 'above',
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 0,
+      ),
+    ),
+    'entity_type' => 'node',
+    'field_name' => 'field_os2web_cp_service_geomap',
+    'label' => 'Geomap',
+    'required' => 0,
+    'settings' => array(
+      'user_register_form' => FALSE,
+    ),
+    'widget' => array(
+      'active' => 1,
+      'module' => 'geocoder',
+      'settings' => array(
+        'delta_handling' => 'default',
+        'geocoder_field' => 'field_os2web_cp_service_address',
+        'geocoder_handler' => 'openstreetmap_nominatim',
+        'handler_settings' => array(
+          'google' => array(
+            'all_results' => 0,
+            'biasing' => array(
+              'bounds' => '',
+              'components' => '',
+              'region' => '',
+            ),
+            'geometry_type' => 'point',
+            'reject_results' => array(
+              'APPROXIMATE' => 0,
+              'GEOMETRIC_CENTER' => 0,
+              'RANGE_INTERPOLATED' => 0,
+              'ROOFTOP' => 0,
+            ),
+          ),
+        ),
+        'latlng_override' => 0,
+      ),
+      'type' => 'geocoder',
+      'weight' => 26,
+    ),
+  );
+
+  // Exported field_instance:
   // 'node-os2web_cp_service_cp_case-field_os2web_cp_service_key'.
   $field_instances['node-os2web_cp_service_cp_case-field_os2web_cp_service_key'] = array(
     'bundle' => 'os2web_cp_service_cp_case',
@@ -810,11 +904,11 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 9,
+        'weight' => 0,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -898,10 +992,9 @@ function os2web_cp_service_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 11,
+        'type' => 'hidden',
+        'weight' => 21,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -964,11 +1057,11 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 22,
+        'weight' => 6,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -1043,10 +1136,9 @@ function os2web_cp_service_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'list',
         'settings' => array(),
-        'type' => 'list_default',
-        'weight' => 14,
+        'type' => 'hidden',
+        'weight' => 19,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -1100,11 +1192,11 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'list',
         'settings' => array(),
         'type' => 'list_default',
-        'weight' => 5,
+        'weight' => 9,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -1168,7 +1260,7 @@ function os2web_cp_service_field_default_field_instances() {
         'label' => 'above',
         'settings' => array(),
         'type' => 'hidden',
-        'weight' => 20,
+        'weight' => 22,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -1238,11 +1330,11 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 4,
+        'weight' => 8,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -1304,10 +1396,9 @@ function os2web_cp_service_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'taxonomy',
         'settings' => array(),
-        'type' => 'taxonomy_term_reference_link',
-        'weight' => 10,
+        'type' => 'hidden',
+        'weight' => 17,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -1364,7 +1455,7 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'date',
         'settings' => array(
           'format_type' => 'long',
@@ -1375,7 +1466,7 @@ function os2web_cp_service_field_default_field_instances() {
           'show_remaining_days' => FALSE,
         ),
         'type' => 'date_default',
-        'weight' => 19,
+        'weight' => 12,
       ),
       'spotbox' => array(
         'label' => 'above',
@@ -1427,11 +1518,11 @@ function os2web_cp_service_field_default_field_instances() {
     'description' => '',
     'display' => array(
       'default' => array(
-        'label' => 'above',
+        'label' => 'inline',
         'module' => 'text',
         'settings' => array(),
         'type' => 'text_default',
-        'weight' => 8,
+        'weight' => 3,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -1492,17 +1583,9 @@ function os2web_cp_service_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'above',
-        'module' => 'date',
-        'settings' => array(
-          'format_type' => 'long',
-          'fromto' => 'both',
-          'multiple_from' => '',
-          'multiple_number' => '',
-          'multiple_to' => '',
-          'show_remaining_days' => FALSE,
-        ),
-        'type' => 'date_default',
-        'weight' => 15,
+        'settings' => array(),
+        'type' => 'hidden',
+        'weight' => 18,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -1567,10 +1650,9 @@ function os2web_cp_service_field_default_field_instances() {
     'display' => array(
       'default' => array(
         'label' => 'inline',
-        'module' => 'text',
         'settings' => array(),
-        'type' => 'text_default',
-        'weight' => 1,
+        'type' => 'hidden',
+        'weight' => 16,
       ),
       'includeable' => array(
         'label' => 'above',
@@ -3046,6 +3128,7 @@ function os2web_cp_service_field_default_field_instances() {
 
   // Translatables
   // Included for use with string extractors like potx.
+  t('Adresse');
   t('CPR');
   t('Delivered status');
   t('DokumentID');
@@ -3055,6 +3138,7 @@ function os2web_cp_service_field_default_field_instances() {
   t('Ejendomsnummer');
   t('Filformat');
   t('FullXML');
+  t('Geomap');
   t('Indhold - File');
   t('Indhold - FileID');
   t('Indholdsbeskrivelse');
@@ -3073,7 +3157,6 @@ function os2web_cp_service_field_default_field_instances() {
   t('Sagsindhold');
   t('Sagsnummer');
   t('Sagsstatus - Sagstypebetegnelse');
-  t('Sagstitel');
   t('Sagstype - Sagstype');
   t('StatusRedigeringsdato');
   t('Sync timestamp');
