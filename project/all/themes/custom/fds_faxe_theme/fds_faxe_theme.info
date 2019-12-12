@@ -1,0 +1,20 @@
+name = 'FDS faxe theme'
+core = '7.x'
+screenshot = 'screenshot.png'
+base theme = 'fds_base_theme'
+
+regions[content__sidebar_left] = 'Content - sidebar - left'
+regions[help] = 'Help'
+regions[content__center] = 'Content - center'
+regions[content__sidebar_right] = 'Content - sidebar - right'
+
+regions[footer__row_1] = 'Footer - row - above columns'
+regions[footer__column_1] = 'Footer - column 1 (2/4)'
+regions[footer__column_2] = 'Footer - column 2 (1/4)'
+regions[footer__column_3] = 'Footer - column 3 (1/4)'
+regions[footer__row_2] = 'Footer - row - below columns'
+
+regions[navigation]     = 'Navigation'
+regions[header]         = 'Top Bar'
+regions[help]           = 'Help'
+regions[content]        = 'Content'
