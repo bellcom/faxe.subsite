@@ -1,0 +1,6 @@
+#admin-menu-wrapper ul {
+    max-width: none;
+}
+#admin-menu-wrapper ul li:before {
+    content: '';
+}

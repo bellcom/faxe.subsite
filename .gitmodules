@@ -1,3 +1,6 @@
 [submodule "public_html"]
 	path = public_html
 	url = git@github.com:bellcom/os2_subsite.git
+[submodule "project/all/themes/custom/fds_base_theme"]
+	path = project/all/themes/custom/fds_base_theme
+	url = git@github.com:bellcom/fds_base_theme.git
