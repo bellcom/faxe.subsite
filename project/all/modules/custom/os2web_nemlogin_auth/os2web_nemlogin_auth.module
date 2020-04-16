@@ -47,6 +47,11 @@ function os2web_nemlogin_auth_form_user_login_alter(&$form, &$form_state, $form_
       // Member not found, save PID into session to be used in
       // os2web_nemid_login_user_login.
       $_SESSION['os2web_nemlogin_auth_pid'] = $pid;
+
+      if (variable_get('nemlogin_idp_fetch_bfe_numbers', NEMLOGIN_IDP_FETCH_BFE_NUMBERS)) {
+        $bfe_numbers = !empty($nemlogin_object) ? $nemlogin_object->fetchValue('esb') : NULL;
+        $_SESSION['os2web_nemlogin_auth_bfe_numberd'] = $bfe_numbers;
+      }
     }
 
     $form['actions']['nemid_login_link'] = array(

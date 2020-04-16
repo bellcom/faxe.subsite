@@ -4,6 +4,7 @@ define('NEMLOGIN_IDP_LOGINSERVICE_PATH', '/service/loginservice.wsdl');
 define('NEMLOGIN_IDP_LOGIN_PATH', '/nemlogin.php');
 define('NEMLOGIN_IDP_LOGOUT_PATH', '/nemlogout.php');
 define('NEMLOGIN_IDP_FETCH_ONCE', TRUE);
+define('NEMLOGIN_IDP_FETCH_BFE_NUMBERS', FALSE);
 
 /**
  * Ctools plugin class NemloginAuthIDP.
@@ -39,6 +40,7 @@ class NemloginAuthIDP extends NemloginAuth {
   public function __construct() {
     $this->idpUrl = variable_get('nemlogin_idp_url');
     $this->fetchOnce = variable_get('nemlogin_idp_fetch_once', NEMLOGIN_IDP_FETCH_ONCE);
+    $this->fetchBFE = variable_get('nemlogin_idp_fetch_bfe_numbers', NEMLOGIN_IDP_FETCH_BFE_NUMBERS);
 
     if (!valid_url($this->idpUrl, TRUE)) {
       watchdog("Nemlogin Idp", 'Idp URL not not valid or empty.', array(), WATCHDOG_WARNING);
@@ -74,12 +76,23 @@ class NemloginAuthIDP extends NemloginAuth {
     if (empty($_REQUEST['token'])) {
       global $base_url;
       $forward_url = $base_url . request_uri();
-      $url = url($this->idpUrl . NEMLOGIN_IDP_LOGIN_PATH, array(
+      if ($this->fetchBFE) {
+        $url = url($this->idpUrl . NEMLOGIN_IDP_LOGIN_PATH, array(
+        'query' => array(
+          'mnemo' => variable_get('nemlogin_idp_mnemo'),
+          'esb' => 1,
+          'forward' => $forward_url,
+        ),
+      ));
+      }
+      else {
+        $url = url($this->idpUrl . NEMLOGIN_IDP_LOGIN_PATH, array(
         'query' => array(
           'mnemo' => variable_get('nemlogin_idp_mnemo'),
           'forward' => $forward_url,
         ),
       ));
+      }
       header('Location: ' . $url, TRUE, 302);
       drupal_exit($url);
     }
@@ -230,6 +243,12 @@ class NemloginAuthIDP extends NemloginAuth {
       '#title' => t('Use fetch only mode.'),
       '#default_value' => variable_get('nemlogin_idp_fetch_once', NEMLOGIN_IDP_FETCH_ONCE),
       '#description' => t('User will be logged out immediately after login. User data will be removed from session after first retrieving'),
+    );
+    $form['nemlogin_idp_fetch_bfe_numbers'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Fetch BFE numbers from datafordeler.'),
+      '#default_value' => variable_get('nemlogin_idp_fetch_bfe_numbers', NEMLOGIN_IDP_FETCH_BFE_NUMBERS),
+      '#description' => t('Will be fetched BEE numbers (real-estate-ID) a person (or company) owns'),
     );
 
     return $form;
