@@ -76,23 +76,13 @@ class NemloginAuthIDP extends NemloginAuth {
     if (empty($_REQUEST['token'])) {
       global $base_url;
       $forward_url = $base_url . request_uri();
-      if ($this->fetchBFE) {
         $url = url($this->idpUrl . NEMLOGIN_IDP_LOGIN_PATH, array(
         'query' => array(
           'mnemo' => variable_get('nemlogin_idp_mnemo'),
-          'esb' => 1,
+          'esb' => ($this->fetchBFE) ? 1 : 0,
           'forward' => $forward_url,
         ),
       ));
-      }
-      else {
-        $url = url($this->idpUrl . NEMLOGIN_IDP_LOGIN_PATH, array(
-        'query' => array(
-          'mnemo' => variable_get('nemlogin_idp_mnemo'),
-          'forward' => $forward_url,
-        ),
-      ));
-      }
       header('Location: ' . $url, TRUE, 302);
       drupal_exit($url);
     }
