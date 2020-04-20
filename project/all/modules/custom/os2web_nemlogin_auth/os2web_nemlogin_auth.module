@@ -49,7 +49,7 @@ function os2web_nemlogin_auth_form_user_login_alter(&$form, &$form_state, $form_
       $_SESSION['os2web_nemlogin_auth_pid'] = $pid;
 
       if ($nemlogin_object->fetchBFE) {
-        $bfe_numbers = !empty($nemlogin_object) ? $nemlogin_object->fetchValue('esb') : NULL;
+        $bfe_numbers = !empty($nemlogin_object) ? $nemlogin_object->fetchValue('bfe_numbers') : NULL;
         $_SESSION['os2web_nemlogin_auth_bfe_numbers'] = $bfe_numbers;
       }
     }
