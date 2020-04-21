@@ -96,6 +96,10 @@ class NemloginAuthIDP extends NemloginAuth {
     $cvr = NULL;
     $rid = NULL;
 
+    if ($this->fetchBFE) {
+      $this->getBFE($token);
+    }
+
     try {
       $response = $this->soapClient->LogIn(array('token' => $token, 'mnemo' => $mnemo));
     }
@@ -141,9 +145,6 @@ class NemloginAuthIDP extends NemloginAuth {
         }
       }
     }
-    if ($this->$this->fetchBFE) {
-       $this->values['bfe_numbers'] = $this->getBFE($token);
-    }
 
     if (!$cpr && !$cvr) {
       watchdog('nemlogin Idp', 'Could not fetch CPR / CVR. Response is empty', array(), WATCHDOG_WARNING);
@@ -161,12 +162,12 @@ class NemloginAuthIDP extends NemloginAuth {
     }
   }
 
-  private function getBFE($token){
+  public function getBFE($token){
     $ch = curl_init();
-    $url = url($this->idpUrl . NEMLOGIN_IDP_LOGIN_PATH, array(
+    $url = url($this->idpUrl . NEMLOGIN_IDP_FETCH_BFE_PATH, array(
         'query' => array(
-          'mnemo' => variable_get('nemlogin_idp_mnemo'),
           'token' => $token,
+          'mnemo' => variable_get('nemlogin_idp_mnemo'),
           'esb' => 1,
         ),
       ));
@@ -177,7 +178,7 @@ class NemloginAuthIDP extends NemloginAuth {
     if ($response) {
       $response = json_decode($response, TRUE);
       if ($response['ok']) {
-       return $response['esb'];
+       $this->values['bfe_numbers'] = $response['esb'];
       }
       else {
         watchdog('nemlogin Idp', 'Could not fetch BFE. Error: %err', array('%err' => $response['message']), WATCHDOG_WARNING);
