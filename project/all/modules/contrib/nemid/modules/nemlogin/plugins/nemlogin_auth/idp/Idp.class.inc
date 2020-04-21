@@ -77,7 +77,7 @@ class NemloginAuthIDP extends NemloginAuth {
     if (empty($_REQUEST['token'])) {
       global $base_url;
       $forward_url = $base_url . request_uri();
-        $url = url($this->idpUrl . NEMLOGIN_IDP_LOGIN_PATH, array(
+      $url = url($this->idpUrl . NEMLOGIN_IDP_LOGIN_PATH, array(
         'query' => array(
           'mnemo' => variable_get('nemlogin_idp_mnemo'),
           'forward' => $forward_url,
