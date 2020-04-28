@@ -4,6 +4,8 @@ define('NEMLOGIN_IDP_LOGINSERVICE_PATH', '/service/loginservice.wsdl');
 define('NEMLOGIN_IDP_LOGIN_PATH', '/nemlogin.php');
 define('NEMLOGIN_IDP_LOGOUT_PATH', '/nemlogout.php');
 define('NEMLOGIN_IDP_FETCH_ONCE', TRUE);
+define('NEMLOGIN_IDP_FETCH_BFE_NUMBERS', FALSE);
+define('NEMLOGIN_IDP_FETCH_BFE_PATH', '/service/loginservice.json.php');
 
 /**
  * Ctools plugin class NemloginAuthIDP.
@@ -39,6 +41,7 @@ class NemloginAuthIDP extends NemloginAuth {
   public function __construct() {
     $this->idpUrl = variable_get('nemlogin_idp_url');
     $this->fetchOnce = variable_get('nemlogin_idp_fetch_once', NEMLOGIN_IDP_FETCH_ONCE);
+    $this->fetchBFE = variable_get('nemlogin_idp_fetch_bfe_numbers', NEMLOGIN_IDP_FETCH_BFE_NUMBERS);
 
     if (!valid_url($this->idpUrl, TRUE)) {
       watchdog("Nemlogin Idp", 'Idp URL not not valid or empty.', array(), WATCHDOG_WARNING);
@@ -92,6 +95,10 @@ class NemloginAuthIDP extends NemloginAuth {
     $pid = NULL;
     $cvr = NULL;
     $rid = NULL;
+
+    if ($this->fetchBFE) {
+      $this->getBFE($token);
+    }
 
     try {
       $response = $this->soapClient->LogIn(array('token' => $token, 'mnemo' => $mnemo));
@@ -152,6 +159,33 @@ class NemloginAuthIDP extends NemloginAuth {
     }
     else {
       drupal_goto($return_to_url);
+    }
+  }
+
+  public function getBFE($token){
+    $ch = curl_init();
+    $url = url($this->idpUrl . NEMLOGIN_IDP_FETCH_BFE_PATH, array(
+        'query' => array(
+          'token' => $token,
+          'mnemo' => variable_get('nemlogin_idp_mnemo'),
+          'esb' => 1,
+        ),
+      ));
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_SSLVERSION, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $response = curl_exec($ch);
+    if ($response) {
+      $response = json_decode($response, TRUE);
+      if ($response['ok']) {
+       $this->values['bfe_numbers'] = $response['esb'];
+      }
+      else {
+        watchdog('nemlogin Idp', 'Could not fetch BFE. Error: %err', array('%err' => $response['message']), WATCHDOG_WARNING);
+      }
+    }
+    else {
+      watchdog('nemlogin Idp', 'Could not fetch BFE. Response is empty', array(), WATCHDOG_WARNING);
     }
   }
 
@@ -230,6 +264,12 @@ class NemloginAuthIDP extends NemloginAuth {
       '#title' => t('Use fetch only mode.'),
       '#default_value' => variable_get('nemlogin_idp_fetch_once', NEMLOGIN_IDP_FETCH_ONCE),
       '#description' => t('User will be logged out immediately after login. User data will be removed from session after first retrieving'),
+    );
+    $form['nemlogin_idp_fetch_bfe_numbers'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Fetch BFE numbers from datafordeler.'),
+      '#default_value' => variable_get('nemlogin_idp_fetch_bfe_numbers', NEMLOGIN_IDP_FETCH_BFE_NUMBERS),
+      '#description' => t('Will be fetched BEE numbers (real-estate-ID) a person (or company) owns'),
     );
 
     return $form;
