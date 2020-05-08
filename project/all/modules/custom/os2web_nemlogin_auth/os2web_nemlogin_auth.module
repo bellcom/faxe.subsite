@@ -116,6 +116,34 @@ function os2web_nemlogin_auth_get_pid() {
 }
 
 /**
+ * Fetches the stored values from a sessions
+ *
+ * @param string $type
+ *  The type of value to be fetched (CPR, CVR, PID, BFE).
+ *
+ * @return string|NULL
+ *   CPR if it can be found,
+ *   FALSE otherwise.
+ */
+function os2web_nemlogin_auth_get_value($type) {
+  // Try fetching from session variable.
+  if (!empty($_SESSION['os2web_nemlogin_auth_' . $type])) {
+    $value = $_SESSION['os2web_nemlogin_auth_' . $type];
+    return $value;
+  }
+  else {
+    // There is a chance, CPR has not been stored in the session yet,
+    // Attempt to fetch CPR nemlogin plugin.
+    $nemlogin_object = nemlogin_get_plugin_object();
+    $value = !empty($nemlogin_object) ? $nemlogin_object->fetchValue($type) : NULL;
+    if ($value) {
+      $_SESSION['os2web_nemlogin_auth_' . $type] = $value;
+      return $value;
+    }
+  }
+}
+
+/**
  * Removing the stored PID from a session.
  */
 function os2web_nemlogin_auth_unset_pid() {

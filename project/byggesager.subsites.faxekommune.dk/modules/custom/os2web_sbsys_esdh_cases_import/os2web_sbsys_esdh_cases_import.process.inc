@@ -12,8 +12,8 @@
  */
 function os2web_sbsys_esdh_cases_import_fixed_case_field_values() {
   return array(
-    'Sagstype - Sagstype' => 'BYGGESAG',
-    'Delivered status' => 0,
+    'Sagstype - Sagstype' => array('BYGGESAG'),
+    'Delivered status' => array(0),
   );
 }
 
@@ -78,6 +78,7 @@ function os2web_sbsys_esdh_cases_import_load_json_path_library() {
     return FALSE;
   }
 
+
   // Loading jsonPath library.
   require_once reset($files);
 
@@ -99,7 +100,7 @@ function os2web_sbsys_esdh_cases_import_case($case, $force = FALSE) {
   }
 
   $case_data = os2web_esdh_provider_invoke('cm', 'get_case_data', $case['uri']);
-  
+
   if (empty($case_data)) {
     lock_release($lock);
     return;
@@ -126,9 +127,13 @@ function os2web_sbsys_esdh_cases_import_case($case, $force = FALSE) {
   );
   foreach ($case_fields_mapping as $field_name => $field_mapping) {
     $value = jsonPath($case_data, $field_mapping);
-    if (isset($value[0]) && !empty(trim($value[0]))) {
-      os2web_sbsys_esdh_cases_import_case_data_preprocess($field_name, $value[0]);
-      $publication['fields'][$field_name] = $value[0];
+    if (is_array($value)) {
+      foreach($value as $key => $val) {
+        if (!empty(trim($val))) {
+          os2web_sbsys_esdh_cases_import_case_data_preprocess($field_name, $val);
+          $publication['fields'][$field_name][$key] = $val;
+        }
+      }
     }
   }
   os2web_cp_service_create_case($publication);

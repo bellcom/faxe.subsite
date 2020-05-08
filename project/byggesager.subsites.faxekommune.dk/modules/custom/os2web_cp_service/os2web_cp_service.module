@@ -489,11 +489,11 @@ function os2web_cp_service_create_case(array $data) {
     case 'EJSAG':
       // Old cases comes as: "Birkevej (8410) 11, 8410 Rønde"
       // regex removes " (8410)"
-      $node->title = (string) preg_replace('/\s\(\d{4}\)/', '', $data['fields']['Sagstitel']);
+      $node->title = (string) preg_replace('/\s\(\d{4}\)/', '', $data['fields']['Sagstitel'][0]);
       break;
 
     default:
-      $node->title = (string) !empty($data['fields']['Sagstitel'])?$data['fields']['Sagstitel'] : $data['fields']['Officiel titel'];
+      $node->title = (string) !empty($data['fields']['Sagstitel'][0])?$data['fields']['Sagstitel'][0] : $data['fields']['Officiel titel'][0];
       break;
   }
   if (strlen($node->title) > 250) {
@@ -508,25 +508,26 @@ function os2web_cp_service_create_case(array $data) {
   $node_fields = field_info_instances('node', 'os2web_cp_service_cp_case');
 
   foreach ($node_fields as $field_name => $field) {
+    $field_info = field_info_field($field_name);
+    if (!is_array($data['fields'][$field['label']])) continue;
+    foreach ($data['fields'][$field['label']] as $key => $value) {
     if (isset($data['fields'][$field['label']]) && $field_name !== 'title') {
-
       $field_info = field_info_field($field_name);
-
       switch ($field_info['type']) {
         case 'text':
           if ($field['label'] === 'Sagstitel' && $data['fields']['Sagstype - Sagstype'] === 'EJSAG') {
-            $node->{$field_name}[LANGUAGE_NONE][0]['value'] = (string) preg_replace('/\s\(\d{4}\)/', '', $data['fields']['Sagstitel']);
-            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_info_type: ' . $field['label'] . ' = ' . $data['fields']['Sagstitel']);
+            $node->{$field_name}[LANGUAGE_NONE][$key]['value'] = (string) preg_replace('/\s\(\d{4}\)/', '', $value);
+            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_info_type: ' . $field['label'] . ' = ' . $value);
           }
           else {
-            $node->{$field_name}[LANGUAGE_NONE][0]['value'] = (string) $data['fields'][$field['label']];
-            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
+            $node->{$field_name}[LANGUAGE_NONE][$key]['value'] = (string) $value;
+            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_info_type: ' . $field['label'] . ' = ' . $value);
           }
           break;
 
         case 'taxonomy_term_reference':
           $choosen_term = NULL;
-          os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
+          os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $value);
 
           // Search of the term in KLE vocabulary.
           if (strpos($field['label'], 'KL emnenummer') !== FALSE) {
@@ -535,7 +536,7 @@ function os2web_cp_service_create_case(array $data) {
             $terms = taxonomy_get_tree($vocabulary->vid);
             foreach ($terms as $term) {
               // Does the term start with the numbers xx.xx.xx.
-              if (strpos($term->name, substr($data['fields'][$field['label']], 0, strpos($data['fields'][$field['label']], ' '))) !== FALSE) {
+              if (strpos($term->name, substr($value, 0, strpos($value, ' '))) !== FALSE) {
                 $choosen_term = $term->name;
                 break;
               }
@@ -545,8 +546,8 @@ function os2web_cp_service_create_case(array $data) {
           // If non found, find in every vocabularies.
           // Retrieve the first occurance of the term.
           if (empty($choosen_term)) {
-            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
-            $choosen_term = array_pop(taxonomy_get_term_by_name((string) $data['fields'][$field['label']], NULL));
+            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $value);
+            $choosen_term = array_pop(taxonomy_get_term_by_name((string) $value, NULL));
           }
 
           if (!empty($choosen_term)) {
@@ -559,12 +560,12 @@ function os2web_cp_service_create_case(array $data) {
 
         default:
           os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_default: ' . $field['label'] . ' = ' . print_r($data['fields'],true));
-          $node->{$field_name}[LANGUAGE_NONE][0]['value'] = $data['fields'][$field['label']];
+          $node->{$field_name}[LANGUAGE_NONE][$key]['value'] = $value;
           break;
       }
     }
   }
-
+  }
   unset($node->field_os2web_cp_service_rules[LANGUAGE_NONE]);
   foreach ($data['rules'] as $rule) {
     $term = taxonomy_get_term_by_name($rule['name'], 'os2web_cp_service_tax_rules');
@@ -654,6 +655,7 @@ function os2web_cp_service_default_case() {
       'Officiel titel' => NULL,
       'Sagsindhold' => NULL,
       'CPR' => NULL,
+      'CVR' => NULL,
       'Matrikel' => NULL,
       'Ejendomsnummer' => NULL,
       'Sagsstatus - Sagstype' => NULL,

@@ -55,28 +55,35 @@ function os2web_bygge_cases_node_access($node, $op, $account) {
   if ($op == 'view') {
     $type = is_string($node) ? $node : $node->type;
     if ($type == 'os2web_cp_service_cp_case') {
-      $field_os2web_cp_service_pid_nr = field_get_items('node', $node, 'field_os2web_cp_service_pid_nr');
 
+      $field_os2web_cp_service_cpr_nr = field_get_items('node', $node, 'field_os2web_cp_service_pid_nr');
+      $field_os2web_cp_service_cvr_nr = field_get_items('node', $node, 'field_os2web_cp_service_cvr_nr');
+      if (!empty($field_os2web_cp_service_cpr_nr) && !empty($field_os2web_cp_service_cvr_nr)) {
+        $owners_cpr_cvr_nr =array_merge($field_os2web_cp_service_cpr_nr, $field_os2web_cp_service_cvr_nr);
+      }
+      else {
+        $owners_cpr_cvr_nr = !empty($field_os2web_cp_service_cpr_nr) ? $field_os2web_cp_service_cpr_nr : $field_os2web_cp_service_cvr_nr;
+      }
+      $cpr = os2web_nemlogin_auth_get_value('cpr');
+      $cvr = os2web_nemlogin_auth_get_value('cvr');
+      $person_nr = is_null($cpr) ? $cvr : $cpr;
       // Doing check only if limit PID are set.
-      if (!empty($field_os2web_cp_service_pid_nr)) {
-        $pid = os2web_nemlogin_auth_get_pid();
+      if (!empty($owners_cpr_cvr_nr)) {
 
-        // PID not present, denying access.
-        if (!$pid) {
+        // CRP/CVR not present, denying access.
+        if (!$person_nr) {
           return NODE_ACCESS_DENY;
         }
 
         // If match is found, not restricting the access.
-        foreach ($field_os2web_cp_service_pid_nr as $pid_nr) {
-          if ($pid_nr['value'] == $pid) {
+        foreach ($owners_cpr_cvr_nr as $cpr_nr) {
+          if (str_replace('-', '', $cpr_nr['value']) == $person_nr) {
             return NODE_ACCESS_IGNORE;
           }
         }
-
         // No match is found, denying access.
         return NODE_ACCESS_DENY;
       }
-
       return NODE_ACCESS_IGNORE;
     }
     elseif ($type == 'os2web_cp_service_cp_document') {
