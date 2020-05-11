@@ -109,32 +109,13 @@ function os2web_bygge_cases_node_access($node, $op, $account) {
   return NODE_ACCESS_IGNORE;
 }
 
-/**
- * Implements hook_views_query_alter().
- */
-function os2web_bygge_cases_views_query_alter(&$view, &$query) {
-  $pid = os2web_nemlogin_auth_get_pid();
 
-  // If no PID don't do anything.
-  if (!$pid) {
-    return;
+function os2web_bygge_cases_user_can_see_case($nid) {
+  $case = node_load($nid);
+  if (!node_access('view', $case)){
+    return FALSE;
   }
-
-  // PID is present, filter the result list to only show the cases tied with
-  // this PID.
-  if ($view->name == 'os2web_bygge_case_cases' && $view->current_display === 'os2web_bygge_case_cases_page') {
-    // Traverse through the 'where' part of the query.
-    foreach ($query->where as &$condition_group) {
-      foreach ($condition_group['conditions'] as &$condition) {
-
-        // Replace the condition for field
-        // 'field_data_field_os2web_cp_service_pid_nr'.
-        if (is_string($condition['field']) && $condition['field'] == 'field_data_field_os2web_cp_service_pid_nr.field_os2web_cp_service_pid_nr_value') {
-          $condition['value'] = $pid;
-        }
-      }
-    }
-  }
+  return TRUE;
 }
 
 /**
