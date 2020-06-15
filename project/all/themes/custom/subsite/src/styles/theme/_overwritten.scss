@@ -24,6 +24,52 @@
 
 body.theme-colourings-overwritten {
 
+  // Search.
+  .table {
+    border-collapse: separate;
+    border-spacing: 2px;
+
+    th {
+      padding-top: 20px;
+      padding-bottom: 20px;
+
+      border-bottom: 0;
+
+      color: #007CA3;
+      background-color: #E6F2F6 !important;
+    }
+
+    td {
+
+      a {
+        color: $text-color;
+      }
+    }
+  }
+
+  .table-striped {
+
+    > tbody {
+
+      > tr {
+
+        &:nth-of-type(even) {
+
+          &, &:hover {
+            background-color: #F0F7F9;
+          }
+        }
+
+        &:nth-of-type(odd) {
+
+          &, &:hover {
+            background-color: #fff;
+          }
+        }
+      }
+    }
+  }
+
   // Flexy navigation.
   .flexy-navigation__item > a {
     text-transform: uppercase;
