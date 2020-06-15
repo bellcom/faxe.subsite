@@ -1,14 +1,6 @@
 <article id="node-<?php print $node->nid; ?>"
          class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
-  <?php if (!empty($title)): ?>
-    <!-- Begin - heading -->
-    <div class="node__heading">
-      <h1 class="node__heading__title"><?php print $title; ?></h1>
-    </div>
-    <!-- End - heading -->
-  <?php endif; ?>
-
     <table class="table">
         <thead>
         <tr>
