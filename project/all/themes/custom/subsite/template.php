@@ -23,6 +23,11 @@ function subsite_preprocess_html(&$variables) {
   // Add fonts from Google fonts API.
   drupal_add_css('https://fonts.googleapis.com/css?family=Lato:400,700',
     ['type' => 'external']);
+
+  $overwrite_project_colourings = theme_get_setting('project_colourings');
+  if ($overwrite_project_colourings) {
+    $variables['classes_array'][] = 'theme-colourings-overwritten';
+  }
 }
 
 /**
