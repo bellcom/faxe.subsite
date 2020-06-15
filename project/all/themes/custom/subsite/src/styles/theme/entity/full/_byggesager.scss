@@ -35,6 +35,32 @@ body.node-type-byggesag {
       }
     }
   }
+
+  .field-name-field-case-documents {
+
+    .field-item {
+      display: flex;
+
+      padding: 8px 12px;
+
+      &.odd {
+        background-color: #E6F2F6;
+      }
+    }
+
+    .file {
+
+      a {
+        flex-grow: 1;
+      }
+    }
+    .file-icon {
+      display: none;
+    }
+    .file-size {
+      color: #828282;
+    }
+  }
 }
 
 // --------------------------------------------------
