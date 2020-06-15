@@ -40,6 +40,10 @@ body.theme-colourings-overwritten {
     }
 
     td {
+      padding-top: 12px;
+      padding-bottom: 12px;
+
+      border: 0;
 
       a {
         color: $text-color;
