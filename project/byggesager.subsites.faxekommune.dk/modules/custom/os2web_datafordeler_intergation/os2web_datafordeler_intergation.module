@@ -1,0 +1,117 @@
+<?php
+/**
+ * @file
+ * Implements pluginable interface for accessing ESDH systems.
+ * All plugins should be implemented in a seperate provider module
+ * which implements the ctools api.
+ * Look to acadre_esdh for example.
+ */
+
+define('OS2WEB_DATAFORDELER_INTEGRATION_EJF_ENDPOINT', 'https://s5-certservices.datafordeler.dk/EJERFORTEGNELSE/EjerfortegnelsenFortrolig/1/rest/EjendommeMedSammeEjer');
+define('OS2WEB_DATAFORDELER_INTEGRATION_MAT_ENDPOINT', 'https://services.datafordeler.dk/MATRIKEL/Matrikel/1/REST/SamletFastEjendom');
+define('OS2WEB_DATAFORDELER_INTEGRATION_EBR_ENDPOINT', 'https://services.datafordeler.dk/EBR/Ejendomsbeliggenhed/1/REST/Ejendomsbeliggenhed?');
+
+/**
+ * Implements hook_menu().
+ */
+function os2web_datafordeler_intergation_menu() {
+   $items['admin/config/services/datafordeler_intergation'] = array(
+    'title' => 'Datafordeler intergation',
+    'description' => 'Settings for integration with datafordeler webservices',
+    'access arguments' => array('administer os2web'),
+    'file' => 'os2web_datafordeler_intergation.admin.inc',    
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2web_datafordeler_intergation_settings_form'),
+    'type' => MENU_NORMAL_ITEM,
+  );  
+  return $items;
+}
+
+function os2web_datafordeler_intergation_fetch_bfe($cpr) {
+  $params = array('format' => 'JSON', 'CPRnr'=>$cpr);
+  $curl_url = OS2WEB_DATAFORDELER_INTEGRATION_EJF_ENDPOINT .  '?' . http_build_query($params);
+  $curl_options =  array (
+    CURLOPT_PORT => 443,
+    CURLOPT_VERBOSE => 0,
+    CURLOPT_HEADER => 0,
+    CURLOPT_CAPATH => variable_get('os2web_datafordeler_intergation_cert_path', NULL),
+    CURLOPT_SSLKEY => variable_get('os2web_datafordeler_intergation_ssl_key', NULL),
+    CURLOPT_SSLCERT => variable_get('os2web_datafordeler_intergation_ssl_cert', NULL),
+    CURLOPT_SSL_VERIFYPEER => 1,
+    CURLOPT_RETURNTRANSFER => 1
+  );
+  $result = os2web_datafordeler_intergation_curl_request($curl_url, $curl_options);
+  $bfe_numbers = array();
+  if (isset($result->features)  && is_array($result->features)) {
+    foreach ($result->features as $object) {
+      $bfe_numbers[] = $object->properties->bestemtFastEjendomBFENr;
+    }
+  }
+  sort($bfe_numbers);
+  return $bfe_numbers;  
+}
+function os2web_datafordeler_intergation_fetch_matrikkel($bfe) {
+  $params = array(
+    'format' => 'JSON', 
+    'SFEBFEnr'=>$bfe, 
+    'username'=>variable_get('os2web_datafordeler_intergation_public_webservice_username', NULL), 
+    'password' => variable_get('os2web_datafordeler_intergation_public_webservice_password', NULL)
+  );
+  $curl_url = OS2WEB_DATAFORDELER_INTEGRATION_MAT_ENDPOINT .  '?' . http_build_query($params);
+  $curl_options =  array (
+    CURLOPT_HEADER => 0,
+    CURLOPT_VERBOSE => 0,
+    CURLOPT_RETURNTRANSFER => 1
+    
+  );
+  $matrikkel = '';
+  $result = os2web_datafordeler_intergation_curl_request($curl_url, $curl_options);
+  if (isset($result->features)  && is_array($result->features)) {
+     $object = array_pop($result->features);
+     if (isset($object->properties->jordstykke)  && is_array($object->properties->jordstykke)) {
+       $matrikkel=$object->properties->jordstykke[0]->properties->matrikelnummer;
+     }
+   }  
+  return $matrikkel;
+}
+function os2web_datafordeler_intergation_fetch_address($bfe) {
+  $params = array(
+    'format' => 'JSON', 
+    'BFEnr'=>$bfe, 
+    'username'=>variable_get('os2web_datafordeler_intergation_public_webservice_username', NULL), 
+    'password' => variable_get('os2web_datafordeler_intergation_public_webservice_password', NULL)
+  );
+  $curl_url = OS2WEB_DATAFORDELER_INTEGRATION_EBR_ENDPOINT .  '?' . http_build_query($params);
+  $curl_options =  array (
+    CURLOPT_HEADER => 0,
+    CURLOPT_VERBOSE => 0,
+    CURLOPT_RETURNTRANSFER => 1
+    
+  );
+  $address = '';
+  $result = os2web_datafordeler_intergation_curl_request($curl_url, $curl_options);
+  if (isset($result->features)  && is_array($result->features)) {
+    $object = array_pop($result->features);
+    if (isset($object->properties->husnummer)  && is_array($object->properties->husnummer)) {
+      $address=$object->properties->husnummer[0]->adgangsadressebetegnelse;
+    }  
+  }  
+  return $address;
+}
+function os2web_datafordeler_intergation_curl_request($curl_url, $options = array()){
+  $ch = curl_init();
+  curl_setopt($ch, CURLOPT_URL, $curl_url);
+  foreach ($options as $key => $option) {
+    curl_setopt($ch, $key , $option);
+  }
+
+  $response = curl_exec($ch);
+   if(curl_errno($ch)){
+      watchdog('os2web_datafordeler_intergation', 'cURL request was failed with error: %errno', array('%errno' => curl_error($ch)), WATCHDOG_ERROR);
+      return FALSE;
+    }
+   
+    return json_decode($response);
+   
+
+}
