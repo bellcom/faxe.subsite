@@ -619,10 +619,37 @@ function os2web_cp_service_create_case(array $data) {
     os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Setting case id to systemid: '. $data['fields']['SystemID']);
     node_save($doc_node);
   }
-
+  if (module_exists(os2web_datafordeler_intergation)) {
+      $cpr = $node->field_os2web_cp_service_pid_nr[LANGUAGE_NONE];
+      $cvr = $node->field_os2web_cp_service_cvr_nr[LANGUAGE_NONE];
+      $matrikkel = $node->field_os2web_cp_service_matrikul[LANGUAGE_NONE][0]['value'];
+      $matrikkel = strtolower($matrikkel);
+      $owner_id = $cpr ? $cpr: $cvr;
+      $bfe = os2web_datafordeler_intergation_get_bfe($owner_id, $matrikkel);
+      if (!empty($bfe)) {
+        $node->field_os2web_cp_service_bfe_nr['und'][0]['value'] = $bfe;
+        $address= os2web_datafordeler_intergation_fetch_address($bfe);
+        $term = taxonomy_get_term_by_name($address, 'os2web_cp_service_tax_addresses');
+        if (empty($term)) {
+          $addresses_vocabulary = taxonomy_vocabulary_machine_name_load('os2web_cp_service_tax_addresses');
+          $term = new stdClass();
+          $term->vid = $addresses_vocabulary->vid;
+          $term->name = $address;
+          $term->field_cp_service_tax_addr_bfe_nr[LANGUAGE_NONE][0]['value'] = $bfe;
+          taxonomy_term_save($term);
+        }
+        if (is_array($term)) {
+          $term = array_pop($term);
+        }
+        $node->field_os2web_cp_service_addr[LANGUAGE_NONE][]['tid'] = $term->tid;
+       // node_save($node);
+      }
+    }
   try {
     node_submit($node);
     node_save($node);
+
+
     os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Saving node of case: '. $doc_nid);
     return $node;
   }

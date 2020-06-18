@@ -19,12 +19,32 @@ function os2web_datafordeler_intergation_menu() {
     'title' => 'Datafordeler intergation',
     'description' => 'Settings for integration with datafordeler webservices',
     'access arguments' => array('administer os2web'),
-    'file' => 'os2web_datafordeler_intergation.admin.inc',    
+    'file' => 'os2web_datafordeler_intergation.admin.inc',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('os2web_datafordeler_intergation_settings_form'),
     'type' => MENU_NORMAL_ITEM,
-  );  
-  return $items;
+  );
+}
+
+
+function os2web_datafordeler_intergation_get_bfe($owner_ids,  $matrikkel) {
+  $bfe = '';
+  $bfe_numbers = array();
+  if (is_array($owner_ids)) {
+    foreach($owner_ids as $id) {
+      $id = str_replace('-', '', $id['value']);
+      $bfe_numbers = array_merge($bfe_numbers, os2web_datafordeler_intergation_fetch_bfe($id));
+    }
+  }
+
+  if (!empty($bfe_numbers)) {
+    foreach ($bfe_numbers as $bfe_number) {
+      if (strtolower(os2web_datafordeler_intergation_fetch_matrikkel($bfe_number)) == $matrikkel) {
+        return $bfe_number;
+      }
+    }
+  }
+  return '';
 }
 
 function os2web_datafordeler_intergation_fetch_bfe($cpr) {
@@ -48,13 +68,13 @@ function os2web_datafordeler_intergation_fetch_bfe($cpr) {
     }
   }
   sort($bfe_numbers);
-  return $bfe_numbers;  
+  return $bfe_numbers;
 }
 function os2web_datafordeler_intergation_fetch_matrikkel($bfe) {
   $params = array(
-    'format' => 'JSON', 
-    'SFEBFEnr'=>$bfe, 
-    'username'=>variable_get('os2web_datafordeler_intergation_public_webservice_username', NULL), 
+    'format' => 'JSON',
+    'SFEBFEnr'=>$bfe,
+    'username'=>variable_get('os2web_datafordeler_intergation_public_webservice_username', NULL),
     'password' => variable_get('os2web_datafordeler_intergation_public_webservice_password', NULL)
   );
   $curl_url = OS2WEB_DATAFORDELER_INTEGRATION_MAT_ENDPOINT .  '?' . http_build_query($params);
@@ -62,7 +82,7 @@ function os2web_datafordeler_intergation_fetch_matrikkel($bfe) {
     CURLOPT_HEADER => 0,
     CURLOPT_VERBOSE => 0,
     CURLOPT_RETURNTRANSFER => 1
-    
+
   );
   $matrikkel = '';
   $result = os2web_datafordeler_intergation_curl_request($curl_url, $curl_options);
@@ -71,14 +91,14 @@ function os2web_datafordeler_intergation_fetch_matrikkel($bfe) {
      if (isset($object->properties->jordstykke)  && is_array($object->properties->jordstykke)) {
        $matrikkel=$object->properties->jordstykke[0]->properties->matrikelnummer;
      }
-   }  
+   }
   return $matrikkel;
 }
 function os2web_datafordeler_intergation_fetch_address($bfe) {
   $params = array(
-    'format' => 'JSON', 
-    'BFEnr'=>$bfe, 
-    'username'=>variable_get('os2web_datafordeler_intergation_public_webservice_username', NULL), 
+    'format' => 'JSON',
+    'BFEnr'=>$bfe,
+    'username'=>variable_get('os2web_datafordeler_intergation_public_webservice_username', NULL),
     'password' => variable_get('os2web_datafordeler_intergation_public_webservice_password', NULL)
   );
   $curl_url = OS2WEB_DATAFORDELER_INTEGRATION_EBR_ENDPOINT .  '?' . http_build_query($params);
@@ -86,7 +106,7 @@ function os2web_datafordeler_intergation_fetch_address($bfe) {
     CURLOPT_HEADER => 0,
     CURLOPT_VERBOSE => 0,
     CURLOPT_RETURNTRANSFER => 1
-    
+
   );
   $address = '';
   $result = os2web_datafordeler_intergation_curl_request($curl_url, $curl_options);
@@ -94,8 +114,8 @@ function os2web_datafordeler_intergation_fetch_address($bfe) {
     $object = array_pop($result->features);
     if (isset($object->properties->husnummer)  && is_array($object->properties->husnummer)) {
       $address=$object->properties->husnummer[0]->adgangsadressebetegnelse;
-    }  
-  }  
+    }
+  }
   return $address;
 }
 function os2web_datafordeler_intergation_curl_request($curl_url, $options = array()){
@@ -110,8 +130,8 @@ function os2web_datafordeler_intergation_curl_request($curl_url, $options = arra
       watchdog('os2web_datafordeler_intergation', 'cURL request was failed with error: %errno', array('%errno' => curl_error($ch)), WATCHDOG_ERROR);
       return FALSE;
     }
-   
+
     return json_decode($response);
-   
+
 
 }

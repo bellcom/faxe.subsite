@@ -126,3 +126,24 @@ function os2web_bygge_cases_preprocess_node(&$variables) {
     $variables['content']['#cp_case_documents'] = views_embed_view('os2web_cp_service_cp_case_view', 'attachment_1', $variables['nid']);
   }
 }
+
+function os2web_bygge_cases_user_can_see_cases_by_address($tid) {
+  $bfe_numbers = os2web_nemlogin_auth_get_value('bfe_numbers');
+  $term = taxonomy_term_load($tid);
+
+  if (isset($term->field_cp_service_tax_addr_bfe_nr[LANGUAGE_NONE]) && in_array($term->field_cp_service_tax_addr_bfe_nr[LANGUAGE_NONE][0]['value'], $bfe_numbers)){
+    return TRUE;
+  }
+  return FALSE;
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function os2web_bygge_cases_views_pre_render(&$view) {
+  if ($view->name == 'os2web_bygge_case_cases' && $view->current_display == 'bygge_cases') {
+    $args = arg();
+    $term = taxonomy_term_load($args[1]);
+    $view->build_info['title'] = t('Byggesager på %address', array('%address' => $term->name));
+  }
+}

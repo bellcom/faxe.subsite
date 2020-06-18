@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2web_cp_service.views_default.inc
@@ -99,33 +100,19 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Documenter er på field_os2web_base_doc_ref';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Forbindelse: Entity Reference: Refereret entity */
+  /* Forbindelse: Handler mangler eller er i stykker */
   $handler->display->display_options['relationships']['field_os2web_base_doc_ref_target_id']['id'] = 'field_os2web_base_doc_ref_target_id';
   $handler->display->display_options['relationships']['field_os2web_base_doc_ref_target_id']['table'] = 'field_data_field_os2web_base_doc_ref';
   $handler->display->display_options['relationships']['field_os2web_base_doc_ref_target_id']['field'] = 'field_os2web_base_doc_ref_target_id';
-  /* Forbindelse: Entity Reference: Refererende entity */
+  /* Forbindelse: Handler mangler eller er i stykker */
   $handler->display->display_options['relationships']['reverse_field_os2web_base_doc_ref_node']['id'] = 'reverse_field_os2web_base_doc_ref_node';
   $handler->display->display_options['relationships']['reverse_field_os2web_base_doc_ref_node']['table'] = 'node';
   $handler->display->display_options['relationships']['reverse_field_os2web_base_doc_ref_node']['field'] = 'reverse_field_os2web_base_doc_ref_node';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Felt: Masse-handlinger: Indhold */
+  /* Felt: Handler mangler eller er i stykker */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-    'action::views_bulk_operations_delete_item' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-  );
   /* Felt: Indhold: Titel */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -146,7 +133,7 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['fields']['nid']['link_to_node'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -168,7 +155,7 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['filters']['nid_1']['relationship'] = 'reverse_field_os2web_base_doc_ref_node';
   $handler->display->display_options['filters']['nid_1']['operator'] = 'not empty';
   $handler->display->display_options['filters']['nid_1']['group'] = 1;
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
   $handler->display->display_options['filters']['status_1']['table'] = 'node';
   $handler->display->display_options['filters']['status_1']['field'] = 'status';
@@ -194,11 +181,11 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['next'] = 'næste ›';
   $handler->display->display_options['pager']['options']['tags']['last'] = 'sidste »';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Forbindelse: Entity Reference: Refereret entity */
+  /* Forbindelse: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_os2web_cp_service_doc_ref_target_id']['id'] = 'field_os2web_cp_service_doc_ref_target_id';
   $handler->display->display_options['relationships']['field_os2web_cp_service_doc_ref_target_id']['table'] = 'field_data_field_os2web_cp_service_doc_ref';
   $handler->display->display_options['relationships']['field_os2web_cp_service_doc_ref_target_id']['field'] = 'field_os2web_cp_service_doc_ref_target_id';
-  /* Forbindelse: Entity Reference: Refererende entity */
+  /* Forbindelse: Entity Reference: Referencing entity */
   $handler->display->display_options['relationships']['reverse_field_os2web_cp_service_doc_ref_node']['id'] = 'reverse_field_os2web_cp_service_doc_ref_node';
   $handler->display->display_options['relationships']['reverse_field_os2web_cp_service_doc_ref_node']['table'] = 'node';
   $handler->display->display_options['relationships']['reverse_field_os2web_cp_service_doc_ref_node']['field'] = 'reverse_field_os2web_cp_service_doc_ref_node';
@@ -217,7 +204,7 @@ function os2web_cp_service_views_default_views() {
     2 => 'AND',
   );
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -246,29 +233,15 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['defaults']['title'] = FALSE;
   $handler->display->display_options['title'] = 'Documenter er på field_os2web_base_doc_ref_single';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Forbindelse: Entity Reference: Refererende entity */
+  /* Forbindelse: Handler mangler eller er i stykker */
   $handler->display->display_options['relationships']['reverse_field_os2web_base_doc_ref_single_node']['id'] = 'reverse_field_os2web_base_doc_ref_single_node';
   $handler->display->display_options['relationships']['reverse_field_os2web_base_doc_ref_single_node']['table'] = 'node';
   $handler->display->display_options['relationships']['reverse_field_os2web_base_doc_ref_single_node']['field'] = 'reverse_field_os2web_base_doc_ref_single_node';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Felt: Masse-handlinger: Indhold */
+  /* Felt: Handler mangler eller er i stykker */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-    'action::views_bulk_operations_delete_item' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-  );
   /* Felt: Indhold: Titel */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -289,7 +262,7 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['fields']['nid']['link_to_node'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -311,7 +284,7 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['filters']['nid_1']['relationship'] = 'reverse_field_os2web_base_doc_ref_single_node';
   $handler->display->display_options['filters']['nid_1']['operator'] = 'not empty';
   $handler->display->display_options['filters']['nid_1']['group'] = 1;
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status_1']['id'] = 'status_1';
   $handler->display->display_options['filters']['status_1']['table'] = 'node';
   $handler->display->display_options['filters']['status_1']['field'] = 'status';
@@ -328,36 +301,21 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['query']['options']['pure_distinct'] = TRUE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Forbindelse: Indhold: Afsnit (field_os2web_paragraphs) */
+  /* Forbindelse: Handler mangler eller er i stykker */
   $handler->display->display_options['relationships']['field_os2web_paragraphs_value']['id'] = 'field_os2web_paragraphs_value';
   $handler->display->display_options['relationships']['field_os2web_paragraphs_value']['table'] = 'field_data_field_os2web_paragraphs';
   $handler->display->display_options['relationships']['field_os2web_paragraphs_value']['field'] = 'field_os2web_paragraphs_value';
-  $handler->display->display_options['relationships']['field_os2web_paragraphs_value']['delta'] = '-1';
-  /* Forbindelse: Entity Reference: Refereret entity */
+  /* Forbindelse: Handler mangler eller er i stykker */
   $handler->display->display_options['relationships']['field_os2web_base_doc_ref_target_id']['id'] = 'field_os2web_base_doc_ref_target_id';
   $handler->display->display_options['relationships']['field_os2web_base_doc_ref_target_id']['table'] = 'field_data_field_os2web_base_doc_ref';
   $handler->display->display_options['relationships']['field_os2web_base_doc_ref_target_id']['field'] = 'field_os2web_base_doc_ref_target_id';
   $handler->display->display_options['relationships']['field_os2web_base_doc_ref_target_id']['relationship'] = 'field_os2web_paragraphs_value';
   $handler->display->display_options['relationships']['field_os2web_base_doc_ref_target_id']['label'] = '(field collection) Indhold entity refereret fra field_os2web_base_doc_ref';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Felt: Masse-handlinger: Indhold */
+  /* Felt: Handler mangler eller er i stykker */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-    'action::views_bulk_operations_delete_item' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-  );
   /* Felt: Indhold: Titel */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -414,33 +372,19 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['next'] = 'næste ›';
   $handler->display->display_options['pager']['options']['tags']['last'] = 'sidste »';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Forbindelse: Entity Reference: Refereret entity */
+  /* Forbindelse: Handler mangler eller er i stykker */
   $handler->display->display_options['relationships']['field_os2web_base_case_ref_target_id']['id'] = 'field_os2web_base_case_ref_target_id';
   $handler->display->display_options['relationships']['field_os2web_base_case_ref_target_id']['table'] = 'field_data_field_os2web_base_case_ref';
   $handler->display->display_options['relationships']['field_os2web_base_case_ref_target_id']['field'] = 'field_os2web_base_case_ref_target_id';
-  /* Forbindelse: Entity Reference: Refererende entity */
+  /* Forbindelse: Handler mangler eller er i stykker */
   $handler->display->display_options['relationships']['reverse_field_os2web_base_case_ref_node']['id'] = 'reverse_field_os2web_base_case_ref_node';
   $handler->display->display_options['relationships']['reverse_field_os2web_base_case_ref_node']['table'] = 'node';
   $handler->display->display_options['relationships']['reverse_field_os2web_base_case_ref_node']['field'] = 'reverse_field_os2web_base_case_ref_node';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Felt: Masse-handlinger: Indhold */
+  /* Felt: Handler mangler eller er i stykker */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-    'action::views_bulk_operations_delete_item' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 1,
-      'override_label' => 0,
-      'label' => '',
-    ),
-  );
   /* Felt: Indhold: Titel */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -462,7 +406,7 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['fields']['nid_1']['link_to_node'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -493,36 +437,21 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['query']['options']['distinct'] = TRUE;
   $handler->display->display_options['query']['options']['pure_distinct'] = TRUE;
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Forbindelse: Indhold: Afsnit (field_os2web_paragraphs) */
+  /* Forbindelse: Handler mangler eller er i stykker */
   $handler->display->display_options['relationships']['field_os2web_paragraphs_value']['id'] = 'field_os2web_paragraphs_value';
   $handler->display->display_options['relationships']['field_os2web_paragraphs_value']['table'] = 'field_data_field_os2web_paragraphs';
   $handler->display->display_options['relationships']['field_os2web_paragraphs_value']['field'] = 'field_os2web_paragraphs_value';
-  $handler->display->display_options['relationships']['field_os2web_paragraphs_value']['delta'] = '-1';
-  /* Forbindelse: Entity Reference: Refereret entity */
+  /* Forbindelse: Handler mangler eller er i stykker */
   $handler->display->display_options['relationships']['field_os2web_base_case_ref_target_id']['id'] = 'field_os2web_base_case_ref_target_id';
   $handler->display->display_options['relationships']['field_os2web_base_case_ref_target_id']['table'] = 'field_data_field_os2web_base_case_ref';
   $handler->display->display_options['relationships']['field_os2web_base_case_ref_target_id']['field'] = 'field_os2web_base_case_ref_target_id';
   $handler->display->display_options['relationships']['field_os2web_base_case_ref_target_id']['relationship'] = 'field_os2web_paragraphs_value';
   $handler->display->display_options['relationships']['field_os2web_base_case_ref_target_id']['label'] = '(field collection) Indhold entity refereret fra field_os2web_base_case_ref';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Felt: Masse-handlinger: Indhold */
+  /* Felt: Handler mangler eller er i stykker */
   $handler->display->display_options['fields']['views_bulk_operations']['id'] = 'views_bulk_operations';
   $handler->display->display_options['fields']['views_bulk_operations']['table'] = 'views_entity_node';
   $handler->display->display_options['fields']['views_bulk_operations']['field'] = 'views_bulk_operations';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['display_type'] = '0';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['enable_select_all_pages'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['row_clickable'] = 1;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['force_single'] = 0;
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_settings']['entity_load_capacity'] = '10';
-  $handler->display->display_options['fields']['views_bulk_operations']['vbo_operations'] = array(
-    'action::views_bulk_operations_delete_item' => array(
-      'selected' => 1,
-      'postpone_processing' => 0,
-      'skip_confirmation' => 0,
-      'override_label' => 0,
-      'label' => '',
-    ),
-  );
   /* Felt: Indhold: Titel */
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
@@ -624,25 +553,24 @@ function os2web_cp_service_views_default_views() {
     t('sidste »'),
     t('Titel'),
     t('Documenter er på field_os2web_base_doc_ref'),
-    t('Indhold entity refereret fra field_os2web_base_doc_ref'),
-    t('Indhold refererer til Indhold fra field_os2web_base_doc_ref'),
-    t('Indhold'),
-    t('- Vælg en handling -'),
+    t('field_os2web_base_doc_ref_target_id'),
+    t('reverse_field_os2web_base_doc_ref_node'),
+    t('Handler i stykker views_entity_node.views_bulk_operations'),
     t('Dok Nid'),
     t('Indholdside Nid'),
     t('Dokumenter er pa field_os2web_cp_service_doc_ref'),
-    t('Indhold entity refereret fra field_os2web_cp_service_doc_ref'),
-    t('Indhold refererer til Indhold fra field_os2web_cp_service_doc_ref'),
+    t('Indhold entity referenced from field_os2web_cp_service_doc_ref'),
+    t('Indhold referencing Indhold from field_os2web_cp_service_doc_ref'),
     t('Nid'),
     t('Documenter er på field_os2web_base_doc_ref_single'),
-    t('Indhold refererer til Indhold fra field_os2web_base_doc_ref_single'),
+    t('reverse_field_os2web_base_doc_ref_single_node'),
     t('FC: Documenter er på field_os2web_base_doc_ref'),
-    t('field collection item from field_os2web_paragraphs'),
+    t('field_os2web_paragraphs_value'),
     t('(field collection) Indhold entity refereret fra field_os2web_base_doc_ref'),
     t('dok Nid'),
     t('Sager er pa field_os2web_base_case_ref'),
-    t('Indhold entity refereret fra field_os2web_base_case_ref'),
-    t('Indhold refererer til Indhold fra field_os2web_base_case_ref'),
+    t('field_os2web_base_case_ref_target_id'),
+    t('reverse_field_os2web_base_case_ref_node'),
     t('Sag Nid'),
     t('FC: Sager er på field_os2web_base_case_ref'),
     t('(field collection) Indhold entity refereret fra field_os2web_base_case_ref'),
@@ -784,11 +712,11 @@ function os2web_cp_service_views_default_views() {
 <span class="no-results">Vi finder desværre ikke nogen sager ud fra de valgte søgekriterier. Prøv at justere på dit søgeord eller tidsintervallet.</span>
 <?php endif; ?>
 ';
-  /* Forbindelse: Entity Reference: Refereret entity */
+  /* Forbindelse: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_os2web_cp_service_doc_ref_target_id']['id'] = 'field_os2web_cp_service_doc_ref_target_id';
   $handler->display->display_options['relationships']['field_os2web_cp_service_doc_ref_target_id']['table'] = 'field_data_field_os2web_cp_service_doc_ref';
   $handler->display->display_options['relationships']['field_os2web_cp_service_doc_ref_target_id']['field'] = 'field_os2web_cp_service_doc_ref_target_id';
-  /* Felt: Indhold: Sagsnummer */
+  /* Felt: Indhold: SagsID */
   $handler->display->display_options['fields']['field_os2web_cp_service_case_id']['id'] = 'field_os2web_cp_service_case_id';
   $handler->display->display_options['fields']['field_os2web_cp_service_case_id']['table'] = 'field_data_field_os2web_cp_service_case_id';
   $handler->display->display_options['fields']['field_os2web_cp_service_case_id']['field'] = 'field_os2web_cp_service_case_id';
@@ -803,7 +731,7 @@ function os2web_cp_service_views_default_views() {
     'value' => 'value',
     'format' => 'format',
   );
-  /* Felt: Indhold: Sagsindhold */
+  /* Felt: Indhold: Indholdsbeskrivelse */
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['id'] = 'field_os2web_cp_service_content';
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['table'] = 'field_data_field_os2web_cp_service_content';
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['field'] = 'field_os2web_cp_service_content';
@@ -843,7 +771,7 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['fields']['field_os2web_cp_service_doc_id_1']['label'] = '';
   $handler->display->display_options['fields']['field_os2web_cp_service_doc_id_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['field_os2web_cp_service_doc_id_1']['element_label_colon'] = FALSE;
-  /* Felt: Indhold: Sagsindhold */
+  /* Felt: Indhold: Indholdsbeskrivelse */
   $handler->display->display_options['fields']['field_os2web_cp_service_content_1']['id'] = 'field_os2web_cp_service_content_1';
   $handler->display->display_options['fields']['field_os2web_cp_service_content_1']['table'] = 'field_data_field_os2web_cp_service_content';
   $handler->display->display_options['fields']['field_os2web_cp_service_content_1']['field'] = 'field_os2web_cp_service_content';
@@ -859,7 +787,7 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['fields']['title_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Felt: Indhold: Sagsdato */
+  /* Felt: Indhold: Dokumentdato */
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['id'] = 'field_os2web_cp_service_date';
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['table'] = 'field_data_field_os2web_cp_service_date';
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['field'] = 'field_os2web_cp_service_date';
@@ -872,7 +800,7 @@ function os2web_cp_service_views_default_views() {
     'multiple_from' => '',
     'multiple_to' => '',
   );
-  /* Felt: Indhold: Sagstitel */
+  /* Felt: Indhold: Adresse */
   $handler->display->display_options['fields']['field_os2web_cp_service_address']['id'] = 'field_os2web_cp_service_address';
   $handler->display->display_options['fields']['field_os2web_cp_service_address']['table'] = 'field_data_field_os2web_cp_service_address';
   $handler->display->display_options['fields']['field_os2web_cp_service_address']['field'] = 'field_os2web_cp_service_address';
@@ -885,7 +813,7 @@ function os2web_cp_service_views_default_views() {
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
   $handler->display->display_options['filter_groups']['operator'] = 'OR';
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -1024,7 +952,7 @@ return TRUE; // If no exposed inputs, remove all results
     t('Total number of results.'),
     t('Reset button'),
     t('Ingen Resultater'),
-    t('Indhold entity refereret fra field_os2web_cp_service_doc_ref'),
+    t('Indhold entity referenced from field_os2web_cp_service_doc_ref'),
     t('Sagstitel'),
     t('[title]'),
     t('[field_os2web_cp_service_content]'),
@@ -1135,7 +1063,7 @@ return TRUE; // If no exposed inputs, remove all results
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
   $handler->display->display_options['sorts']['created']['order'] = 'DESC';
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -1155,7 +1083,7 @@ return TRUE; // If no exposed inputs, remove all results
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Felt: Indhold: Sagsindhold */
+  /* Felt: Indhold: Indholdsbeskrivelse */
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['id'] = 'field_os2web_cp_service_content';
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['table'] = 'field_data_field_os2web_cp_service_content';
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['field'] = 'field_os2web_cp_service_content';
@@ -1179,7 +1107,7 @@ return TRUE; // If no exposed inputs, remove all results
   $handler->display->display_options['arguments']['nid']['validate_options']['access'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -1194,7 +1122,7 @@ return TRUE; // If no exposed inputs, remove all results
     'os2web_cp_service_cp_case' => 'os2web_cp_service_cp_case',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filterkriterie: Indhold: Sagsindhold (field_os2web_cp_service_content) */
+  /* Filterkriterie: Indhold: Indholdsbeskrivelse (field_os2web_cp_service_content) */
   $handler->display->display_options['filters']['field_os2web_cp_service_content_value']['id'] = 'field_os2web_cp_service_content_value';
   $handler->display->display_options['filters']['field_os2web_cp_service_content_value']['table'] = 'field_data_field_os2web_cp_service_content';
   $handler->display->display_options['filters']['field_os2web_cp_service_content_value']['field'] = 'field_os2web_cp_service_content_value';
@@ -1219,7 +1147,7 @@ return TRUE; // If no exposed inputs, remove all results
   $handler->display->display_options['header']['area']['content'] = '<h2>Dokumenter</h2>';
   $handler->display->display_options['header']['area']['format'] = 'filtered_html';
   $handler->display->display_options['defaults']['relationships'] = FALSE;
-  /* Forbindelse: Entity Reference: Refereret entity */
+  /* Forbindelse: Entity Reference: Referenced Entity */
   $handler->display->display_options['relationships']['field_os2web_cp_service_doc_ref_target_id']['id'] = 'field_os2web_cp_service_doc_ref_target_id';
   $handler->display->display_options['relationships']['field_os2web_cp_service_doc_ref_target_id']['table'] = 'field_data_field_os2web_cp_service_doc_ref';
   $handler->display->display_options['relationships']['field_os2web_cp_service_doc_ref_target_id']['field'] = 'field_os2web_cp_service_doc_ref_target_id';
@@ -1232,7 +1160,7 @@ return TRUE; // If no exposed inputs, remove all results
   $handler->display->display_options['fields']['nid']['label'] = '';
   $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
   $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
-  /* Felt: Indhold: Sagsindhold */
+  /* Felt: Indhold: Indholdsbeskrivelse */
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['id'] = 'field_os2web_cp_service_content';
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['table'] = 'field_data_field_os2web_cp_service_content';
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['field'] = 'field_os2web_cp_service_content';
@@ -1284,7 +1212,7 @@ return TRUE; // If no exposed inputs, remove all results
   $handler->display->display_options['fields']['field_os2web_cp_service_doc_id_1']['relationship'] = 'field_os2web_cp_service_doc_ref_target_id';
   $handler->display->display_options['fields']['field_os2web_cp_service_doc_id_1']['label'] = 'Dokumentnummer';
   $handler->display->display_options['fields']['field_os2web_cp_service_doc_id_1']['element_label_colon'] = FALSE;
-  /* Felt: Indhold: Sagsdato */
+  /* Felt: Indhold: Dokumentdato */
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['id'] = 'field_os2web_cp_service_date';
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['table'] = 'field_data_field_os2web_cp_service_date';
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['field'] = 'field_os2web_cp_service_date';
@@ -1307,7 +1235,7 @@ return TRUE; // If no exposed inputs, remove all results
   $handler->display->display_options['fields']['nothing']['alter']['text'] = '<div class="os2web_cp_service-ajax-loader ajax-loader" style="display:none;"></div>';
   $handler->display->display_options['fields']['nothing']['element_label_colon'] = FALSE;
   $handler->display->display_options['defaults']['sorts'] = FALSE;
-  /* Sorteringskriterie: Indhold: Sagsdato (field_os2web_cp_service_date) */
+  /* Sorteringskriterie: Indhold: Dokumentdato (field_os2web_cp_service_date) */
   $handler->display->display_options['sorts']['field_os2web_cp_service_date_value']['id'] = 'field_os2web_cp_service_date_value';
   $handler->display->display_options['sorts']['field_os2web_cp_service_date_value']['table'] = 'field_data_field_os2web_cp_service_date';
   $handler->display->display_options['sorts']['field_os2web_cp_service_date_value']['field'] = 'field_os2web_cp_service_date_value';
@@ -1414,7 +1342,7 @@ Se alle sager på denne addresse
   $handler->display->display_options['fields']['nothing_1']['label'] = 'Titel';
   $handler->display->display_options['fields']['nothing_1']['alter']['text'] = '[title] <br> [php]';
   $handler->display->display_options['fields']['nothing_1']['element_label_colon'] = FALSE;
-  /* Felt: Indhold: Sagsnummer */
+  /* Felt: Indhold: SagsID */
   $handler->display->display_options['fields']['field_os2web_cp_service_case_id']['id'] = 'field_os2web_cp_service_case_id';
   $handler->display->display_options['fields']['field_os2web_cp_service_case_id']['table'] = 'field_data_field_os2web_cp_service_case_id';
   $handler->display->display_options['fields']['field_os2web_cp_service_case_id']['field'] = 'field_os2web_cp_service_case_id';
@@ -1430,7 +1358,7 @@ Se alle sager på denne addresse
   $handler->display->display_options['fields']['title_1']['exclude'] = TRUE;
   $handler->display->display_options['fields']['title_1']['element_label_colon'] = FALSE;
   $handler->display->display_options['fields']['title_1']['link_to_node'] = FALSE;
-  /* Felt: Indhold: Sagsdato */
+  /* Felt: Indhold: Dokumentdato */
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['id'] = 'field_os2web_cp_service_date';
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['table'] = 'field_data_field_os2web_cp_service_date';
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['field'] = 'field_os2web_cp_service_date';
@@ -1462,7 +1390,7 @@ Se alle sager på denne addresse
   $handler->display->display_options['arguments']['nid']['validate_options']['access'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -1492,8 +1420,8 @@ Se alle sager på denne addresse
     t('Documents'),
     t('Attachent to display all documents for a case'),
     t('<h2>Dokumenter</h2>'),
-    t('Indhold entity refereret fra field_os2web_cp_service_doc_ref'),
-    t('Sagsindhold'),
+    t('Indhold entity referenced from field_os2web_cp_service_doc_ref'),
+    t('Indholdsbeskrivelse'),
     t('Journalnummer'),
     t('[field_os2web_cp_service_content]'),
     t('[title]'),
@@ -1555,7 +1483,7 @@ Se alle sager på denne addresse
   $handler->display->display_options['sorts']['created']['id'] = 'created';
   $handler->display->display_options['sorts']['created']['table'] = 'node';
   $handler->display->display_options['sorts']['created']['field'] = 'created';
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -1575,7 +1503,7 @@ Se alle sager på denne addresse
   $handler->display->display_options['defaults']['hide_admin_links'] = FALSE;
   $handler->display->display_options['pager']['type'] = 'some';
   $handler->display->display_options['defaults']['fields'] = FALSE;
-  /* Felt: Indhold: Sagsindhold */
+  /* Felt: Indhold: Indholdsbeskrivelse */
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['id'] = 'field_os2web_cp_service_content';
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['table'] = 'field_data_field_os2web_cp_service_content';
   $handler->display->display_options['fields']['field_os2web_cp_service_content']['field'] = 'field_os2web_cp_service_content';
@@ -1599,7 +1527,7 @@ Se alle sager på denne addresse
   $handler->display->display_options['arguments']['nid']['validate_options']['access'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
@@ -1614,7 +1542,7 @@ Se alle sager på denne addresse
     'os2web_cp_service_cp_document' => 'os2web_cp_service_cp_document',
   );
   $handler->display->display_options['filters']['type']['group'] = 1;
-  /* Filterkriterie: Indhold: Sagsindhold (field_os2web_cp_service_content) */
+  /* Filterkriterie: Indhold: Indholdsbeskrivelse (field_os2web_cp_service_content) */
   $handler->display->display_options['filters']['field_os2web_cp_service_content_value']['id'] = 'field_os2web_cp_service_content_value';
   $handler->display->display_options['filters']['field_os2web_cp_service_content_value']['table'] = 'field_data_field_os2web_cp_service_content';
   $handler->display->display_options['filters']['field_os2web_cp_service_content_value']['field'] = 'field_os2web_cp_service_content_value';
@@ -1665,7 +1593,7 @@ Se alle sager på denne addresse
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['title']['link_to_node'] = FALSE;
-  /* Felt: Indhold: Sagsnummer */
+  /* Felt: Indhold: SagsID */
   $handler->display->display_options['fields']['field_os2web_cp_service_case_id']['id'] = 'field_os2web_cp_service_case_id';
   $handler->display->display_options['fields']['field_os2web_cp_service_case_id']['table'] = 'field_data_field_os2web_cp_service_case_id';
   $handler->display->display_options['fields']['field_os2web_cp_service_case_id']['field'] = 'field_os2web_cp_service_case_id';
@@ -1686,7 +1614,7 @@ Se alle sager på denne addresse
   $handler->display->display_options['fields']['field_os2web_cp_service_file_id']['settings'] = array(
     'base_url' => 'os2web/service/gf/v1/!id',
   );
-  /* Felt: Indhold: Sagsdato */
+  /* Felt: Indhold: Dokumentdato */
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['id'] = 'field_os2web_cp_service_date';
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['table'] = 'field_data_field_os2web_cp_service_date';
   $handler->display->display_options['fields']['field_os2web_cp_service_date']['field'] = 'field_os2web_cp_service_date';
@@ -1718,7 +1646,7 @@ Se alle sager på denne addresse
   $handler->display->display_options['arguments']['nid']['validate_options']['access'] = TRUE;
   $handler->display->display_options['defaults']['filter_groups'] = FALSE;
   $handler->display->display_options['defaults']['filters'] = FALSE;
-  /* Filterkriterie: Indhold: Udgivet */
+  /* Filterkriterie: Indhold: Published status */
   $handler->display->display_options['filters']['status']['id'] = 'status';
   $handler->display->display_options['filters']['status']['table'] = 'node';
   $handler->display->display_options['filters']['status']['field'] = 'status';
