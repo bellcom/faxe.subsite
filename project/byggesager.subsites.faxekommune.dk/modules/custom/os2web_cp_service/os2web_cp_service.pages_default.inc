@@ -12,13 +12,13 @@ function os2web_cp_service_default_page_manager_handlers() {
   $export = array();
 
   $handler = new stdClass();
-  $handler->disabled = FALSE; /* Edit this to true to make a default handler disabled initially */
+  $handler->disabled = TRUE; /* Edit this to true to make a default handler disabled initially */
   $handler->api_version = 1;
   $handler->name = 'os2web_cp_service_cp_case_panel';
   $handler->task = 'node_view';
   $handler->subtask = '';
   $handler->handler = 'panel_context';
-  $handler->weight = -29;
+  $handler->weight = -1;
   $handler->conf = array(
     'title' => 'CP Case',
     'no_blocks' => 0,
@@ -135,7 +135,7 @@ function os2web_cp_service_default_page_manager_handlers() {
   $handler->task = 'node_view';
   $handler->subtask = '';
   $handler->handler = 'panel_context';
-  $handler->weight = -30;
+  $handler->weight = -3;
   $handler->conf = array(
     'title' => 'CP Document',
     'no_blocks' => 0,

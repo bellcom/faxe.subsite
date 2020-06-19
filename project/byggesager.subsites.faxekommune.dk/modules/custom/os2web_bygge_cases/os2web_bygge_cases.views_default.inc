@@ -198,7 +198,7 @@ function os2web_bygge_cases_views_default_views() {
   $handler->display->display_options['fields']['field_os2web_cp_service_edited']['field'] = 'field_os2web_cp_service_edited';
   $handler->display->display_options['fields']['field_os2web_cp_service_edited']['label'] = 'Sidste opdatered';
   $handler->display->display_options['fields']['field_os2web_cp_service_edited']['settings'] = array(
-    'format_type' => 'os2web_base_date_only',
+    'format_type' => 'os2web_cp_service_date_only',
     'custom_date_format' => 'dd.mm.YY',
     'fromto' => 'both',
     'multiple_number' => '',
@@ -212,7 +212,7 @@ function os2web_bygge_cases_views_default_views() {
   $handler->display->display_options['fields']['field_os2web_cp_service_created']['field'] = 'field_os2web_cp_service_created';
   $handler->display->display_options['fields']['field_os2web_cp_service_created']['label'] = 'Oprettet';
   $handler->display->display_options['fields']['field_os2web_cp_service_created']['settings'] = array(
-    'format_type' => 'os2web_base_date_only',
+    'format_type' => 'os2web_cp_service_date_only',
     'custom_date_format' => '',
     'fromto' => 'both',
     'multiple_number' => '',
@@ -235,6 +235,30 @@ function os2web_bygge_cases_views_default_views() {
   $handler->display->display_options['fields']['field_os2web_cp_service_matrikul']['table'] = 'field_data_field_os2web_cp_service_matrikul';
   $handler->display->display_options['fields']['field_os2web_cp_service_matrikul']['field'] = 'field_os2web_cp_service_matrikul';
   $handler->display->display_options['fields']['field_os2web_cp_service_matrikul']['exclude'] = TRUE;
+  $handler->display->display_options['defaults']['filter_groups'] = FALSE;
+  $handler->display->display_options['defaults']['filters'] = FALSE;
+  /* Filterkriterie: Indhold: Published status */
+  $handler->display->display_options['filters']['status']['id'] = 'status';
+  $handler->display->display_options['filters']['status']['table'] = 'node';
+  $handler->display->display_options['filters']['status']['field'] = 'status';
+  $handler->display->display_options['filters']['status']['value'] = 1;
+  $handler->display->display_options['filters']['status']['group'] = 1;
+  $handler->display->display_options['filters']['status']['expose']['operator'] = FALSE;
+  /* Filterkriterie: Indhold: Type */
+  $handler->display->display_options['filters']['type']['id'] = 'type';
+  $handler->display->display_options['filters']['type']['table'] = 'node';
+  $handler->display->display_options['filters']['type']['field'] = 'type';
+  $handler->display->display_options['filters']['type']['value'] = array(
+    'os2web_cp_service_cp_case' => 'os2web_cp_service_cp_case',
+  );
+  $handler->display->display_options['filters']['type']['group'] = 1;
+  /* Filterkriterie: Case Access */
+  $handler->display->display_options['filters']['php']['id'] = 'php';
+  $handler->display->display_options['filters']['php']['table'] = 'views';
+  $handler->display->display_options['filters']['php']['field'] = 'php';
+  $handler->display->display_options['filters']['php']['ui_name'] = 'Case Access';
+  $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
+  $handler->display->display_options['filters']['php']['php_filter'] = 'return  !os2web_bygge_cases_user_can_see_case($data->nid);';
   $handler->display->display_options['path'] = 'bygge-cases/%';
   $translatables['os2web_bygge_case_cases'] = array(
     t('Master'),
@@ -294,7 +318,10 @@ function os2web_bygge_cases_views_default_views() {
   $handler->display->display_options['exposed_form']['options']['sort_asc_label'] = 'Stigende';
   $handler->display->display_options['exposed_form']['options']['sort_desc_label'] = 'Faldende';
   $handler->display->display_options['pager']['type'] = 'full';
-  $handler->display->display_options['pager']['options']['items_per_page'] = '10';
+  $handler->display->display_options['pager']['options']['items_per_page'] = '50';
+  $handler->display->display_options['pager']['options']['offset'] = '0';
+  $handler->display->display_options['pager']['options']['id'] = '0';
+  $handler->display->display_options['pager']['options']['quantity'] = '9';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_label'] = 'Antal elementer';
   $handler->display->display_options['pager']['options']['expose']['items_per_page_options_all_label'] = '- Alle -';
   $handler->display->display_options['pager']['options']['expose']['offset_label'] = 'Forskydning';

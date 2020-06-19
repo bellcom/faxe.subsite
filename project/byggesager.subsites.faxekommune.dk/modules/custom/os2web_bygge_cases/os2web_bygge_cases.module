@@ -128,9 +128,12 @@ function os2web_bygge_cases_preprocess_node(&$variables) {
 }
 
 function os2web_bygge_cases_user_can_see_cases_by_address($tid) {
+  global $user;
   $bfe_numbers = os2web_nemlogin_auth_get_value('bfe_numbers');
   $term = taxonomy_term_load($tid);
-
+  if ($user->uid == 1) {
+    return TRUE;
+  }
   if (isset($term->field_cp_service_tax_addr_bfe_nr[LANGUAGE_NONE]) && in_array($term->field_cp_service_tax_addr_bfe_nr[LANGUAGE_NONE][0]['value'], $bfe_numbers)){
     return TRUE;
   }

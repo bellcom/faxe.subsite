@@ -1,46 +1,26 @@
-<article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
+<article id="node-<?php print $node->nid; ?>"
+         class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
-  <?php if ((!$page && !empty($title)) || !empty($title_prefix) || !empty($title_suffix) || $display_submitted): ?>
-    <header>
-      <?php print render($title_prefix); ?>
-      <?php if (!$page && !empty($title)): ?>
-        <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
-      <?php endif; ?>
-      <?php print render($title_suffix); ?>
-      <?php if ($display_submitted): ?>
-        <span class="submitted">
-      <?php print $user_picture; ?>
-      <?php print $submitted; ?>
-    </span>
-      <?php endif; ?>
-    </header>
-  <?php endif; ?>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Adresse</th>
+            <th>Senest opdateret</th>
+            <th>Oprettet</th>
+            <th>Sagsnummer</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><?php print render($content['field_os2web_cp_service_addr']); ?></td>
+            <td><?php print render($content['field_os2web_cp_service_st_edit']); ?></td>
+            <td><?php print render($content['field_os2web_cp_service_created']); ?></td>
+            <td><?php print render($content['field_os2web_cp_service_case_id']); ?></td>
+        </tr>
+        </tbody>
+    </table>
 
-  <?php
-  // Hide comments, tags, and links now so that we can render them later.
-  hide($content['comments']);
-  hide($content['links']);
-  hide($content['field_tags']);
-  print render($content);
-  ?>
-
-  <?php
-  // Only display the wrapper div if there are tags or links.
-  $field_tags = render($content['field_tags']);
-  $links = render($content['links']);
-  if ($field_tags || $links):
-    ?>
-    <footer>
-      <?php print $field_tags; ?>
-      <?php print $links; ?>
-    </footer>
-  <?php endif; ?>
-
-  <?php print render($content['comments']); ?>
-
-  <?php
-    // Rendering documents view.
-    print $content['#cp_case_documents'];
-  ?>
-
+    <?php print render($content['field_os2web_cp_service_content']); ?>
+    <?php print render($content['field_case_comment']); ?>
+    <?php print render($content['field_os2web_cp_service_doc_ref']); ?>
 </article>

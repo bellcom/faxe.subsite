@@ -137,6 +137,24 @@ function os2web_cp_service_strongarm() {
       'token' => array(
         'custom_settings' => FALSE,
       ),
+      'spotbox' => array(
+        'custom_settings' => TRUE,
+      ),
+      'list_simple' => array(
+        'custom_settings' => FALSE,
+      ),
+      'list' => array(
+        'custom_settings' => FALSE,
+      ),
+      'list_advanced' => array(
+        'custom_settings' => FALSE,
+      ),
+      'embedded' => array(
+        'custom_settings' => FALSE,
+      ),
+      'diff_standard' => array(
+        'custom_settings' => FALSE,
+      ),
     ),
     'extra_fields' => array(
       'form' => array(
