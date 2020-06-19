@@ -1,0 +1,164 @@
+// |--------------------------------------------------------------------------
+// | THeme colourings overwritten
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// | - .theme-colourings-overwritten
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// Responsive
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+@mixin theme-colourings-overwritten-mixin() {}
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+body.theme-colourings-overwritten {
+
+  // Search.
+  .table {
+    border-collapse: separate;
+    border-spacing: 2px;
+
+    th {
+      padding-top: 20px;
+      padding-bottom: 20px;
+
+      border-bottom: 0;
+
+      color: #007CA3;
+      background-color: #E6F2F6 !important;
+    }
+
+    td {
+      padding-top: 12px;
+      padding-bottom: 12px;
+
+      border: 0;
+
+      a {
+        color: $text-color;
+      }
+    }
+  }
+
+  .table-striped {
+
+    > tbody {
+
+      > tr {
+
+        &:nth-of-type(even) {
+
+          &, &:hover {
+            background-color: #F0F7F9;
+          }
+        }
+
+        &:nth-of-type(odd) {
+
+          &, &:hover {
+            background-color: #fff;
+          }
+        }
+      }
+    }
+  }
+
+  // Flexy navigation.
+  .flexy-navigation__item > a {
+    text-transform: uppercase;
+
+    &, &:hover, &:focus {
+      color: #fff !important;
+    }
+  }
+  .flexy-header--static .flexy-header__row--second {
+    background-color: #4195B2 !important;
+  }
+
+  // Footer.
+  .layout__footer {
+    border-top-color: #E2DDDB !important;
+    background-color: #D6D0CE !important;
+
+    .container {
+      background-image: none;
+    }
+
+    a {
+
+      &, &:hover {
+        color: #4f4f4f;
+      }
+    }
+  }
+  .layout__footer__navigation {
+
+    a {
+      text-transform: uppercase;
+    }
+  }
+  .layout__footer__row {
+
+    .col-sm-6 {
+      width: 100% !important;
+    }
+  }
+  .layout__footer__row--secondary {
+
+    .text-right {
+      text-align: left !important;
+    }
+  }
+  .layout__footer__row--tertiary {
+    display: none !important;
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

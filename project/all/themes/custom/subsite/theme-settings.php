@@ -29,4 +29,9 @@ function subsite_form_system_theme_settings_alter(&$form, $form_state, $form_id 
     '#title' => t('Tekst'),
     '#default_value' => theme_get_setting('project_branding_text'),
   ];
+  $form['project']['branding']['project_colourings'] = [
+    '#type' => 'checkbox',
+    '#title' => t('Overskriv farvevalg (faste farver)'),
+    '#default_value' => theme_get_setting('project_colourings'),
+  ];
 }
