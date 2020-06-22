@@ -26,7 +26,9 @@ function os2web_datafordeler_intergation_menu() {
   );
 }
 
-
+/*
+ * Helper function to get building's BFE number by owner's CPR/CVR and matrikkel.
+ */
 function os2web_datafordeler_intergation_get_bfe($owner_ids,  $matrikkel) {
   $bfe = '';
   $bfe_numbers = array();
@@ -47,6 +49,9 @@ function os2web_datafordeler_intergation_get_bfe($owner_ids,  $matrikkel) {
   return '';
 }
 
+/*
+ * Helper function to get BFE numbers from EJF web-service.
+ */
 function os2web_datafordeler_intergation_fetch_bfe($cpr) {
   $params = array('format' => 'JSON', 'CPRnr'=>$cpr);
   $curl_url = OS2WEB_DATAFORDELER_INTEGRATION_EJF_ENDPOINT .  '?' . http_build_query($params);
@@ -70,6 +75,10 @@ function os2web_datafordeler_intergation_fetch_bfe($cpr) {
   sort($bfe_numbers);
   return $bfe_numbers;
 }
+
+/*
+ * Helper function to get matrikkel number by BFE from MAT web-service.
+ */
 function os2web_datafordeler_intergation_fetch_matrikkel($bfe) {
   $params = array(
     'format' => 'JSON',
@@ -81,19 +90,22 @@ function os2web_datafordeler_intergation_fetch_matrikkel($bfe) {
   $curl_options =  array (
     CURLOPT_HEADER => 0,
     CURLOPT_VERBOSE => 0,
-    CURLOPT_RETURNTRANSFER => 1
-
+    CURLOPT_RETURNTRANSFER => 1,
   );
   $matrikkel = '';
   $result = os2web_datafordeler_intergation_curl_request($curl_url, $curl_options);
   if (isset($result->features)  && is_array($result->features)) {
-     $object = array_pop($result->features);
-     if (isset($object->properties->jordstykke)  && is_array($object->properties->jordstykke)) {
-       $matrikkel=$object->properties->jordstykke[0]->properties->matrikelnummer;
+      $object = array_pop($result->features);
+      if (isset($object->properties->jordstykke)  && is_array($object->properties->jordstykke)) {
+        $matrikkel=$object->properties->jordstykke[0]->properties->matrikelnummer;
      }
    }
   return $matrikkel;
 }
+
+/*
+ * Helper function to get address number by BFE number from EBR web-service.
+ */
 function os2web_datafordeler_intergation_fetch_address($bfe) {
   $params = array(
     'format' => 'JSON',
@@ -118,6 +130,10 @@ function os2web_datafordeler_intergation_fetch_address($bfe) {
   }
   return $address;
 }
+
+/*
+ * Helper function to send CURL request to web-service.
+ */
 function os2web_datafordeler_intergation_curl_request($curl_url, $options = array()){
   $ch = curl_init();
   curl_setopt($ch, CURLOPT_URL, $curl_url);
@@ -126,12 +142,9 @@ function os2web_datafordeler_intergation_curl_request($curl_url, $options = arra
   }
 
   $response = curl_exec($ch);
-   if(curl_errno($ch)){
+    if(curl_errno($ch)){
       watchdog('os2web_datafordeler_intergation', 'cURL request was failed with error: %errno', array('%errno' => curl_error($ch)), WATCHDOG_ERROR);
       return FALSE;
     }
-
-    return json_decode($response);
-
-
+  return json_decode($response);
 }
