@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2sub_uses_and_tools.features.user_permission.inc
@@ -1539,6 +1540,7 @@ function os2sub_uses_and_tools_user_default_permissions() {
   $permissions['view the administration theme'] = array(
     'name' => 'view the administration theme',
     'roles' => array(
+      'Editor' => 'Editor',
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'system',
