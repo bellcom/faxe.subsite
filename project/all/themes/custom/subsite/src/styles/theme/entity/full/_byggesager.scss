@@ -22,7 +22,7 @@
 
 body.node-type-os2web-cp-service-cp-case {
 
-  .node-os2web-cp-service-cp-document {
+  .node-os2web-cp-service-cp-case {
 
     .field-label {
       font-size: 20px;
@@ -36,7 +36,7 @@ body.node-type-os2web-cp-service-cp-case {
     }
   }
 
-  .field-name-field-case-documents {
+  .field-name-field-os2web-cp-service-doc-ref {
 
     .field-item {
       padding: 8px 12px;
@@ -46,12 +46,12 @@ body.node-type-os2web-cp-service-cp-case {
       }
     }
 
-    .file {
+    .node-os2web-cp-service-cp-document {
       display: flex;
 
       flex-grow: 1;
 
-      a {
+      .field-name-field-os2web-cp-service-file {
         flex-grow: 1;
       }
     }
