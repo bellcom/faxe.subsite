@@ -38,11 +38,14 @@ body.node-type-os2web-cp-service-cp-case {
 
   .field-name-field-os2web-cp-service-doc-ref {
 
-    > .field-item {
-      padding: 8px 12px;
+    > .field-items {
 
-      &.even {
-        background-color: #E6F2F6;
+      > .field-item {
+        padding: 8px 12px;
+
+        &.even {
+          background-color: #E6F2F6;
+        }
       }
     }
 
@@ -53,6 +56,21 @@ body.node-type-os2web-cp-service-cp-case {
 
       .field-name-field-os2web-cp-service-file {
         flex-grow: 1;
+
+        a {
+
+          &, &:hover {
+            color: $text-color;
+          }
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .field-name-field-os2web-cp-service-date {
+        color: #828282;
       }
     }
     .file-icon {
