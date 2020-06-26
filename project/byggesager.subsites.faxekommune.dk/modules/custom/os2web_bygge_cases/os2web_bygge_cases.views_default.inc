@@ -183,7 +183,6 @@ function os2web_bygge_cases_views_default_views() {
   $handler->display->display_options['fields']['title']['id'] = 'title';
   $handler->display->display_options['fields']['title']['table'] = 'node';
   $handler->display->display_options['fields']['title']['field'] = 'title';
-  $handler->display->display_options['fields']['title']['label'] = 'Sags title';
   $handler->display->display_options['fields']['title']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['title']['alter']['ellipsis'] = FALSE;
   /* Felt: Ord i ordforråd: Navn */
@@ -196,7 +195,7 @@ function os2web_bygge_cases_views_default_views() {
   $handler->display->display_options['fields']['field_os2web_cp_service_edited']['id'] = 'field_os2web_cp_service_edited';
   $handler->display->display_options['fields']['field_os2web_cp_service_edited']['table'] = 'field_data_field_os2web_cp_service_edited';
   $handler->display->display_options['fields']['field_os2web_cp_service_edited']['field'] = 'field_os2web_cp_service_edited';
-  $handler->display->display_options['fields']['field_os2web_cp_service_edited']['label'] = 'Sidste opdatered';
+  $handler->display->display_options['fields']['field_os2web_cp_service_edited']['label'] = 'Senest opdateret';
   $handler->display->display_options['fields']['field_os2web_cp_service_edited']['settings'] = array(
     'format_type' => 'os2web_cp_service_date_only',
     'custom_date_format' => 'dd.mm.YY',
@@ -285,9 +284,9 @@ function os2web_bygge_cases_views_default_views() {
     t('Alle'),
     t('Søg på Ejendomsnummer, matrikelnummer, adresse osv'),
     t('Side'),
-    t('Sags title'),
+    t('Titel'),
     t('Adresse'),
-    t('Sidste opdatered'),
+    t('Senest opdateret'),
     t('Oprettet'),
     t('Sagsnummer'),
   );
