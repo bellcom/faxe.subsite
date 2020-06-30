@@ -12,6 +12,15 @@ function os2web_nemlogin_auth_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
+  $items['admin/config/os2web/nemlogin_auth'] = array(
+    'title' => 'Nemlogin Auth',
+    'access arguments' => array('administer os2web'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2web_nemlogin_auth_settings_form'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'os2web_nemlogin_auth.admin.inc',
+  );
+
   return $items;
 }
 
@@ -148,4 +157,24 @@ function os2web_nemlogin_auth_get_value($type) {
  */
 function os2web_nemlogin_auth_unset_pid() {
   unset($_SESSION['os2web_nemlogin_auth_pid']);
+}
+
+/**
+ * Implements hook_node_view().
+ *
+ * Updates nemlogin URL for NemID login spotbox.
+ */
+function oos2web_nemlogin_auth_node_view($node, $view_mode, $langcode) {
+  if ($node->type == 'os2web_spotbox_box' && $node->nid == variable_get('os2web_nemlogin_auth_nemlogin_spotbox_nid')) {
+    if ($pid = os2web_nemlogin_auth_get_pid()) {
+      $node->title = 'Log ud af NemID';
+      $link = 'os2web_nemlogin_logout';
+    } else {
+      $link = nemlogin_get_login_url();
+    }
+
+    $node->field_spot_link['und'][0]['url'] = $link;
+    $node->field_spot_link['und'][0]['display_url'] = $link;
+    $node->field_spot_link['und'][0]['title'] = $link;
+  }
 }
