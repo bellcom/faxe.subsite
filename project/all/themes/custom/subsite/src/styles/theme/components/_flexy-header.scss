@@ -200,6 +200,16 @@ $lg-logo-font-size: 28px;
   }
 }
 
+.theme-colourings-overwritten {
+
+  .flexy-header__logo {
+
+    img {
+      display: none;
+    }
+  }
+}
+
 // --------------------------------------------------
 // Variants
 // --------------------------------------------------
