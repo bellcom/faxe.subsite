@@ -8,47 +8,6 @@
 include_once 'os2web_bygge_cases.features.inc';
 
 /**
- * Implements hook_block_info().
- */
-function os2web_bygge_cases_block_info() {
-  $blocks['os2web_bygge_cases_menu'] = array(
-    // info: The name of the block.
-    'info' => t('NemID login block'),
-    'cache' =>  DRUPAL_NO_CACHE,
-  );
-
-  return $blocks;
-}
-
-/**
- * Implements hook_block_view().
- */
-function os2web_bygge_cases_block_view($delta = '') {
-  $block = array();
-
-  // The $delta parameter tells us which block is being requested.
-  switch ($delta) {
-    case 'os2web_bygge_cases_menu':
-      if ($pid = os2web_nemlogin_auth_get_pid()) {
-        $output = t('Logged in with NemID, click <a href="@login_url">here</a> to logout', array('@login_url' => url('os2web_nemlogin_logout')));
-        $output .= ' PID: ' . $pid;
-      } else {
-        $output = nemlogin_link('Login med Nemlogin', NULL, array('attributes' => array('class' => array('btn', 'btn-secondary'))));
-      }
-
-      // Create your block content here
-      $block['subject'] = t('NemID login');
-      $block['content'] = array(
-        '#markup' => $output
-      );
-
-      break;
-  }
-
-  return $block;
-}
-
-/**
  * Implements hook_node_access().
  */
 function os2web_bygge_cases_node_access($node, $op, $account) {
