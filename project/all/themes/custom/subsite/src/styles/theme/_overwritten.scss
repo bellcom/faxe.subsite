@@ -30,8 +30,10 @@ body.theme-colourings-overwritten {
     border-spacing: 2px;
 
     th {
-      padding-top: 20px;
-      padding-bottom: 20px;
+      padding-top: 13px;
+      padding-bottom: 13px;
+
+      vertical-align: middle;
 
       border-bottom: 0;
 
@@ -45,13 +47,14 @@ body.theme-colourings-overwritten {
 
       border: 0;
 
+      &:first-child {
+        font-weight: bold;
+      }
+
       a {
         color: $text-color;
       }
     }
-  }
-
-  .table-striped {
 
     > tbody {
 
