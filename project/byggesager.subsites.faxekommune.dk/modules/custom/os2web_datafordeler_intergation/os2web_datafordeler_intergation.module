@@ -24,6 +24,7 @@ function os2web_datafordeler_intergation_menu() {
     'page arguments' => array('os2web_datafordeler_intergation_settings_form'),
     'type' => MENU_NORMAL_ITEM,
   );
+   return $items;
 }
 
 /*
