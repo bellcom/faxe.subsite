@@ -1,4 +1,29 @@
 <?php
+
+/**
+ * Implements hook_menu().
+ */
+function os2web_nemlogin_auth_menu() {
+  $items['os2web_nemlogin_logout'] = array(
+    'title' => 'OS2Web NemLogin Auth logout',
+    'description' => 'Delete the PID stored in session',
+    'page callback' => 'os2web_nemlogin_auth_logout',
+    'access arguments' => array('access content'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  $items['admin/config/os2web/nemlogin_auth'] = array(
+    'title' => 'Nemlogin Auth',
+    'access arguments' => array('administer os2web'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2web_nemlogin_auth_settings_form'),
+    'type' => MENU_LOCAL_TASK,
+    'file' => 'os2web_nemlogin_auth.admin.inc',
+  );
+
+  return $items;
+}
+
 /**
  * Implements hook_form_FORM_ID_alter().
  *
@@ -32,7 +57,10 @@ function os2web_nemlogin_auth_form_user_login_alter(&$form, &$form_state, $form_
       // os2web_nemid_login_user_login.
       $_SESSION['os2web_nemlogin_auth_pid'] = $pid;
     }
-
+    if ($nemlogin_object->fetchBFE) {
+      $bfe_numbers = !empty($nemlogin_object) ? $nemlogin_object->fetchValue('bfe_numbers') : NULL;
+      $_SESSION['os2web_nemlogin_auth_bfe_numbers'] = $bfe_numbers;
+    }
     $form['actions']['nemid_login_link'] = array(
       '#markup' => nemlogin_link('Login med Nemlogin', NULL, array('attributes' => array('class' => array('btn', 'btn-secondary')))),
     );
@@ -46,10 +74,107 @@ function os2web_nemlogin_auth_form_user_login_alter(&$form, &$form_state, $form_
  * Drupal account.
  */
 function os2web_nemlogin_auth_user_login(&$edit, $account) {
-  if (!empty($_SESSION['os2web_nemlogin_auth_pid'])) {
-    $pid = $_SESSION['os2web_nemlogin_auth_pid'];
-    unset($_SESSION['os2web_nemlogin_auth_pid']);
+  if ($pid = os2web_nemlogin_auth_get_pid()) {
+    os2web_nemlogin_auth_unset_pid();
     $account->field_os2web_user_pid['und'][0]['value'] = $pid;
     user_save($account);
+  }
+}
+
+/**
+ * Deletes the PID from a session and redirects to front page.
+ *
+ * If the NemLogin plugin is still not destroyed, it will be destroyed.
+ *
+ * @see os2web_nemlogin_auth_unset_pid.
+ */
+function os2web_nemlogin_auth_logout() {
+  os2web_nemlogin_auth_unset_pid();
+
+  $nemlogin_object = nemlogin_get_plugin_object();
+  if ($nemlogin_object) {
+    $nemlogin_object->logout();
+  }
+
+  drupal_goto();
+}
+
+/**
+ * Fetches the stored PID from a sessions
+ *
+ * @return string|NULL
+ *   PID if it can be found,
+ *   FALSE otherwise.
+ */
+function os2web_nemlogin_auth_get_pid() {
+  // Try fetching from session variable.
+  if (!empty($_SESSION['os2web_nemlogin_auth_pid'])) {
+    $pid = $_SESSION['os2web_nemlogin_auth_pid'];
+    return $pid;
+  }
+  else {
+    // There is a chance, PID has not been stored in the session yet,
+    // Attempt to fetch PID nemlogin plugin.
+    $nemlogin_object = nemlogin_get_plugin_object();
+    $pid = !empty($nemlogin_object) ? $nemlogin_object->fetchValue('pid') : NULL;
+    if ($pid) {
+      $_SESSION['os2web_nemlogin_auth_pid'] = $pid;
+      return $pid;
+    }
+  }
+}
+
+/**
+ * Fetches the stored values from a sessions
+ *
+ * @param string $type
+ *  The type of value to be fetched (CPR, CVR, PID, BFE).
+ *
+ * @return string|NULL
+ *   CPR if it can be found,
+ *   FALSE otherwise.
+ */
+function os2web_nemlogin_auth_get_value($type) {
+  // Try fetching from session variable.
+  if (!empty($_SESSION['os2web_nemlogin_auth_' . $type])) {
+    $value = $_SESSION['os2web_nemlogin_auth_' . $type];
+    return $value;
+  }
+  else {
+    // There is a chance, CPR has not been stored in the session yet,
+    // Attempt to fetch CPR nemlogin plugin.
+    $nemlogin_object = nemlogin_get_plugin_object();
+    $value = !empty($nemlogin_object) ? $nemlogin_object->fetchValue($type) : NULL;
+    if ($value) {
+      $_SESSION['os2web_nemlogin_auth_' . $type] = $value;
+      return $value;
+    }
+  }
+}
+
+/**
+ * Removing the stored PID from a session.
+ */
+function os2web_nemlogin_auth_unset_pid() {
+  unset($_SESSION['os2web_nemlogin_auth_pid']);
+}
+
+/**
+ * Implements hook_node_view().
+ *
+ * Updates nemlogin URL for NemID login spotbox.
+ */
+function os2web_nemlogin_auth_node_view($node, $view_mode, $langcode) {
+  if ($node->type == 'os2web_spotbox_box' && $node->nid == variable_get('os2web_nemlogin_auth_nemlogin_spotbox_nid')) {
+    if ($pid = os2web_nemlogin_auth_get_pid()) {
+      $node->title = 'Log ud af NemID';
+      $link = 'os2web_nemlogin_logout';
+    } else {
+      $link = nemlogin_get_login_url();
+    }
+
+    $node->field_spot_link['und'][0]['url'] = $link;
+    $node->field_spot_link['und'][0]['display_url'] = $link;
+    $node->field_spot_link['und'][0]['title'] = $link;
   }
 }

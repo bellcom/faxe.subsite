@@ -30,8 +30,10 @@ body.theme-colourings-overwritten {
     border-spacing: 2px;
 
     th {
-      padding-top: 20px;
-      padding-bottom: 20px;
+      padding-top: 13px;
+      padding-bottom: 13px;
+
+      vertical-align: middle;
 
       border-bottom: 0;
 
@@ -45,13 +47,14 @@ body.theme-colourings-overwritten {
 
       border: 0;
 
+      &:first-child {
+        font-weight: bold;
+      }
+
       a {
         color: $text-color;
       }
     }
-  }
-
-  .table-striped {
 
     > tbody {
 
@@ -76,6 +79,8 @@ body.theme-colourings-overwritten {
 
   // Flexy navigation.
   .flexy-navigation__item > a {
+    font-size: 18px;
+
     text-transform: uppercase;
 
     &, &:hover, &:focus {
@@ -84,6 +89,13 @@ body.theme-colourings-overwritten {
   }
   .flexy-header--static .flexy-header__row--second {
     background-color: #4195B2 !important;
+  }
+
+  .flexy-header__secondary-navigation {
+
+    a {
+      font-size: 18px;
+    }
   }
 
   // Footer.

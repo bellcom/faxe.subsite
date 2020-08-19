@@ -1,0 +1,13 @@
+name = OS2Web Bygge Cases
+description = Handles functionality related to Bygge cases.
+core = 7.x
+package = OS2Sub
+dependencies[] = ctools
+dependencies[] = os2web_nemlogin_auth
+dependencies[] = session_expire
+dependencies[] = views
+dependencies[] = views_bootstrap
+features[ctools][] = views:views_default:3.0
+features[features_api][] = api:2
+features[views_view][] = os2web_bygge_case_cases
+features[views_view][] = os2web_bygge_cases_by_adresses

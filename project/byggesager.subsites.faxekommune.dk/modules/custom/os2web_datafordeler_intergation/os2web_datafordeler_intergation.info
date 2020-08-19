@@ -1,0 +1,5 @@
+name = OS2Web Datafordeler integration
+description = Integration with Datafordeler webservices.
+core = 7.x
+package = OS2Web - Backend
+project = os2web_datafordeler_intergation

@@ -1,0 +1,16 @@
+name = Field encrypt
+description = Extension of the Field API to allow encryption of fields
+package = Fields
+core = 7.x
+
+dependencies[] = field
+dependencies[] = encrypt
+
+files[] = field_encrypt.cache.inc
+
+; Information added by Drupal.org packaging script on 2017-01-27
+version = "7.x-1.0-beta3"
+core = "7.x"
+project = "field_encrypt"
+datestamp = "1485553694"
+

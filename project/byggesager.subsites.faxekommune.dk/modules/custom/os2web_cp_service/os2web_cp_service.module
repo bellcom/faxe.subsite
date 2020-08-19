@@ -1,0 +1,1660 @@
+<?php
+
+/**
+ * @file
+ * Code for the OS2Web Case Publishing Service feature.
+ */
+
+include_once 'os2web_cp_service.features.inc';
+include_once 'includes/cp_service_methods.inc';
+module_load_include('inc', 'os2web_cp_service', 'os2web_cp_service.batch');
+
+define('OS2WEB_CP_SERVICE_FILE_TRANSFER_MODE', 'pull');
+define('OS2WEB_CP_SERVICE_FILE_PATH', 'public://cp-document');
+define('OS2WEB_CP_SERVICE_FILE_TRANSFER_MAX_TRIES', 5);
+define('OS2WEB_CP_SERVICE_FILE_TRANSFER_MAX_RESETS', 5);
+
+/**
+ * Implements hook_init().
+ */
+function os2web_cp_service_init() {
+  // ab@bellcom.dk
+  // Menu Minipanels us using qTip. Only add qTip js if module doesnt exits.
+  if (!module_exists('menu_minipanels')) {
+    drupal_add_js(drupal_get_path('module', 'os2web_cp_service') . '/js/jquery.qtip-1.0.0-rc3.min.js');
+  }
+
+  drupal_add_js(drupal_get_path('module', 'os2web_cp_service') . '/js/os2web_cp_service.js');
+  drupal_add_css(drupal_get_path('module', 'os2web_cp_service') . '/css/os2web_cp_service.css');
+}
+
+/**
+ * Implements hook_menu().
+ */
+function os2web_cp_service_menu() {
+  $items = array();
+
+  $items['os2web/service/cp/v1'] = array(
+    'type' => MENU_CALLBACK,
+    'page callback' => 'os2web_cp_service_handler',
+    'access callback' => TRUE,
+  );
+
+  $items['os2web/service/gf/v1/%'] = array(
+    'type' => MENU_CALLBACK,
+    'page callback' => 'os2web_gf_service_handler',
+    'page arguments' => array(4),
+    'access callback' => TRUE,
+  );
+
+  $items['seneste-dokumenter'] = array(
+    'type' => MENU_CALLBACK,
+    'title' => 'Senest journaliserede dokumenter',
+    'page callback' => 'os2web_cp_service_page',
+    'access callback' => TRUE,
+  );
+
+  $items['admin/config/os2web/cp-document-page'] = array(
+    'title' => 'Instillinger for "seneste-dokumenter" side.',
+    'description' => '',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2web_cp_service_page_settings'),
+    'access arguments' => array('administer site configuration'),
+  );
+
+  $items['admin/content/acadre_om/reset_transfer_status/%'] = array(
+    'title' => 'Reset transfer_status',
+    'page callback' => '_os2web_cp_service_reset_transfer_status_callback',
+    'page arguments' => array(4),
+    'access arguments' => array('administer site configuration'),
+  );
+
+  $items['admin/content/acadre_om/transfering_queue'] = array(
+    'type' => MENU_CALLBACK,
+    'title' => 'Documents transfer queue',
+    'page callback' => '_os2web_cp_service_transfering_queue',
+    'access arguments' => array('administer site configuration'),
+  );
+
+  return $items;
+}
+
+/**
+ * Form callback for cp service page settings.
+ */
+function os2web_cp_service_page_settings() {
+  $form = array();
+
+  $form['os2web_cp_service_page_preface'] = array(
+    '#type' => 'textarea',
+    '#title' => 'Tekst til "Seneste dokumenter" side, vises før dato formularen',
+    '#default_value' => variable_get('os2web_cp_service_page_preface', ''),
+  );
+
+  $form['os2web_cp_service_debug_info'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Save debug info',
+    '#default_value' => variable_get('os2web_cp_service_debug_info', FALSE),
+  );
+
+  $form['os2web_cp_service_log_file'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Path to debug file',
+    '#description' => 'You can specify path to debug file that can be used to store debug information. If empty default settings for error_log() function will be used.',
+    '#default_value' => variable_get('os2web_cp_service_log_file', FALSE),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Page callback for overview.
+ */
+function os2web_cp_service_page() {
+  drupal_set_title('Senest journaliserede dokumenter');
+  $variables = array();
+
+  // @TODO: Remove this
+  setlocale(LC_TIME, "da_DK.utf8");
+
+  if (!isset($_SESSION['os2web_cp_service_date'])) {
+    $_SESSION['os2web_cp_service_date'] = strtotime("yesterday");
+  }
+  $date = $_SESSION['os2web_cp_service_date'];
+
+  $variables['preface'] = variable_get('os2web_cp_service_page_preface', '');
+  $variables['date_string'] = strftime('%A d. %e %B %Y', $date);
+  $variables['datepicker'] = drupal_get_form('os2web_cp_service_datepicker');
+  $variables['document_table'] = os2web_cp_service_page_document_table($date);
+
+  return theme('os2web_cp_service_page', $variables);
+}
+
+/**
+ * Render table with documents for specified date.
+ */
+function os2web_cp_service_page_document_table($date) {
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'os2web_cp_service_cp_document')
+    ->fieldCondition('field_os2web_cp_service_date', 'value', date('Y-m-d', $date));
+  $result = $query->execute();
+
+  $rows = array();
+
+  foreach (node_load_multiple(array_keys($result['node'])) as $node) {
+    $document_number = '';
+    $case_number = '';
+    $case_name = '';
+    $document_fileid = '';
+
+    if ($field = field_get_items('node', $node, 'field_os2web_cp_service_doc_id')) {
+      $document_number = $field[0]['value'];
+    }
+
+    if ($field = field_get_items('node', $node, 'field_os2web_cp_service_case_id')) {
+      $case_number = $field[0]['value'];
+
+      $case_name = '';
+      if ($case = _os2web_cp_service_get_cp_document_node_by_case_id($case_number)) {
+        $case_name = $case->title;
+      }
+
+    }
+
+    if ($field = field_get_items('node', $node, 'field_os2web_cp_service_file_id')) {
+      $document_fileid = $field[0]['value'];
+    }
+
+    $rows[] = array(
+      $document_number,
+      l($node->title, 'os2web/service/gf/v1/' . $document_fileid),
+      l($case_number, 'sag/' . $case_number, array('attributes' => array('class' => 'qtip-this', 'title' => $case_name))),
+    );
+  }
+
+  $variables['header'] = array(
+    t('Dokumentnummer'),
+    t('Dokumentnavn'),
+    t('Sagsnummer'),
+  );
+
+  $variables['empty'] = t('Der er ingen dokumenter for den ønskede dato.');
+  $variables['rows'] = $rows;
+
+  return theme('table', $variables);
+}
+
+/**
+ * Datepicker form.
+ */
+function os2web_cp_service_datepicker($form, &$form_state) {
+  $form['datepicker'] = array(
+    '#type' => 'date_popup',
+    '#date_format' => 'd-m-Y',
+    '#default_value' => date('Y-m-d', $_SESSION['os2web_cp_service_date']),
+  );
+
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => t('Skift dato'),
+  );
+
+  return $form;
+}
+
+/**
+ * Submit handler for datepicker.
+ */
+function os2web_cp_service_datepicker_submit(&$form, &$form_state) {
+  $_SESSION['os2web_cp_service_date'] = strtotime($form_state['values']['datepicker']);
+  drupal_goto('seneste-dokumenter/' . md5($_SESSION['os2web_cp_service_date']));
+}
+
+/**
+ * Implements hook_theme().
+ */
+function os2web_cp_service_theme($existing, $type, $theme, $path) {
+  return array(
+    'os2web_cp_service_page' => array(
+      'template' => 'os2web-cp-service-page',
+    ),
+  );
+}
+
+/**
+ * Callback for Case Publishing service. Forwards handling to provided plugin.
+ */
+function os2web_cp_service_handler() {
+  if (!os2web_esdh_provider_has_api('cp')) {
+  #  drupal_access_denied();
+  }
+  # skifter
+  $ip_string = variable_get('os2web_cp_service_cp_access_ip', '');
+  $valid_ips = array_map('trim', explode(',', $ip_string));
+  #if (!in_array(ip_address(), $valid_ips)) {
+  #  drupal_access_denied();
+  #}
+
+  $data = os2web_esdh_provider_invoke('cp', 'handle_request');
+  return $data;
+}
+
+/**
+ * Callback for the file provider service.
+ */
+function os2web_gf_service_handler($file_id) {
+  $file_uri = NULL;
+  $node = _os2web_cp_service_get_cp_document_node_by_file_id($file_id);
+  if (!empty($node)) {
+    $field_os2web_cp_service_file = field_get_items('node', $node, 'field_os2web_cp_service_file');
+  }
+  if (!empty($field_os2web_cp_service_file)) {
+    $field_os2web_cp_service_file = reset($field_os2web_cp_service_file);
+    $file_uri = $field_os2web_cp_service_file['uri'];
+  }
+
+  $file_tranfser_mode = variable_get('os2web_cp_service_file_transfer_mode', OS2WEB_CP_SERVICE_FILE_TRANSFER_MODE);
+
+  // For push tranfser mode redirect user to file or show the error.
+  if ($file_tranfser_mode == 'push') {
+    if (!empty($file_uri)) {
+      drupal_goto(file_create_url($file_uri));
+    }
+    return _os2web_cp_file_error();
+  }
+
+  // For combined transfer mode redirect to file if it exist.
+  if ($file_tranfser_mode == 'combined' && !empty($file_uri)) {
+    drupal_goto(file_create_url($file_uri));
+  }
+
+  // Mime Types which are disallowed to be downloaded.
+  // People shouldn't be able to download special files.
+  $disallowed_mimes = array(
+    // Disallow .msg files.
+    'application/vnd.ms-outlook',
+  );
+
+  $disallowed_mimes = array_merge($disallowed_mimes, explode(',', variable_get('os2web_cp_service_disallow_mimes', '')));
+  $case_exceptions = explode(',', variable_get('os2web_cp_service_disallow_mimes_exceptions', ''));
+
+  if ($url = variable_get('os2web_cp_service_cp_document_fileurl')) {
+    $username = variable_get('os2web_cp_service_endpoint_user');
+    $password = variable_get('os2web_cp_service_endpoint_password');
+    if (!empty($username) && !empty($password)) {
+      // CURL for transfer:
+      $ch = curl_init($url . '?FileID=' . $file_id . '&FileFormat=Available');
+      curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
+      curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($ch, CURLOPT_USERPWD, "{$username}:{$password}");
+      curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_NTLM);
+      $data = curl_exec($ch);
+
+      // Load and save file for combined transfer mode.
+      if ($file_tranfser_mode == 'combined') {
+        $uri = _os2web_cp_document_get_file_uri($file_id);
+        if (file_unmanaged_save_data($data, $uri, FILE_EXISTS_ERROR)) {
+          $node = _os2web_cp_service_get_cp_document_node_by_file_id($file_id);
+          $node_wrapper = entity_metadata_wrapper('node', $node);
+
+          // Bind existing file to CP Document node and update transfer status.
+          _os2web_cp_document_bind_file($node_wrapper, $uri);
+          $status_message = 'combined mode transfer';
+          $node_wrapper->field_os2web_cp_service_tr_stat->set($status_message);
+          $node_wrapper->field_os2web_cp_service_res_c->set(0);
+
+          // Save node changes.
+          $node_wrapper->save();
+        }
+        else {
+          error_log('CP Service file saving error' . $file_uri);
+        }
+      }
+
+      $header = curl_getinfo($ch);
+
+      if (curl_error($ch)) {
+        error_log('curl error' . curl_error($ch));
+      }
+      # Skifter debug
+      #error_log('header log: ' . print_r($header,true));
+      curl_close($ch);
+      if ($header['http_code'] === 200) {
+        // Load the title to use it as the filename, and for conditions.
+        $query = new EntityFieldQuery();
+        $result = $query
+          ->entityCondition('entity_type', 'node')
+          ->propertyCondition('type', 'os2web_cp_service_cp_document')
+          ->propertyCondition('status', 1)
+          ->fieldCondition('field_os2web_cp_service_file_id', 'value', $file_id, '=')
+          ->execute();
+        $nids = (isset($result['node'])) ? array_keys($result['node']) : NULL;
+
+        $node = node_load(array_pop($nids));
+        $case_id = NULL;
+        if ($node) {
+          $case_id = $node->field_os2web_cp_service_case_id[LANGUAGE_NONE][0]['value'];
+        }
+
+        error_log($case_exceptions);
+
+        if (!in_array($header['content_type'], $disallowed_mimes) || ($case_id && in_array($case_id, $case_exceptions))) {
+          error_log('CP document 1');
+          drupal_add_http_header('Content-Type', $header['content_type']);
+          drupal_add_http_header('Content-Length', $header['download_content_length']);
+          drupal_add_http_header('Cache-Control', 'must-revalidate, post-check=0, pre-check=0');
+          drupal_add_http_header('Cache-Control', 'private', FALSE);
+          drupal_add_http_header('Connection', 'close');
+          drupal_add_http_header('Expires', '0');
+
+          // Check for IE only headers.
+          if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE)) {
+            drupal_add_http_header('Pragma', 'public');
+          }
+          else {
+            drupal_add_http_header('Pragma', 'no-cache');
+          }
+
+          $filename = str_replace('/', '_', $file_id . '.' . os2web_cp_service_get_extension_from_mime($header['content_type']));
+          if ($node) {
+            // If we can find the doc in DB, give it a real name.
+            $filename = str_replace('/', '_', $node->field_os2web_cp_service_doc_id[LANGUAGE_NONE][0]['value'] . '.' . os2web_cp_service_get_extension_from_mime($header['content_type']));
+          }
+          drupal_add_http_header('Content-Disposition', 'attachment; filename=' . $filename);
+          echo $data;
+          drupal_exit();
+        }
+        else {
+          error_log('CP document 2');
+          // Show a polite message if the file isnt allowed for download.
+          // If the message isnt set in config, deliver a access denied page.
+          if ($error_message = variable_get('os2web_cp_service_access_denied_message')) {
+            return _os2web_cp_file_error($error_message);
+          }
+        }
+      }
+    }
+    else {
+      watchdog('os2web_cp_service', 'Settings are wrong.', array(), WATCHDOG_ERROR);
+    }
+
+  }
+  else {
+    watchdog('os2web_cp_service', 'No URL found in variable DB', array(), WATCHDOG_ERROR);
+  }
+
+  // If we come to this line, show an error.
+  return _os2web_cp_file_error();
+}
+
+
+/**
+ * Callback for failed case.
+ */
+function _os2web_cp_file_error($message = '') {
+  if (empty($message)) {
+    $message = t('Det ønskede dokument kunne ikke hentes, hvilket kan skyldes opdatering af løsningen. Prøv venligst igen senere.');
+  }
+  $markup = '<div class="messages error"><ul><li>';
+  $markup .= $message;
+  $markup .= '</li></ul></div>';
+
+  $page['region'] = array(
+    '#type' => 'markup',
+    '#markup' => $markup,
+  );
+  return $page;
+}
+
+/**
+ * Function to control/alter any configurations before added to the variable table.
+ *
+ * @param string $key
+ *   The key of the configuration.
+ * @param string $value
+ *   The value of the conf, which has to be altered/stored.
+ */
+function os2web_cp_service_alter_configuration($key, $value) {
+  switch ($key) {
+    case 'FileServiceURL':
+      return variable_set('os2web_cp_service_cp_document_fileurl', $value);
+
+    break;
+  }
+}
+
+/**
+ * Service function for creating a case.
+ *
+ * @param array $data
+ *   Structured array with data for the Case.
+ *
+ * @return bool
+ *   TRUE on successful content creation.
+ */
+function os2web_cp_service_create_case(array $data) {
+  watchdog('os2web_cp_service', 'Preparing to create cp case', array());
+  os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Create CP case start');
+  // Prepare data.
+  $data = array_replace_recursive(os2web_cp_service_default_case(), $data);
+
+  $query = new EntityFieldQuery();
+  $result = $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'os2web_cp_service_cp_case')
+      ->fieldCondition('field_os2web_cp_service_sysid', 'value', $data['fields']['SystemID'], '=')
+      ->execute();
+  $nids = (isset($result['node']))?array_keys($result['node']) : NULL;
+  if(count($nids) > 0) {
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Multiple cases with same id found' . count($nids));
+  }
+  $node = new stdClass();
+  if (count($nids) > 1) {
+    if (is_array($nids)) {
+      node_delete_multiple($nids);
+    }
+  }
+
+  if (!empty($nids)) {
+    $node = node_load(array_pop($nids));
+  }
+
+  // See if the triggered rules on the published node, is approved
+  // in the vocabulary. Otherwise the node will be unpublished.
+  $approved_vocabulary = taxonomy_vocabulary_machine_name_load('os2web_cp_service_tax_approved_rules');
+  $approved_rules = taxonomy_get_tree($approved_vocabulary->vid);
+  $approved = FALSE;
+  foreach ($data['rules'] as $trigger_rule) {
+    foreach ($approved_rules as $approved_rule) {
+      if ($approved_rule->name === $trigger_rule['tag']) {
+        $approved = TRUE;
+        break;
+      }
+    }
+  }
+
+  $node->type = 'os2web_cp_service_cp_case';
+  $node->uid = 0;
+  $node->status = $approved;
+  $node->comment = 0;
+  $node->promote = 0;
+  $node->moderate = 0;
+  $node->sticky = 0;
+  $node->language = LANGUAGE_NONE;
+  node_object_prepare($node);
+
+  switch ($data['fields']['Sagstype - Sagstype']) {
+    case 'EJSAG':
+      // Old cases comes as: "Birkevej (8410) 11, 8410 Rønde"
+      // regex removes " (8410)"
+      $node->title = (string) preg_replace('/\s\(\d{4}\)/', '', $data['fields']['Sagstitel'][0]);
+      break;
+
+    default:
+      $node->title = (string) !empty($data['fields']['Sagstitel'][0])?$data['fields']['Sagstitel'][0] : $data['fields']['Officiel titel'][0];
+      break;
+  }
+  if (strlen($node->title) > 250) {
+    $node->title = substr($node->title, 0, 250);
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Title longer than 250 char. Cutting it to 250: ' . $node->title);
+  }
+
+  watchdog('os2web_cp_service', 'Create CP Case: %title', array('%title' => $node->title));
+  os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Create CP Case: ' . $node->title);
+
+  // Has all fields of a node type "case".
+  $node_fields = field_info_instances('node', 'os2web_cp_service_cp_case');
+
+  foreach ($node_fields as $field_name => $field) {
+    $field_info = field_info_field($field_name);
+    if (!is_array($data['fields'][$field['label']])) continue;
+    foreach ($data['fields'][$field['label']] as $key => $value) {
+    if (isset($data['fields'][$field['label']]) && $field_name !== 'title') {
+      $field_info = field_info_field($field_name);
+      switch ($field_info['type']) {
+        case 'text':
+          if ($field['label'] === 'Sagstitel' && $data['fields']['Sagstype - Sagstype'] === 'EJSAG') {
+            $node->{$field_name}[LANGUAGE_NONE][$key]['value'] = (string) preg_replace('/\s\(\d{4}\)/', '', $value);
+            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_info_type: ' . $field['label'] . ' = ' . $value);
+          }
+          else {
+            $node->{$field_name}[LANGUAGE_NONE][$key]['value'] = (string) $value;
+            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_info_type: ' . $field['label'] . ' = ' . $value);
+          }
+          break;
+
+        case 'taxonomy_term_reference':
+          $choosen_term = NULL;
+          os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $value);
+
+          // Search of the term in KLE vocabulary.
+          if (strpos($field['label'], 'KL emnenummer') !== FALSE) {
+            // TODO: Use os2web_taxonomies_kle.
+            $vocabulary = taxonomy_vocabulary_machine_name_load('kle');
+            $terms = taxonomy_get_tree($vocabulary->vid);
+            foreach ($terms as $term) {
+              // Does the term start with the numbers xx.xx.xx.
+              if (strpos($term->name, substr($value, 0, strpos($value, ' '))) !== FALSE) {
+                $choosen_term = $term->name;
+                break;
+              }
+            }
+          }
+
+          // If non found, find in every vocabularies.
+          // Retrieve the first occurance of the term.
+          if (empty($choosen_term)) {
+            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $value);
+            $choosen_term = array_pop(taxonomy_get_term_by_name((string) $value, NULL));
+          }
+
+          if (!empty($choosen_term)) {
+            os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Tax_Field_info_type: ' . $field['label'] . ' = ' . $data['fields'][$field['label']]);
+            // Note that if its an update of an existing node,
+            // it will ńot be resat.
+            $node->{$field_name}['und'][0]['tid'] = $term->tid;
+          }
+          break;
+
+        default:
+          os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Field_default: ' . $field['label'] . ' = ' . print_r($data['fields'],true));
+          $node->{$field_name}[LANGUAGE_NONE][$key]['value'] = $value;
+          break;
+      }
+    }
+  }
+  }
+  unset($node->field_os2web_cp_service_rules[LANGUAGE_NONE]);
+  foreach ($data['rules'] as $rule) {
+    $term = taxonomy_get_term_by_name($rule['name'], 'os2web_cp_service_tax_rules');
+    if (empty($term)) {
+      $rules_vocabulary = taxonomy_vocabulary_machine_name_load('os2web_cp_service_tax_rules');
+      $term = new stdClass();
+      $term->vid = $rules_vocabulary->vid;
+      $term->name = $rule['name'];
+      taxonomy_term_save($term);
+    }
+    if (is_array($term)) {
+      $term = array_pop($term);
+    }
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Setting taxonomy trigger: '. $term->name);
+    $node->field_os2web_cp_service_rules[LANGUAGE_NONE][]['tid'] = $term->tid;
+  }
+
+  // Update all existing documents with same SagsID.
+  $query = new EntityFieldQuery();
+  $result = $query
+    ->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', 'os2web_cp_service_cp_document')
+    ->fieldCondition('field_os2web_cp_service_case_id', 'value', $data['fields']['Sagsnummer'], '=')
+    ->execute();
+  $doc_nids = (isset($result['node'])) ? array_keys($result['node']) : array();
+
+  if(count($doc_nids) > 0) {
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Found multiple documents on this case: '. count($doc_nids));
+  }
+  else {
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' Found NO documents on this case: '. count($doc_nids));
+  }
+  $doc_nodes = node_load_multiple($doc_nids);
+  foreach ($doc_nodes as $doc_nid => $doc_node) {
+    // Set reference on case if not exists.
+    $doc_ref_found = FALSE;
+    foreach ($node->field_os2web_cp_service_doc_ref[LANGUAGE_NONE] as $doc_ref) {
+      if ($doc_ref['target_id'] == $doc_nid) {
+        $doc_ref_found = TRUE;
+        os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' document references found setting it to: '. $doc_nid);
+        break;
+      }
+    }
+    if (!$doc_ref_found) {
+      $node->field_os2web_cp_service_doc_ref[LANGUAGE_NONE][]['target_id'] = $doc_nid;
+      os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . ' No document references found setting it to: '. $doc_nid);
+    }
+
+    // Set sagsid on doc.
+    $doc_node->field_os2web_cp_service_case_sid[LANGUAGE_NONE][0]['value'] = $data['fields']['SystemID'];
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Setting case id to systemid: '. $data['fields']['SystemID']);
+    node_save($doc_node);
+  }
+  if (module_exists(os2web_datafordeler_intergation)) {
+      $cpr = $node->field_os2web_cp_service_pid_nr[LANGUAGE_NONE];
+      $cvr = $node->field_os2web_cp_service_cvr_nr[LANGUAGE_NONE];
+      $matrikkel = $node->field_os2web_cp_service_matrikul[LANGUAGE_NONE][0]['value'];
+      $matrikkel = strtolower($matrikkel);
+      $owner_id = $cpr ? $cpr: $cvr;
+      $bfe = os2web_datafordeler_intergation_get_bfe($owner_id, $matrikkel);
+      if (!empty($bfe)) {
+        $node->field_os2web_cp_service_bfe_nr['und'][0]['value'] = $bfe;
+        $address= os2web_datafordeler_intergation_fetch_address($bfe);
+        $term = taxonomy_get_term_by_name($address, 'os2web_cp_service_tax_addresses');
+        if (empty($term)) {
+          $addresses_vocabulary = taxonomy_vocabulary_machine_name_load('os2web_cp_service_tax_addresses');
+          $term = new stdClass();
+          $term->vid = $addresses_vocabulary->vid;
+          $term->name = $address;
+          $term->field_cp_service_tax_addr_bfe_nr[LANGUAGE_NONE][0]['value'] = $bfe;
+          taxonomy_term_save($term);
+        }
+        if (is_array($term)) {
+          $term = array_pop($term);
+        }
+        $node->field_os2web_cp_service_addr[LANGUAGE_NONE][]['tid'] = $term->tid;
+       // node_save($node);
+      }
+    }
+  try {
+    node_submit($node);
+    node_save($node);
+
+
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Saving node of case: '. $doc_nid);
+    return $node;
+  }
+  catch (Exception $e) {
+    os2web_cp_service_log(basename(__FILE__) . ': ' . __LINE__ . ': ' .  __FUNCTION__ . 'Error hvem saving node: '. print_r($e->getMessage(), 1) . ' Titel: ' . $node->title);
+    return FALSE;
+  }
+}
+
+/**
+ * Default array structure for a case.
+ */
+function os2web_cp_service_default_case() {
+  return array(
+    'type' => 'case',
+    'rules' => array(),
+    'status' => NULL,
+    'fields' => array(
+      'SagsID' => NULL,
+      'SystemID' => NULL,
+      'Sagsnummer' => NULL,
+      // 'Sagsår' => NULL,
+      'Sagsløbenummer' => NULL,
+      // PERSAG, EJSAG, Akassesag, Børn- og ungesag.
+      'Sagstype - Sagstype' => NULL,
+      // Personsag, Ejendomssag, Akassesag, Børn- og ungesag.
+      'Sagstype - Sagstypebetegnelse' => NULL,
+      'Sagsundertype - Sagsundertype' => NULL,
+      'Sagstitel' => NULL,
+      'Officiel titel' => NULL,
+      'Sagsindhold' => NULL,
+      'CPR' => NULL,
+      'CVR' => NULL,
+      'Matrikel' => NULL,
+      'Ejendomsnummer' => NULL,
+      'Sagsstatus - Sagstype' => NULL,
+      'Sagsstatus - Sagstypebetegnelse' => NULL,
+      'Sagsstatus - Afsluttet' => NULL,
+      'Sagsstatus - Passiv' => NULL,
+      'Sagsbehandler - BrugerID' => NULL,
+      'Sagsbehandler - Bruger logon' => NULL,
+      'Sagsbehandler - Brugernavn' => NULL,
+      'Sagsansvarlig enhed - ID' => NULL,
+      'Sagsansvarlig enhed - Administrativ enhed forkortelse' => NULL,
+      'Sagsansvarlig enhed - Administrativ enhed' => NULL,
+      'Sagsansvarlig enhed - Administrativ enhed beskrivelse' => NULL,
+      'Sagsdato' => NULL,
+      'Oprettelsesdato' => NULL,
+      'Redigeringsdato' => NULL,
+      'StatusRedigeringsdato' => NULL,
+      'Sidste dokument' => NULL,
+      'Afslutningsdato' => NULL,
+      'Kassationsdato' => NULL,
+      'Kassationskode - Kassationskode' => NULL,
+      'Kassationskode - Kassationskodebetegnelse' => NULL,
+      'Slettekode' => NULL,
+      'Adgangskode - Adgangskode' => NULL,
+      'Adgangskode - Adgangskodebetegnelse' => NULL,
+      'Adgangsgruppe - AdgangsgruppeID' => NULL,
+      'Adgangsgruppe - Adgangsgruppe' => NULL,
+      'Aktindsigt - AktindsigtsID' => NULL,
+      'Aktindsigt - Aktindsigt' => NULL,
+      'Arkivdel - Arkivdel' => NULL,
+      'Arkivdel - Arkivdelbetegnelse' => NULL,
+      'Journalenhed - Journalenhed' => NULL,
+      'Journalenhed - Journalenhedsbetegnelse' => NULL,
+      'Papirsag' => NULL,
+      'KL emnenummer - KL emnenummer' => NULL,
+      'KL emnenummer - KL emnenbeskrivelse' => NULL,
+      'KL emnenummer - KL emnenummer og beskrivelse' => NULL,
+      'KL handlingsfacet - KL handlingsfacet' => NULL,
+      'KL handlingsfacet - KL handlingsfacetbeskrivelse' => NULL,
+      'KL handlingsfacet - KL handlingsfacet og beskrivelse' => NULL,
+      'OBS-dato' => NULL,
+      'OBS-note' => NULL,
+      'Sagsfrist' => NULL,
+      'Sagsfrist note' => NULL,
+      'Projekt - Projekt' => NULL,
+      'Sagsgruppe - SagsgruppeID' => NULL,
+      'Sagsgruppe - Sagsgruppe' => NULL,
+      'Afgørelse - AfgørelsesID' => NULL,
+      'Afgørelse - Afgørelse' => NULL,
+      'Prioritet - ID' => NULL,
+      'Prioritet - Prioritet' => NULL,
+      'Sagsfase - SagsfaseID' => NULL,
+      'Sagsfase - Sagsfase' => NULL,
+      'Sagsfasefrist' => NULL,
+      'Afventer - AfventerID' => NULL,
+      'Afventer - Afventer' => NULL,
+      'Klient køn - ID' => NULL,
+      'Klient køn - Klient køn' => NULL,
+      'Klient fødselsdato' => NULL,
+      'Klient alder ved registrering' => NULL,
+      'Klient faggruppe - ID' => NULL,
+      'Klient faggruppe - Klient faggruppe' => NULL,
+      'Klient henvendelse - ID' => NULL,
+      'Klient henvendelse - Klient henvendelse' => NULL,
+      'Klient faglig vurdering - ID' => NULL,
+      'Klient faglig vurdering - Klient faglig vurdering' => NULL,
+      'Klient foranstaltningsforslag - ID' => NULL,
+      'Klient foranstaltningsforslag - Klient foranstaltningsforslag' => NULL,
+      'Klient afgørelse - ID' => NULL,
+      'Klient afgørelse - Klient afgørelse' => NULL,
+      'Klient kategori - ID' => NULL,
+      'Klient kategori - Klient kategori' => NULL,
+      'Klient klassetrin - ID' => NULL,
+      'Klient klassetrin - Klient klassetrin' => NULL,
+      'Klient forældremyndighed - ID' => NULL,
+      'Klient forældremyndighed - Klient forældremyndighed' => NULL,
+      'Klient note' => NULL,
+    ),
+  );
+}
+
+/**
+ * Service function for creating a document.
+ *
+ * @param array $data
+ *   Structured array with data for the Case.
+ *
+ * @return bool
+ *   TRUE on successful content creation.
+ */
+function os2web_cp_service_create_document(array $data) {
+  $data = array_replace_recursive(os2web_cp_service_default_document(), $data);
+
+  // Prepare data.
+  $query = new EntityFieldQuery();
+  $result = $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'os2web_cp_service_cp_document')
+      ->fieldCondition('field_os2web_cp_service_sysid', 'value', $data['fields']['SystemID'], '=')
+      ->execute();
+  $node = new stdClass();
+  $nids = (isset($result['node']))?array_keys($result['node']) : array();
+
+  if (count($nids) > 1) {
+    error_log('Multiple documents with same systemID found. A total of: ' . count($nids));
+  }
+
+  if (count($nids) > 1) {
+    if (is_array($nids)) {
+      node_delete_multiple($nids);
+    }
+  }
+
+  if (!empty($nids)) {
+    $node = node_load(array_pop($nids));
+  }
+
+  // See if the triggered rules on the published node, is approved
+  // in the vocabulary. Otherwise the node will be unpublished.
+  $vocabulary = taxonomy_vocabulary_machine_name_load('os2web_cp_service_tax_approved_rules');
+  $approved_rules = taxonomy_get_tree($vocabulary->vid);
+  $approved = TRUE;
+  foreach ($data['rules'] as $trigger_rule) {
+    foreach ($approved_rules as $approved_rule) {
+      if ($approved_rule->name === $trigger_rule['tag']) {
+        $approved = TRUE;
+        break;
+      }
+    }
+  }
+
+  $node->type = 'os2web_cp_service_cp_document';
+  $node->uid = 0;
+  $node->status = $approved;
+  $node->comment = 0;
+  $node->promote = 0;
+  $node->moderate = 0;
+  $node->sticky = 0;
+  $node->language = LANGUAGE_NONE;
+  node_object_prepare($node);
+
+  $node->title = (string) !empty($data['fields']['Dokumenttitel'])?$data['fields']['Dokumenttitel'] : $data['fields']['Officiel titel'];
+
+  // Has all fields of a node type "document".
+  $node_fields = field_info_instances('node', 'os2web_cp_service_cp_document');
+  foreach ($node_fields as $field_name => $field) {
+    if (isset($data['fields'][$field['label']]) && $field_name !== 'title') {
+
+      $field_info = field_info_field($field_name);
+
+      switch ($field_info['type']) {
+        case 'text':
+          $node->{$field_name}[LANGUAGE_NONE][0]['value'] = (string) $data['fields'][$field['label']];
+          break;
+
+        default:
+          $node->{$field_name}[LANGUAGE_NONE][0]['value'] = $data['fields'][$field['label']];
+          break;
+      }
+    }
+  }
+
+  unset($node->field_os2web_cp_service_rules[LANGUAGE_NONE]);
+  foreach ($data['rules'] as $rule) {
+    $term = taxonomy_get_term_by_name($rule['name'], 'os2web_cp_service_tax_rules');
+    if (empty($term)) {
+      $rules_vocabulary = taxonomy_vocabulary_machine_name_load('os2web_cp_service_tax_rules');
+      $term = new stdClass();
+      $term->vid = $rules_vocabulary->vid;
+      $term->name = $rule['name'];
+      taxonomy_term_save($term);
+    }
+    if (is_array($term)) {
+      $term = array_pop($term);
+    }
+    $node->field_os2web_cp_service_rules[LANGUAGE_NONE][]['tid'] = $term->tid;
+  }
+
+  // If file has been delivered, we are going to reset transfering status. To
+  // get it uploaded again.
+  $delivery_status = field_get_items('node', $node, 'field_os2web_cp_service_deliver');
+  if (!empty($delivery_status[0]['value'])) {
+    _os2web_cp_service_reset_transfer_status($node, 'Metadata updated. Reseted to transfer.');
+  }
+
+  try {
+    node_submit($node);
+    node_save($node);
+
+    // Trigger a cache reload by calling the URL for the node.
+    $cache_trigger = curl_init(url('node/' . $node->nid, array('absolute' => TRUE)));
+    // Stop the call after 1 sec. Dont care about the response.
+    curl_setopt($cache_trigger, CURLOPT_TIMEOUT, 1);
+    // Do not print curl response.
+    curl_setopt($cache_trigger, CURLOPT_RETURNTRANSFER, 1);
+    curl_exec($cache_trigger);
+    curl_close($cache_trigger);
+  }
+  catch (Exception $e) {
+    watchdog('os2web_cp_service', 'Error on save: %message', array('%message' => print_r($e->getMessage(), 1)));
+    return FALSE;
+  }
+
+  // Update reference on cases.
+  $query = new EntityFieldQuery();
+  $result = $query
+      ->entityCondition('entity_type', 'node')
+      ->entityCondition('bundle', 'os2web_cp_service_cp_case')
+      ->fieldCondition('field_os2web_cp_service_sysid', 'value', $data['fields']['Sag SystemID'], '=')
+      ->execute();
+  if (!empty($result['node'])) {
+    $nids = array_keys($result['node']);
+    foreach ($nids as $nid) {
+      $cnode = node_load($nid);
+      if (!empty($cnode)) {
+        $node->field_os2web_cp_service_case_id[LANGUAGE_NONE][]['value'] = $cnode->field_os2web_cp_service_case_id[LANGUAGE_NONE][0]['value'];
+        node_save($node);
+        $is_missing = TRUE;
+        if (!empty($cnode->field_os2web_cp_service_doc_ref[LANGUAGE_NONE])) {
+          foreach ($cnode->field_os2web_cp_service_doc_ref[LANGUAGE_NONE] as $value) {
+            if ($value['target_id'] == $node->nid) {
+              $is_missing = FALSE;
+            }
+          }
+        }
+        if ($is_missing) {
+          $cnode->field_os2web_cp_service_doc_ref[LANGUAGE_NONE][]['target_id'] = $node->nid;
+          node_save($cnode);
+        }
+      }
+    }
+  }
+  return $node;
+}
+
+/**
+ * Default array structure for a case.
+ */
+function os2web_cp_service_default_document() {
+  return array(
+    'type' => 'document',
+    'rules' => array(),
+    'status' => NULL,
+    'fields' => array(
+      'Opfølgning påkrævet' => NULL,
+      'Journaldato' => NULL,
+      'Dokumentdato' => NULL,
+      'Oprettelsesdato' => NULL,
+      'Redigeringsdato' => NULL,
+      'StatusRedigeringsdato' => NULL,
+      'Dokumentfrist' => NULL,
+      'FilRedigeringsdato' => NULL,
+      'SystemID' => NULL,
+      'Sag SystemID' => NULL,
+      'Dokumentnummer' => NULL,
+      'Dokumentløbenummer' => NULL,
+      'Journalår' => NULL,
+      'Lagringsform - ID' => NULL,
+      'Sagsbehandler - BrugerID' => NULL,
+      'Aktindsigt - AktindsigtsID' => NULL,
+      'Adgangsgruppe - AdgangsgruppeID' => NULL,
+      'FilID' => NULL,
+      'Filversion' => NULL,
+      'SagsID' => NULL,
+      'Indhold_FileID' => NULL,
+      'Journalnummer' => NULL,
+      'Dokumenttitel' => NULL,
+      'Officiel titel' => NULL,
+      'Indholdsbeskrivelse' => NULL,
+      'Lagringsform - Lagringsform' => NULL,
+      'Dokumenttype - Dokumenttype' => NULL,
+      'Dokumenttype - Dokumenttypebetegnelse' => NULL,
+      'Kategori - Kategori' => NULL,
+      'Kategori - Kategoribetegnelse' => NULL,
+      'Sagsbehandler - Bruger logon' => NULL,
+      'Sagsbehandler - Brugernavn' => NULL,
+      'Aktindsigt - Aktindsigt' => NULL,
+      'Adgangskode - Adgangskode' => NULL,
+      'Adgangskode - Adgangskodebetegnelse' => NULL,
+      'Adgangsgruppe - Adgangsgruppe' => NULL,
+      'Journalstatus - Journalstatus' => NULL,
+      'Journalstatus - Journalstatusbetegnelse' => NULL,
+      'Dokumentstatus - Dokumentstatus' => NULL,
+      'Dokumentstatus - Dokumentstatusbetegnelse' => NULL,
+      'Dokumentfrist note' => NULL,
+      'Arkivdel - Arkivdel' => NULL,
+      'Arkivdel - Arkivdelbetegnelse' => NULL,
+      'Filformat' => NULL,
+      'Låst' => NULL,
+    ),
+  );
+}
+
+/**
+ * Service function to delete an Case or Document.
+ *
+ * @param string $guid
+ *   The key of the node stored in field_os2web_cp_service_key
+ *
+ * @return bool
+ *   Success
+ */
+function os2web_cp_service_delete($guid) {
+  $query = new EntityFieldQuery();
+  $result = $query
+      ->entityCondition('entity_type', 'node')
+      ->fieldCondition('field_os2web_cp_service_key', 'value', $guid, '=')
+      ->execute();
+  $nids = (isset($result['node']))?array_keys($result['node']) : array();
+  try {
+    if (count($nids) > 1) {
+      if (is_array($nids)) {
+        node_delete_multiple($nids);
+      }
+    }
+    else {
+      node_delete(array_pop($nids));
+    }
+    return TRUE;
+  }
+  catch (Exception $e) {
+    watchdog('os2web_cp_service', 'Error on delete: %message', array('%message' => print_r($e->getMessage(), 1)));
+    return FALSE;
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ */
+function os2web_cp_service_node_delete($node) {
+  if ($node->type == 'os2web_cp_service_cp_document') {
+    // Prepare data.
+    $query = new EntityFieldQuery();
+    $result = $query
+        ->entityCondition('entity_type', 'node')
+        ->propertyCondition('type', 'os2web_cp_service_cp_case')
+        ->fieldCondition('field_os2web_cp_service_doc_ref', 'target_id', $node->nid, '=')
+        ->execute();
+    if (!empty($result['node'])) {
+      $nids = array_keys($result['node']);
+      $new_nids = array();
+      foreach ($nids as $nid) {
+        $cnode = node_load($nid);
+        foreach ($cnode->field_os2web_cp_service_doc_ref[LANGUAGE_NONE] as $value) {
+          if ($value['target_id'] != $node->nid) {
+            $new_nids[] = $value;
+          }
+        }
+        $cnode->field_os2web_cp_service_doc_ref[LANGUAGE_NONE] = $new_nids;
+        node_save($cnode);
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_field_formatter_info().
+ */
+function os2web_cp_service_field_formatter_info() {
+  return array(
+    'os2web_cp_service_file_formatter' => array(
+      'label' => t('OS2Web Filelink'),
+      'field types' => array('text'),
+      'settings' => array(
+        // Base url up which we'll insert the file id.
+        'base_url' => 'os2web/service/gf/v1/!id',
+      ),
+    ),
+    'os2web_cp_service_case_link' => array(
+      'label' => t('OS2Web CP Case link'),
+      'field types' => array('text'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_field_formatter_settings_form().
+ */
+function os2web_cp_service_field_formatter_settings_form($field, $instance, $view_mode, $form, &$form_state) {
+  if (empty($instance['display'][$view_mode]['type']) ||
+    $instance['display'][$view_mode]['type'] != 'os2web_cp_service_file_formatter') {
+    return array();
+  }
+  $display = $instance['display'][$view_mode];
+  $element = array();
+  $element['base_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Base URL'),
+    '#description' => t('Base URL where to request the file. !id will be substituded for the actual ID.'),
+    '#default_value' => $display['settings']['base_url'],
+  );
+  return $element;
+}
+
+/**
+ * Implements hook_field_formatter_settings_summary().
+ */
+function os2web_cp_service_field_formatter_settings_summary($field, $instance, $view_mode) {
+  $display = $instance['display'][$view_mode];
+  $settings = $display['settings'];
+  $summary = t('Make a link to a file with a base url of @url', array(
+    '@url' => $settings['base_url'],
+      ));
+  return $summary;
+}
+
+/**
+ * Implements hook_field_formatter_view().
+ */
+function os2web_cp_service_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
+  if ($display['type'] == 'os2web_cp_service_case_link'
+    && $field['field_name'] == 'field_os2web_cp_service_case_id') {
+    $element = array();
+    foreach ($items as $delta => $item) {
+      $query = new EntityFieldQuery();
+      $result = $query
+        ->entityCondition('entity_type', 'node')
+        ->entityCondition('bundle', 'os2web_cp_service_cp_case')
+        ->fieldCondition('field_os2web_cp_service_case_id', 'value', $item['value'], '=')
+        ->execute();
+      if (!empty($result['node'])) {
+        $nids = array_keys($result['node']);
+        $element[$delta]['#markup'] = l($item['value'], 'node/' . $nids[0]);
+      }
+    }
+  }
+
+  if ($display['type'] == 'os2web_cp_service_file_formatter') {
+    $base_url = $display['settings']['base_url'];
+    $element = array();
+    foreach ($items as $delta => $item) {
+      $file_id = $item['value'];
+      $url = format_string($base_url, array('!id' => $file_id));
+      $element[$delta]['#markup'] = l(t('Download'), $url);
+    }
+  }
+
+  return $element;
+}
+
+/**
+ * Implements hook_foorm_alter().
+ */
+function os2web_cp_service_form_alter(&$form, &$form_state, $form_id) {
+  switch ($form['#id']) {
+    case 'views-exposed-form-os2web-cp-service-cp-case-search-page':
+    case 'views-exposed-form-os2web-cp-service-cp-case-search-panel-pane-1':
+    case 'views-exposed-form-os2web-cp-service-cp-case-search-default':
+      foreach ($form['#info'] as &$widget) {
+        // Adds placeholder to all textfields with a description ab@bellcom.dk.
+        if (!empty($widget['description']) && isset($form[$widget['value']]['#type']) && $form[$widget['value']]['#type'] === 'textfield') {
+          $form[$widget['value']]['#attributes']['placeholder'] = $widget['description'];
+        }
+        if (isset($form[$widget['value']]['value']) && $form[$widget['value']]['value']['#type'] === 'date_popup') {
+          $form[$widget['value']]['value']['#date_format'] = 'd-m-Y';
+        }
+      }
+      break;
+
+    case 'search-form':
+      $form['#suffix'] .= '<div class="link-aaben-indsigt">Søger du efter sager i vores sagssystem, kan du bruge vores <a href="/aaben-indsigt">Åben Indsigt</a>.</div>';
+      break;
+  }
+}
+
+/**
+ * Implements theme_preprocess_views_exposed_form().
+ */
+function os2web_cp_service_preprocess_views_exposed_form(&$variables) {
+  // Wrap certain elements in search form. Used for styling etc.
+  if ($variables['form']['#id'] == 'views-exposed-form-os2web-cp-service-cp-case-search-page' ||
+      $variables['form']['#id'] == 'views-exposed-form-os2web-cp-service-cp-case-search-panel-pane-1' ||
+      $variables['form']['#id'] == 'views-exposed-form-os2web-cp-service-cp-case-search-default') {
+    foreach ($variables['widgets'] as $id => &$widget) {
+      switch ($id) {
+        case 'filter-field_os2web_cp_service_date_value_1':
+          $widget->prefix = '<div class="filter-widgets-wrapper clearfix">';
+          break;
+
+        case 'filter-field_os2web_cp_service_date_value_2':
+          $widget->suffix = '<input type="submit" name="" value="Søg" class="form-submit"><div class="os2web_cp_service-ajax-loader ajax-loader"></div></div>';
+          break;
+
+        case 'filter-field_os2web_cp_service_case_id_value':
+          $widget->prefix = '<div class="filter-widgets-wrapper clearfix">';
+          $widget->suffix = '<input type="submit" name="" value="Find sag" class="form-submit"></div>';
+          break;
+
+        case 'filter-field_os2web_cp_service_doc_id_value':
+          $widget->prefix = '<div class="filter-widgets-wrapper clearfix">';
+          $widget->suffix = '<input type="submit" name="" value="Find dokument" class="form-submit"></div>';
+          break;
+      }
+    }
+
+    $cal_icon = drupal_get_path('module', 'os2web_cp_service') . "/images/cal.png";
+    $datepicker = 'jQuery(document).ready(function($) {
+      $( "#edit-field-os2web-cp-service-date-from-value-datepicker-popup-0" ).datepicker({
+                    showOn: "both",
+                    buttonImage: "' . $cal_icon . '",
+                    buttonImageOnly: true,
+                    dateFormat: "dd-mm-yy"
+      });
+      $( "#edit-field-os2web-cp-service-date-to-value-datepicker-popup-0" ).datepicker({
+                    showOn: "both",
+                    buttonImage: "' . $cal_icon . '",
+                    buttonImageOnly: true,
+                    dateFormat: "dd-mm-yy"
+      });
+    });';
+    drupal_add_js($datepicker,
+      array(
+        'type' => 'inline',
+        'scope' => 'footer',
+        'weight' => 5,
+      )
+    );
+  }
+}
+
+/**
+ * Implements hook_theme_registry_alter().
+ */
+function os2web_cp_service_theme_registry_alter(&$theme_registry) {
+  // Add the tpl for exposed form to the theme registry
+  // Somehow this gets overridden by os2web_core_theme.
+  if (!empty($theme_registry['views_exposed_form__os2web_cp_service_cp_case_search']['path'])) {
+    $theme_registry['views_exposed_form__os2web_cp_service_cp_case_search']['path'] = drupal_get_path('module', 'os2web_cp_service') . '/theme/';
+  }
+}
+
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Add configuration to the settings form.
+ */
+function os2web_cp_service_form_os2web_settings_settings_form_alter(&$form, &$form_state) {
+  // CP Configuration.
+  $form['os2web_cp_service_config_group'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => !(variable_get('os2web_cp_service_endpoint_user') || variable_get('os2web_cp_service_endpoint_password')),
+    '#title' => t('CP File Endpoint configuration'),
+  );
+  $form['os2web_cp_service_config_group']['os2web_cp_service_endpoint_user'] = array(
+    '#type' => 'textfield',
+    '#default_value' => variable_get('os2web_cp_service_endpoint_user'),
+    '#title' => t('CP File endpoint user'),
+    '#description' => t('CP File endpoint HTTP authentification user.'),
+  );
+  $form['os2web_cp_service_config_group']['os2web_cp_service_endpoint_password'] = array(
+    '#type' => 'textfield',
+    '#default_value' => variable_get('os2web_cp_service_endpoint_password'),
+    '#title' => t('CP File endpoint password'),
+    '#description' => t('CP File endpoint HTTP authentification password.'),
+  );
+  $form['os2web_cp_service_config_group']['os2web_cp_service_cp_access_ip'] = array(
+    '#type' => 'textfield',
+    '#title' => 'IP addresser der kan tilgå publiserings webservicen',
+    '#description' => 'Komma separeret liste af ip-addresser der kan tilgå <em>webservicen</em>.',
+    '#default_value' => variable_get('os2web_cp_service_cp_access_ip', ip_address()),
+  );
+  $form['os2web_cp_service_config_group']['os2web_cp_service_access_denied_message'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Besked til brugeren, hvis fil ikke er tilgængelig.',
+    '#description' => 'Vises når den modtagede filtype ikke er godkendt til Download.',
+    '#default_value' => variable_get('os2web_cp_service_access_denied_message'),
+  );
+  $form['os2web_cp_service_config_group']['os2web_cp_service_disallow_mimes'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Filers MIME type, som ikke må downloades af brugere.',
+    '#description' => 'Tillad kun filer som ikke har disse mimes. Seperer mimes med komma. Standard:.msg',
+    '#default_value' => variable_get('os2web_cp_service_disallow_mimes'),
+  );
+  $form['os2web_cp_service_config_group']['os2web_cp_service_disallow_mimes_exceptions'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Sager hvor ALLE mimes er tilladt.',
+    '#description' => 'Tillad brugere at hente ALLE mime typer på angivende sager. Seperer sager med komma.',
+    '#default_value' => variable_get('os2web_cp_service_disallow_mimes_exceptions'),
+  );
+
+  $form['os2web_cp_config_group']['os2web_cp_service_file_transfer_mode'] = array(
+    '#title' => 'CP Files transfer mode',
+    '#type' => 'radios',
+    '#options' => array(
+      'pull' => 'PULL via HTTP request.',
+      'push' => 'PUSH to Drupal file system. All files stored locally.',
+      'combined' => 'Combined. If file doesn\'t exist, pull it via HTTP request.',
+    ),
+    '#description' => t('CP File transfer mode from Formpipe Output Manager'),
+    '#default_value' => variable_get('os2web_cp_service_file_transfer_mode', OS2WEB_CP_SERVICE_FILE_TRANSFER_MODE),
+  );
+
+  $private_path = drupal_realpath('private://');
+  $form['os2web_cp_config_group']['os2web_cp_service_file_path'] = array(
+    '#title' => 'CP Files path',
+    '#type' => 'textfield',
+    '#description' => t('URI to CP Document files inside with schema. Example: public://cp-document. !public !private', array(
+      '!public' => '</br>public:// = <code>' . drupal_realpath('public://') . '</code>',
+      '!private' => '</br>private:// = <code>' . ($private_path ? $private_path : 'N/A') . '</code>',
+    )),
+    '#default_value' => variable_get('os2web_cp_service_file_path', OS2WEB_CP_SERVICE_FILE_PATH),
+  );
+
+  $form['os2web_cp_config_group']['os2web_cp_service_file_transfer_max_resets'] = array(
+    '#title' => 'Max amount of resets (Resets counter) allowed for CP Document with "failed transfer mode".',
+    '#type' => 'textfield',
+    '#description' => t('If field "Resets counter" on CP Document node less then this value, CP Document is available for ReturnFileTransferRequest method'),
+    '#default_value' => variable_get('os2web_cp_service_file_transfer_max_resets', OS2WEB_CP_SERVICE_FILE_TRANSFER_MAX_RESETS),
+  );
+
+  $form['#submit'][] = 'os2web_cp_service_file_transfer';
+}
+
+/**
+ * Custom submit handler for file_transfer settings.
+ */
+function os2web_cp_service_file_transfer($form, &$form_state) {
+  $values = $form_state['values'];
+
+  if (!empty($values['os2web_cp_service_file_path']) && !file_exists($values['os2web_cp_service_file_path'])) {
+    mkdir(drupal_realpath($values['os2web_cp_service_file_path']));
+  }
+}
+
+/**
+ * Implements hook_date_formats().
+ */
+function os2web_cp_service_date_formats() {
+  return array(
+    array(
+      'type' => 'os2web_cp_service_date_only',
+      'format' => 'Y',
+      'locales' => array(),
+    ),
+  );
+}
+/**
+ * Implements hook_date_format_types().
+ */
+function os2web_cp_service_date_format_types() {
+  // Define the core date format types.
+  return array(
+    'os2web_cp_service_date_only' => t('Date Only'),
+  );
+
+}
+
+/**
+ * Turns a mime type to its corresponding file ext.
+ *
+ * @param string $mime
+ *   The mime-type.
+ *
+ * @return string
+ *   The file ext without the dot.
+ */
+function os2web_cp_service_get_extension_from_mime($mime) {
+
+  // Todo: use file_mimetype_mapping().
+  $map = array(
+    'application/pdf'   => 'pdf',
+    'application/zip'   => 'zip',
+    'image/gif'         => 'gif',
+    'image/jpeg'        => 'jpg',
+    'image/png'         => 'png',
+    'text/css'          => 'css',
+    'text/html'         => 'html',
+    'text/javascript'   => 'js',
+    'text/plain'        => 'txt',
+    'text/xml'          => 'xml',
+  );
+  if (isset($map[$mime])) {
+    return $map[$mime];
+  }
+  $pieces = explode('/', $mime);
+  return array_pop($pieces);
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function os2web_cp_service_block_info() {
+  $blocks = array();
+  $blocks['os2web_cp_service_counter'] = array(
+    'info' => t('Open Insight document and case counter'),
+    'cache' => DRUPAL_CACHE_GLOBAL,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function os2web_cp_service_block_view($delta = '') {
+  $block = array();
+
+  switch ($delta) {
+    case 'os2web_cp_service_counter':
+      $block['content'] = _os2web_cp_service_block_counter_view();
+      break;
+  }
+  return $block;
+}
+
+function _os2web_cp_service_block_counter_view() {
+
+  // Query cases and documents
+  $count_cases     =  _os2web_cp_service_count_nodes('os2web_cp_service_cp_case');
+  $count_documents =  _os2web_cp_service_count_nodes('os2web_cp_service_cp_document');
+
+  $string = t('Du kan nu søge i !cases sager og !documents dokumenter.', array(
+    '!cases' => '<span title="Samlet antal sager i Åben Indsigt" style="background: #9b185c; color: #fff; padding: 3px;">' . number_format($count_cases, 0, '', '.') . '</span>',
+    '!documents' => '<span title="Samlet antal dokumenter i Åben Indsigt" style="background: #9b185c; color: #fff; padding: 3px;">' . number_format($count_documents, 0, '', '.') . '</span>',
+    )
+  );
+
+  $render_array = array(
+    '#type' => 'markup',
+    '#markup' => $string,
+    '#prefix' => '<p style="margin-bottom: 30px;">',
+    '#suffix' => '</p>',
+  );
+  return $render_array;
+}
+
+/**
+ * Returns a count of published nodes of a given node type.
+ */
+function _os2web_cp_service_count_nodes($type) {
+
+  $query = new EntityFieldQuery();
+  $query->entityCondition('entity_type', 'node')
+    ->entityCondition('bundle', $type)
+    ->propertyCondition('status', NODE_PUBLISHED)
+    ->count();
+
+  return $query->execute();
+}
+
+/**
+ * Error logging.
+ */
+function os2web_cp_service_log($message) {
+  if (module_exists('os2web_acadre_esdh')) {
+    return os2web_acadre_esdh_log($message);
+  }
+
+  if (variable_get('os2web_cp_service_debug_info', FALSE)) {
+    // Save log messages to a different file.
+    $destination = variable_get('os2web_cp_service_log_file', FALSE);
+    if ($destination) {
+      error_log($message, 3, $destination);
+    }
+    else {
+      // If no other file is specified, save it to the normal php error log.
+      error_log($message);
+    }
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ */
+function os2web_cp_service_views_pre_render(&$view) {
+  if ($view->name == 'sager_og_dokumenter_importeret_dobbelt') {
+    foreach ($view->result as $r => &$result) {
+      if (!empty($result->field_field_os2web_cp_service_tr_stat)
+        && $result->field_field_os2web_cp_service_tr_stat[0]['raw']['value'] == 'failed transfer status') {
+        $result->field_field_os2web_cp_service_tr_stat[0]['rendered']['#markup'] .= '</br>' . l(t('Reset'),
+            'admin/content/acadre_om/reset_transfer_status/' . $result->nid, array(
+              'query' => array(
+                'destination' => url(current_path(), array(
+                  'query' => drupal_get_query_parameters(),
+                )),
+              ),
+            )
+          );
+      }
+      if (!empty($result->field_field_os2web_cp_service_res_c[0]['raw']['value'])) {
+        $result->field_field_os2web_cp_service_tr_stat[0]['rendered']['#markup'] .= '</br>Amount of resets: ' . format_plural(
+            $result->field_field_os2web_cp_service_res_c[0]['raw']['value'],
+            '1 time',
+            '@count times');
+      }
+    }
+  }
+}
+
+/**
+ * Reset transfer status callback.
+ */
+function _os2web_cp_service_reset_transfer_status_callback($nid) {
+  $destination = 'admin/content/acadre_om';
+  $params = drupal_get_query_parameters();
+  if (!empty($params['destination'])) {
+    $destination = $params['destination'];
+  }
+
+  $node = node_load($nid);
+  if (empty($node)) {
+    drupal_set_message(t('Node with id @nid not found.',
+      array('@nid' => $nid)));
+    drupal_goto($destination);
+    return;
+  }
+
+  _os2web_cp_service_reset_transfer_status($node);
+
+  drupal_set_message(t('Transfer status for node "@title" has been reset',
+    array('@title' => $node->title)));
+  drupal_goto($destination);
+}
+
+/**
+ * Reset transfer status.
+ */
+function _os2web_cp_service_reset_transfer_status(&$node, $status = 'Resetted. To be transferred.') {
+  $node->field_os2web_cp_service_fails[LANGUAGE_NONE][0]['value'] = 0;
+  $node->field_os2web_cp_service_nontrans[LANGUAGE_NONE][0]['value'] = 0;
+  $node->field_os2web_cp_service_deliver[LANGUAGE_NONE][0]['value'] = 0;
+  $node->field_os2web_cp_service_synctime[LANGUAGE_NONE][0]['value'] = time();
+  $node->field_os2web_cp_service_tr_stat[LANGUAGE_NONE][0]['value'] = $status;
+  if (!isset($node->field_os2web_cp_service_res_c[LANGUAGE_NONE][0]['value'])) {
+    $node->field_os2web_cp_service_res_c[LANGUAGE_NONE][0]['value'] = 0;
+  }
+  (int) $node->field_os2web_cp_service_res_c[LANGUAGE_NONE][0]['value']++;
+  node_save($node);
+  $field_os2web_cp_service_file_id = field_get_items('node', $node, 'field_os2web_cp_service_file_id');
+  watchdog('acadre OM', 'CP Document with fid: @fid ' . $status,
+    array('@fid' => $field_os2web_cp_service_file_id[0]['value']),
+    WATCHDOG_NOTICE
+  );
+}
+
+/**
+ * Callback function to build transfer queue.
+ */
+function _os2web_cp_service_transfering_queue() {
+  // Fetch CP Document file_id list.
+  $query = _os2web_cp_service_get_transfer_request_query();;
+
+  $query->leftJoin('field_data_field_os2web_cp_service_file_id', 'fid', 'fid.entity_id = n.nid');
+  $query->fields('n', array('changed'));
+  $query->fields('n', array('title'));
+  $query->fields('fid', array('field_os2web_cp_service_file_id_value'));
+  $query->fields('fid', array('field_os2web_cp_service_file_id_value'));
+  $query->fields('cpd', array('field_os2web_cp_service_deliver_value'));
+  $query->fields('cpn', array('field_os2web_cp_service_nontrans_value'));
+  $query->fields('cpst', array('field_os2web_cp_service_synctime_value'));
+  $query->fields('cprc', array('field_os2web_cp_service_res_c_value'));
+
+  $result = $query
+    ->orderBy('n.changed', 'DESC')
+    ->execute()
+    ->fetchAll();
+  $rows = [];
+  foreach ($result as $row) {
+    $row->field_os2web_cp_service_synctime_value = date('Y-m-d H:i:s',
+      $row->field_os2web_cp_service_synctime_value);
+    $row->changed = date('Y-m-d H:i:s', $row->changed);
+    $rows[] = [
+      $row->nid,
+      l($row->title, 'node/' . $row->nid),
+      $row->changed,
+      $row->field_os2web_cp_service_file_id_value,
+      $row->field_os2web_cp_service_synctime_value,
+      $row->field_os2web_cp_service_deliver_value ? 'Yes': 'No',
+      $row->field_os2web_cp_service_nontrans_value ? 'Yes': 'No',
+      $row->field_os2web_cp_service_res_c_value,
+    ];
+  }
+  $output['transfering_queue'] =  array(
+    '#theme' => 'table',
+    '#header' => [
+      'NID',
+      'Document',
+      'Chanded',
+      'File ID',
+      'Sync time',
+      'Delivered',
+      'Not transferable',
+      'Resets counter',
+    ],
+    '#rows' => $rows,
+    '#empty' =>t('Documents transfer queue is empty'),
+  );
+
+  return $output;
+}
+
+/**
+ * Get nodes to delete .
+ */
+function _os2web_cp_service_delete_nodes_get($type) {
+  $results = &drupal_static(__FUNCTION__ . $type);
+  if (empty($results)) {
+    $cp_types = array(
+      'cases' => 'page_8',
+      'cases-by-field_os2web_base_case_ref' => 'page_4',
+      'cases-by-fc-field_os2web_base_case_ref' => 'page_1',
+      'documents' => 'page_2',
+      'documents-by-field_os2web_base_doc_ref' => 'page_3',
+      'documents-by-field_os2web_base_doc_ref_single' => 'page_7',
+      'documents-by-field_os2web_cp_service_doc_ref' => 'page_5',
+      'documents-by-fc-field_os2web_base_doc_ref' => 'page_6',
+    );
+
+    if (empty($cp_types[$type])) {
+      print_r('empty type' . "\n");
+      return;
+    }
+
+    $view = views_get_view('docsnotoncase');
+
+    if (empty($view->display[$cp_types[$type]])) {
+      print_r('No dispay ' . $cp_types[$type] . ' to fetch nodes.' . "\n");
+      return;
+    }
+
+    $view->set_display($cp_types[$type]);
+    $view->pre_execute();
+    $view->set_items_per_page('0');
+    $view->execute();
+
+    $nid_property = 'nid';
+
+    switch ($type) {
+      case 'documents':
+        $to_exclude = array();
+        foreach (array(
+                   'documents-by-field_os2web_base_doc_ref',
+                   'documents-by-field_os2web_base_doc_ref_single',
+                   'documents-by-field_os2web_cp_service_doc_ref',
+                   'documents-by-fc-field_os2web_base_doc_ref',
+                 ) as $type_exclude) {
+          $to_exclude += _os2web_cp_service_delete_nodes_get($type_exclude);
+        }
+        break;
+
+      case 'cases':
+        $to_exclude = array();
+        foreach (array(
+                   'cases-by-field_os2web_base_case_ref',
+                   'cases-by-fc-field_os2web_base_case_ref',
+                 ) as $type_exclude) {
+          $to_exclude += _os2web_cp_service_delete_nodes_get($type_exclude);
+        }
+        break;
+
+      case 'documents-by-fc-field_os2web_base_doc_ref':
+        $nid_property = 'node_field_data_field_os2web_base_doc_ref_nid';
+        break;
+
+      case 'cases-by-fc-field_os2web_base_case_ref':
+        $nid_property = 'node_field_data_field_os2web_base_case_ref_nid';
+        break;
+    }
+
+    $results = array();
+    foreach($view->result as $row) {
+      $results[$row->{$nid_property}] = $row->{$nid_property};
+    }
+
+    if (!empty($to_exclude)) {
+      foreach ($to_exclude as $nid) {
+        if (isset($results[$nid])) {
+          unset($results[$nid]);
+        }
+      }
+    }
+  }
+  return $results;
+}

@@ -187,6 +187,14 @@ $lg-logo-font-size: 28px;
   }
 }
 
+.flexy-header--sticky {
+
+  &,
+  &.flexy-header--pinned {
+    display: none !important;
+  }
+}
+
 .flexy-header__sidebar-toggle {
   border: 0;
   background-color: transparent;
@@ -197,6 +205,16 @@ $lg-logo-font-size: 28px;
 
   &, &:hover, &:focus {
     color: $text-color;
+  }
+}
+
+.theme-colourings-overwritten {
+
+  .flexy-header__logo {
+
+    img {
+      display: none;
+    }
   }
 }
 

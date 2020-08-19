@@ -4,6 +4,8 @@ define('NEMLOGIN_IDP_LOGINSERVICE_PATH', '/service/loginservice.wsdl');
 define('NEMLOGIN_IDP_LOGIN_PATH', '/nemlogin.php');
 define('NEMLOGIN_IDP_LOGOUT_PATH', '/nemlogout.php');
 define('NEMLOGIN_IDP_FETCH_ONCE', TRUE);
+define('NEMLOGIN_IDP_FETCH_BFE_NUMBERS', FALSE);
+define('NEMLOGIN_IDP_FETCH_BFE_PATH', '/service/loginservice.json.php');
 
 /**
  * Ctools plugin class NemloginAuthIDP.
@@ -39,6 +41,7 @@ class NemloginAuthIDP extends NemloginAuth {
   public function __construct() {
     $this->idpUrl = variable_get('nemlogin_idp_url');
     $this->fetchOnce = variable_get('nemlogin_idp_fetch_once', NEMLOGIN_IDP_FETCH_ONCE);
+    $this->fetchBFE = variable_get('nemlogin_idp_fetch_bfe_numbers', NEMLOGIN_IDP_FETCH_BFE_NUMBERS);
 
     if (!valid_url($this->idpUrl, TRUE)) {
       watchdog("Nemlogin Idp", 'Idp URL not not valid or empty.', array(), WATCHDOG_WARNING);
@@ -90,6 +93,12 @@ class NemloginAuthIDP extends NemloginAuth {
     $response = NULL;
     $cpr = NULL;
     $pid = NULL;
+    $cvr = NULL;
+    $rid = NULL;
+
+    if ($this->fetchBFE) {
+      $this->getBFE($token);
+    }
 
     try {
       $response = $this->soapClient->LogIn(array('token' => $token, 'mnemo' => $mnemo));
@@ -99,34 +108,84 @@ class NemloginAuthIDP extends NemloginAuth {
     }
 
     if ($response && isset($response->LogInResult)) {
-      // We need to store CPR and PID value between redirects
+      // We need to store values between redirects
       // to be able use it in a a signup form.
       // This value will be deleted after first usage.
       // @see $this->fetchValue() method.
 
-      $cprraw = $response->LogInResult->cpr;
-      if ($cprraw) {
-        $cpr = utf8_decode($cprraw);
-        $this->values['cpr'] = $cpr;
+      if (isset($response->LogInResult->cpr)) {
+        $cprraw = $response->LogInResult->cpr;
+        if ($cprraw) {
+          $cpr = utf8_decode($cprraw);
+          $this->values['cpr'] = $cpr;
+        }
       }
 
-      $pidraw = $response->LogInResult->pid;
-      if ($pidraw) {
-        $pid = utf8_decode($pidraw);
-        $this->values['pid'] = $pid;
+      if (isset($response->LogInResult->pid)) {
+        $pidraw = $response->LogInResult->pid;
+        if ($pidraw) {
+          $pid = utf8_decode($pidraw);
+          $this->values['pid'] = $pid;
+        }
+      }
+
+      if (isset($response->LogInResult->cvr)) {
+        $cvrraw = $response->LogInResult->cvr;
+        if ($cvrraw) {
+          $cvr = utf8_decode($cvrraw);
+          $this->values['cvr'] = $cvr;
+        }
+      }
+
+      if (isset($response->LogInResult->rid)) {
+        $ridraw = $response->LogInResult->rid;
+        if ($ridraw) {
+          $rid = utf8_decode($ridraw);
+          $this->values['rid'] = $rid;
+        }
       }
     }
 
-    if (!$cpr) {
-      watchdog('nemlogin Idp', 'Could not fetch CPR. Response is empty', array(), WATCHDOG_WARNING);
+    if (!$cpr && !$cvr) {
+      watchdog('nemlogin Idp', 'Could not fetch CPR / CVR. Response is empty', array(), WATCHDOG_WARNING);
     }
-    if (!$pid) {
-      watchdog('nemlogin Idp', 'Could not fetch PID. Response is empty', array(), WATCHDOG_WARNING);
+    if (!$pid && $rid) {
+      watchdog('nemlogin Idp', 'Could not fetch PID / RID. Response is empty', array(), WATCHDOG_WARNING);
     }
 
+    $return_to_url = $this->getReturnUrl();
     if ($this->fetchOnce) {
-      $return_to_url = $this->getReturnUrl();
       $this->destroySession($return_to_url);
+    }
+    else {
+      drupal_goto($return_to_url);
+    }
+  }
+
+  public function getBFE($token){
+    $ch = curl_init();
+    $url = url($this->idpUrl . NEMLOGIN_IDP_FETCH_BFE_PATH, array(
+        'query' => array(
+          'token' => $token,
+          'mnemo' => variable_get('nemlogin_idp_mnemo'),
+          'esb' => 1,
+        ),
+      ));
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_SSLVERSION, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $response = curl_exec($ch);
+    if ($response) {
+      $response = json_decode($response, TRUE);
+      if ($response['ok']) {
+       $this->values['bfe_numbers'] = $response['esb'];
+      }
+      else {
+        watchdog('nemlogin Idp', 'Could not fetch BFE. Error: %err', array('%err' => $response['message']), WATCHDOG_WARNING);
+      }
+    }
+    else {
+      watchdog('nemlogin Idp', 'Could not fetch BFE. Response is empty', array(), WATCHDOG_WARNING);
     }
   }
 
@@ -205,6 +264,12 @@ class NemloginAuthIDP extends NemloginAuth {
       '#title' => t('Use fetch only mode.'),
       '#default_value' => variable_get('nemlogin_idp_fetch_once', NEMLOGIN_IDP_FETCH_ONCE),
       '#description' => t('User will be logged out immediately after login. User data will be removed from session after first retrieving'),
+    );
+    $form['nemlogin_idp_fetch_bfe_numbers'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Fetch BFE numbers from datafordeler.'),
+      '#default_value' => variable_get('nemlogin_idp_fetch_bfe_numbers', NEMLOGIN_IDP_FETCH_BFE_NUMBERS),
+      '#description' => t('Will be fetched BEE numbers (real-estate-ID) a person (or company) owns'),
     );
 
     return $form;

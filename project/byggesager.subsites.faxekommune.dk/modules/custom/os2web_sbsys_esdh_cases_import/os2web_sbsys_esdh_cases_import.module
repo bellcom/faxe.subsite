@@ -1,0 +1,239 @@
+<?php
+/**
+ * @file
+ * Code for the OS2Web SBSYS ESDH CP import feature.
+ */
+
+include_once 'os2web_sbsys_esdh_cases_import.features.inc';
+
+define('OS2WEB_SBSYS_ESDH_CASES_IMPORT_DIR', 'public://sbsys/cp');
+define('OS2WEB_SBSYS_ESDH_CASES_IMPORT_QUEUE_NAME', 'sbsys_esdh_cases_import');
+define('OS2WEB_SBSYS_ESDH_CASES_IMPORT_DOCUMENT_FILES_JSONPATH', 'Filer[0]');
+define('OS2WEB_SBSYS_ESDH_CASES_IMPORT_DOCUMENT_ALLOWED_TYPES', 'pdf');
+define('OS2WEB_SBSYS_ESDH_CASES_IMPORT_DOCUMENT_FILES_LIMIT', 100);
+
+module_load_include('inc', 'os2web_sbsys_esdh_cases_import', 'os2web_sbsys_esdh_cases_import.process');
+module_load_include('inc', 'os2web_sbsys_esdh_cases_import', 'os2web_sbsys_esdh_cases_import.queue');
+
+/**
+ * Implements hook_ctools_plugin_directory().
+ *
+ * Register as provider of esdh plugins
+ */
+function os2web_sbsys_esdh_cases_import_ctools_plugin_directory($module, $plugin) {
+  if ($module == 'os2web_esdh_provider') {
+    return "plugins/$plugin";
+  }
+}
+
+/**
+ * Implements hook_menu().
+ */
+function os2web_sbsys_esdh_cases_import_menu() {
+  $items['admin/config/os2web/esdh_provider/sbsys_cases_import'] = array(
+    'title' => 'SBSYS Cases import status',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2web_sbsys_esdh_cases_import_form'),
+    'access arguments' => array('administer os2web'),
+    'type' => MENU_LOCAL_ACTION,
+    'file' => 'os2web_sbsys_esdh_cases_import.admin.inc',
+  );
+
+  $items['admin/config/os2web/esdh_provider/sbsys_cases_import/confirm'] = array(
+    'title' => 'SBSYS Cases import confirm',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2web_sbsys_esdh_cases_import_form_confirm'),
+    'access arguments' => array('administer os2web'),
+    'type' => MENU_CALLBACK,
+    'file' => 'os2web_sbsys_esdh_cases_import.admin.inc',
+  );
+
+  $items['admin/config/os2web/esdh_provider/sbsys_cases_import/delete/confirm'] = array(
+    'title' => 'SBSYS Cases delete import queue confirmation form',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2web_sbsys_esdh_cases_import_form_delete_queue_confirm_form'),
+    'access arguments' => array('administer os2web'),
+    'type' => MENU_CALLBACK,
+    'file' => 'os2web_sbsys_esdh_cases_import.admin.inc',
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_form_alter().
+ *
+ * Add configuration to the settings form.
+ */
+function os2web_sbsys_esdh_cases_import_form_os2web_settings_settings_form_alter(&$form, &$form_state) {
+  $form['sbsys-cases-import'] = array(
+    '#type' => 'fieldset',
+    '#title' => 'SBSYS Case Publishing import settings',
+    '#collapsible' => TRUE,
+    '#collapsed' => empty(variable_get('os2web_sbsys_esdh_cases_import_path')),
+  );
+
+  $form['sbsys-cases-import']['os2web_sbsys_esdh_cases_import_path'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Path for SBSYS publish folder.',
+    '#description' => 'Path with schema where SBSYS ESDH will publish files. Example: ' . OS2WEB_SBSYS_ESDH_CASES_IMPORT_DIR,
+    '#default_value' => variable_get('os2web_sbsys_esdh_cases_import_path', OS2WEB_SBSYS_ESDH_CASES_IMPORT_DIR),
+  );
+
+  $form['sbsys-cases-import']['os2web_sbsys_esdh_cases_changed_value_path'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Last changed case timestamp mapping.',
+    '#description' => 'jsonPath value for mapping last changed case timestamp',
+    '#default_value' => variable_get('os2web_sbsys_esdh_cases_changed_value_path'),
+  );
+
+  $form['sbsys-cases-import']['os2web_sbsys_esdh_document_changed_value_path'] = array(
+    '#type' => 'textfield',
+    '#title' => 'Last changed document timestamp mapping.',
+    '#description' => 'jsonPath value for mapping last changed document timestamp',
+    '#default_value' => variable_get('os2web_sbsys_esdh_document_changed_value_path'),
+  );
+
+  $form['sbsys-cases-import']['os2web_sbsys_esdh_cases_import_queue_enabled'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use Queue API for import'),
+    '#default_value' => variable_get('os2web_sbsys_esdh_cases_import_queue_enabled', FALSE),
+  );
+
+  // Case fields mapping.
+  $case_mapping_list = variable_get('os2web_sbsys_esdh_cases_import_case_mapping_list', array());
+  $form['sbsys-cases-import']['case-wrapper'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Case fields mapping'),
+    '#collapsible' => TRUE,
+    '#collapsed' => empty($case_mapping_list),
+  );
+  $case_defaults = os2web_sbsys_esdh_cases_import_default_case();
+  $field_keys = array_keys($case_defaults['fields']);
+  $form['sbsys-cases-import']['case-wrapper']['os2web_sbsys_esdh_cases_import_case_mapping_list'] = array(
+    '#title' => t('Mapping list'),
+    '#type' => 'checkboxes',
+    '#options' => array_combine($field_keys, $field_keys),
+    '#default_value' => $case_mapping_list,
+    '#multiple' => TRUE,
+    '#size' => 5,
+    '#prefix' => '<div style="height: 200px; overflow-y: scroll">',
+    '#suffix' => '</div>',
+  );
+  
+  $form['sbsys-cases-import']['case-wrapper']['os2web_sbsys_esdh_cases_import_case_fields_mapping'] = array(
+    '#type' => 'container',
+    '#tree' => TRUE,
+  );
+
+  // Get mapping keys without fixed values.
+  $case_fields_mapping = array_diff_key(
+    variable_get('os2web_sbsys_esdh_cases_import_case_fields_mapping', array()),
+    array_flip(array_keys(os2web_sbsys_esdh_cases_import_fixed_case_field_values()))
+  );
+
+  foreach (array_filter($case_mapping_list) as $mapping_key) {
+    $form['sbsys-cases-import']['case-wrapper']['os2web_sbsys_esdh_cases_import_case_fields_mapping'][$mapping_key] = array(
+      '#type' => 'textfield',
+      '#title' => $mapping_key,
+      '#default_value' => empty($case_fields_mapping[$mapping_key]) ? '' : $case_fields_mapping[$mapping_key],
+      '#description' => t('Specify jsonPath expression for key "!key".', array('!key' => $mapping_key)),
+    );
+  }
+
+  // Documents fields mapping.
+  $document_mapping_list = variable_get('os2web_sbsys_esdh_cases_import_document_mapping_list', array());
+  $form['sbsys-cases-import']['document-wrapper'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Document import settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => empty($document_mapping_list),
+  );
+
+  $form['sbsys-cases-import']['document-wrapper']['os2web_sbsys_esdh_cases_import_document_files_jsonpath'] = array(
+    '#type' => 'textfield',
+    '#title' => t('JSON path for files section'),
+    '#default_value' => variable_get('os2web_sbsys_esdh_cases_import_document_files_jsonpath', OS2WEB_SBSYS_ESDH_CASES_IMPORT_DOCUMENT_FILES_JSONPATH),
+  );
+
+  $form['sbsys-cases-import']['document-wrapper']['os2web_sbsys_esdh_cases_import_document_allowed_types'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Allowed file types.'),
+    '#default_value' => variable_get('os2web_sbsys_esdh_cases_import_document_allowed_types', OS2WEB_SBSYS_ESDH_CASES_IMPORT_DOCUMENT_ALLOWED_TYPES),
+  );
+
+  $form['sbsys-cases-import']['document-wrapper']['os2web_sbsys_esdh_cases_import_document_files_limit'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Maximum amount of files that will be imported for each document.'),
+    '#default_value' => variable_get('os2web_sbsys_esdh_cases_import_document_files_limit'),
+    '#description' => t('Possible maximum amount is restricted to %max files', array('%max' => OS2WEB_SBSYS_ESDH_CASES_IMPORT_DOCUMENT_FILES_LIMIT)),
+  );
+
+  $document_defaults = os2web_sbsys_esdh_cases_import_default_document();
+  $field_keys = array_keys($document_defaults['fields']);
+  $form['sbsys-cases-import']['document-wrapper']['os2web_sbsys_esdh_cases_import_document_mapping_list'] = array(
+    '#type' => 'checkboxes',
+    '#options' => array_combine($field_keys, $field_keys),
+    '#default_value' => $document_mapping_list,
+    '#multiple' => TRUE,
+    '#size' => 5,
+    '#prefix' => '<label style="font-size: 20px;font-weight: 300;margin-bottom:10px">'. t('Mapping list') . '</label><div style="height: 200px; overflow-y: scroll; margin-bottom:15px">',
+    '#suffix' => '</div>',
+  );
+
+  $form['sbsys-cases-import']['document-wrapper']['os2web_sbsys_esdh_cases_import_document_fields_mapping'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Document fields mapping'),
+    '#tree' => TRUE,
+  );
+
+  // Get mapping keys without fixed values.
+  $document_fields_mapping = array_diff_key(
+    variable_get('os2web_sbsys_esdh_cases_import_document_fields_mapping', array()),
+    array_flip(array_keys(os2web_sbsys_esdh_cases_import_fixed_document_field_values()))
+  );
+
+  foreach (array_filter($document_mapping_list) as $mapping_key) {
+    $form['sbsys-cases-import']['document-wrapper']['os2web_sbsys_esdh_cases_import_document_fields_mapping'][$mapping_key] = array(
+      '#type' => 'textfield',
+      '#title' => $mapping_key,
+      '#default_value' => empty($document_fields_mapping[$mapping_key]) ? '' : $document_fields_mapping[$mapping_key],
+    );
+  }
+
+  array_unshift($form['#submit'], 'os2web_sbsys_esdh_cases_import_form_mapping_submit');
+}
+
+/**
+ * Custom submit handler to cleanup empty values from mapping settings.
+ */
+function os2web_sbsys_esdh_cases_import_form_mapping_submit (&$form, &$form_state) {
+  $cleanup_values = array(
+    'os2web_sbsys_esdh_cases_import_case_mapping_list',
+    'os2web_sbsys_esdh_cases_import_case_fields_mapping',
+    'os2web_sbsys_esdh_cases_import_document_mapping_list',
+    'os2web_sbsys_esdh_cases_import_document_fields_mapping',
+  );
+  foreach ($cleanup_values as $value_key) {
+    if (!empty($form_state['values'][$value_key]) && is_array($form_state['values'][$value_key])) {
+      $form_state['values'][$value_key] = array_filter($form_state['values'][$value_key]);
+    }
+  }
+}
+
+/**
+ * Implements hook_cron_queue_info().
+ */
+function os2web_sbsys_esdh_cases_import_cron_queue_info() {
+  // If the external queue handler is enabled, don't let
+  // drupals cron impor the meetings.
+  if (!variable_get('os2web_sbsys_esdh_cases_import_queue_enabled', FALSE)) {
+    return array();
+  }
+
+  $queues[OS2WEB_SBSYS_ESDH_CASES_IMPORT_QUEUE_NAME] = array(
+    'worker callback' => 'os2web_sbsys_esdh_cases_import_cron_queue_worker',
+    'time' => 30,
+  );
+  return $queues;
+}

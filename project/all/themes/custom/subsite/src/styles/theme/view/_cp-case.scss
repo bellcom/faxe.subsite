@@ -1,0 +1,113 @@
+// |--------------------------------------------------------------------------
+// | CP case
+// |--------------------------------------------------------------------------
+// |
+// | This file contains styles for the following:
+// |
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Styling
+// --------------------------------------------------
+
+.view-os2web-bygge-cases-by-adresses {
+
+  .item-list {
+
+    > ul {
+      list-style: none;
+      padding-left: 0;
+
+      max-width: 66ch;
+    }
+  }
+
+  .views-row {
+    margin-bottom: 5px;
+
+    a,
+    .field-content {
+      display: block;
+    }
+
+    a {
+      position: relative;
+
+      padding: 12px;
+      padding-left: 52px;
+
+      background-color: #E6F2F6;
+
+      &:before {
+        position: absolute;
+        display: inline-block;
+
+        top: 0;
+        left: 0;
+        bottom: 0;
+
+        padding-top: 5px;
+
+        width: 40px;
+
+        font-size: 24px;
+        font-family: FontAwesome;
+        content: $fa-var-angle-right;
+
+        text-align: center;
+
+        color: $brand-primary;
+        background-color: rgba($brand-primary, .2);
+      }
+
+      &, &:hover {
+        color: $text-color;
+      }
+    }
+  }
+}
+
+// --------------------------------------------------
+// Variants
+// --------------------------------------------------
+
+// --------------------------------------------------
+// Responsive
+// --------------------------------------------------
+
+// Mobile - and up
+@media #{$breakpoint-mobile-and-up} {}
+
+// Mobile - only
+@media #{$breakpoint-mobile-only} {}
+
+// Tablet - and up
+@media #{$breakpoint-tablet-and-up} {}
+
+// Tablet - only
+@media #{$breakpoint-tablet-only} {}
+
+// Desktop - and up
+@media #{$breakpoint-desktop-and-up} {}
+
+// Desktop - only
+@media #{$breakpoint-desktop-only} {}
+
+// Large desktop - and up
+@media #{$breakpoint-large-desktop-and-up} {}
+
+// Print
+@media print {}
+
+// Touch
+.touchevents {}
+
+// No touch
+.no-touchevents {}

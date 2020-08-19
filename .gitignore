@@ -65,3 +65,6 @@ project/*/settings*.php
 # Ignore paths that contain user-generated content.
 project/*/files
 project/*/private
+
+# Local environments
+project/byggesager.faxesubsite.docksal
