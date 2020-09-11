@@ -109,3 +109,4 @@ function os2web_bygge_cases_views_pre_render(&$view) {
     $view->build_info['title'] = t('Byggesager på %address', array('%address' => $term->name));
   }
 }
+

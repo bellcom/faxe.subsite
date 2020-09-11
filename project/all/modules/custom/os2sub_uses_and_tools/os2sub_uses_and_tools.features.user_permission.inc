@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @file
  * os2sub_uses_and_tools.features.user_permission.inc
@@ -155,15 +156,6 @@ function os2sub_uses_and_tools_user_default_permissions() {
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'media_internet',
-  );
-
-  // Exported permission: 'administer EU Cookie Compliance popup'.
-  $permissions['administer EU Cookie Compliance popup'] = array(
-    'name' => 'administer EU Cookie Compliance popup',
-    'roles' => array(
-      'subsiteadmin' => 'subsiteadmin',
-    ),
-    'module' => 'eu_cookie_compliance',
   );
 
   // Exported permission: 'administer actions'.
@@ -923,14 +915,6 @@ function os2sub_uses_and_tools_user_default_permissions() {
     'module' => 'taxonomy',
   );
 
-  // Exported permission: 'display EU Cookie Compliance popup'.
-  $permissions['display EU Cookie Compliance popup'] = array(
-    'name' => 'display EU Cookie Compliance popup',
-    'roles' => array(
-      'subsiteadmin' => 'subsiteadmin',
-    ),
-    'module' => 'eu_cookie_compliance',
-  );
 
   // Exported permission: 'download any audio files'.
   $permissions['download any audio files'] = array(
@@ -1539,6 +1523,7 @@ function os2sub_uses_and_tools_user_default_permissions() {
   $permissions['view the administration theme'] = array(
     'name' => 'view the administration theme',
     'roles' => array(
+      'Editor' => 'Editor',
       'subsiteadmin' => 'subsiteadmin',
     ),
     'module' => 'system',

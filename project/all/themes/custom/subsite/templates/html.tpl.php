@@ -19,7 +19,8 @@
   <!-- Begin - internal stylesheet -->
   <?php print $styles; ?>
   <!-- End - internal stylesheet -->
-
+<script id="CookieConsent" src="https://policy.app.cookieinformation.com/uc.js"
+    data-culture="DA" type="text/javascript"></script>
 </head>
 <body class="<?php print $classes; ?>"<?php print $attributes; ?>>
 
