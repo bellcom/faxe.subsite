@@ -307,6 +307,7 @@ function os2web_bygge_cases_views_default_views() {
   $handler->display->display_options['title'] = 'Dine ejendomme';
   $handler->display->display_options['use_more_always'] = FALSE;
   $handler->display->display_options['use_more_text'] = 'mere';
+  $handler->display->display_options['group_by'] = TRUE;
   $handler->display->display_options['access']['type'] = 'perm';
   $handler->display->display_options['cache']['type'] = 'none';
   $handler->display->display_options['query']['type'] = 'views_query';
@@ -330,6 +331,10 @@ function os2web_bygge_cases_views_default_views() {
   $handler->display->display_options['pager']['options']['tags']['last'] = 'sidste »';
   $handler->display->display_options['style_plugin'] = 'list';
   $handler->display->display_options['row_plugin'] = 'fields';
+  /* Forbindelse: Ord i ordforråd: Indhold som bruger Address */
+  $handler->display->display_options['relationships']['reverse_field_os2web_cp_service_addr_node']['id'] = 'reverse_field_os2web_cp_service_addr_node';
+  $handler->display->display_options['relationships']['reverse_field_os2web_cp_service_addr_node']['table'] = 'taxonomy_term_data';
+  $handler->display->display_options['relationships']['reverse_field_os2web_cp_service_addr_node']['field'] = 'reverse_field_os2web_cp_service_addr_node';
   /* Felt: Ord i ordforråd: Term ID */
   $handler->display->display_options['fields']['tid']['id'] = 'tid';
   $handler->display->display_options['fields']['tid']['table'] = 'taxonomy_term_data';
@@ -347,6 +352,21 @@ function os2web_bygge_cases_views_default_views() {
   $handler->display->display_options['fields']['name']['alter']['word_boundary'] = FALSE;
   $handler->display->display_options['fields']['name']['alter']['ellipsis'] = FALSE;
   $handler->display->display_options['fields']['name']['element_label_colon'] = FALSE;
+  /* Felt: COUNT(os2web_cp_cases) */
+  $handler->display->display_options['fields']['nid']['id'] = 'nid';
+  $handler->display->display_options['fields']['nid']['table'] = 'node';
+  $handler->display->display_options['fields']['nid']['field'] = 'nid';
+  $handler->display->display_options['fields']['nid']['relationship'] = 'reverse_field_os2web_cp_service_addr_node';
+  $handler->display->display_options['fields']['nid']['group_type'] = 'count';
+  $handler->display->display_options['fields']['nid']['ui_name'] = 'os2web_cp_cases';
+  $handler->display->display_options['fields']['nid']['label'] = '';
+  $handler->display->display_options['fields']['nid']['exclude'] = TRUE;
+  $handler->display->display_options['fields']['nid']['element_label_colon'] = FALSE;
+  $handler->display->display_options['fields']['nid']['separator'] = '';
+  /* Sorteringskriterie: Ordforråd: Navn */
+  $handler->display->display_options['sorts']['name']['id'] = 'name';
+  $handler->display->display_options['sorts']['name']['table'] = 'taxonomy_vocabulary';
+  $handler->display->display_options['sorts']['name']['field'] = 'name';
   /* Filterkriterie: Ordforråd: Internt navn */
   $handler->display->display_options['filters']['machine_name']['id'] = 'machine_name';
   $handler->display->display_options['filters']['machine_name']['table'] = 'taxonomy_vocabulary';
@@ -361,6 +381,15 @@ function os2web_bygge_cases_views_default_views() {
   $handler->display->display_options['filters']['php']['ui_name'] = 'Case Access (PHP)';
   $handler->display->display_options['filters']['php']['use_php_setup'] = 0;
   $handler->display->display_options['filters']['php']['php_filter'] = 'return  !os2web_bygge_cases_user_can_see_cases_by_address($data->tid);';
+  /* Filterkriterie: COUNT(cases_count) */
+  $handler->display->display_options['filters']['nid']['id'] = 'nid';
+  $handler->display->display_options['filters']['nid']['table'] = 'node';
+  $handler->display->display_options['filters']['nid']['field'] = 'nid';
+  $handler->display->display_options['filters']['nid']['relationship'] = 'reverse_field_os2web_cp_service_addr_node';
+  $handler->display->display_options['filters']['nid']['group_type'] = 'count';
+  $handler->display->display_options['filters']['nid']['ui_name'] = 'cases_count';
+  $handler->display->display_options['filters']['nid']['operator'] = '>=';
+  $handler->display->display_options['filters']['nid']['value']['value'] = '0';
 
   /* Display: Page */
   $handler = $view->new_display('page', 'Page', 'page');
@@ -381,6 +410,7 @@ function os2web_bygge_cases_views_default_views() {
     t('‹ forrige'),
     t('næste ›'),
     t('sidste »'),
+    t('field_os2web_cp_service_addr'),
     t('.'),
     t(','),
     t('Page'),

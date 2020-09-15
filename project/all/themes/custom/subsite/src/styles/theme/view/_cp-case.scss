@@ -35,6 +35,7 @@
     a,
     .field-content {
       display: block;
+      position: relative;
     }
 
     a {
@@ -44,8 +45,19 @@
       padding-left: 52px;
 
       background-color: #E6F2F6;
-
-      &:before {
+      
+      &.inactive-link {
+        pointer-events: none;
+        cursor: default;
+      }
+      
+      &.case-request-link {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      
+      &:not(.case-request-link):before {
         position: absolute;
         display: inline-block;
 

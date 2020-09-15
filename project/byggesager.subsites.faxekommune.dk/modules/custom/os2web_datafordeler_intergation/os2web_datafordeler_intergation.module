@@ -121,15 +121,19 @@ function os2web_datafordeler_intergation_fetch_address($bfe) {
     CURLOPT_RETURNTRANSFER => 1
 
   );
-  $address = '';
   $result = os2web_datafordeler_intergation_curl_request($curl_url, $curl_options);
   if (isset($result->features)  && is_array($result->features)) {
     $object = array_pop($result->features);
+    if (isset($object->properties->adresse)  && !empty($object->properties->adresse)) {
+        return $object->properties->adresse[0]->husnummer->adgangsadressebetegnelse;
+    }
     if (isset($object->properties->husnummer)  && is_array($object->properties->husnummer)) {
-      $address=$object->properties->husnummer[0]->adgangsadressebetegnelse;
+      return $object->properties->husnummer[0]->adgangsadressebetegnelse;
+
     }
   }
-  return $address;
+
+  return '';
 }
 
 /*

@@ -8,6 +8,86 @@
 include_once 'os2web_bygge_cases.features.inc';
 
 /**
+ * Implements hook_menu().
+ */
+function os2web_bygge_cases_menu() {
+  $items['admin/config/os2web_bygge_cases'] = array(
+    'title' => 'OS2Web Byggecases',
+    'description' => 'Configuration for Byggecases',
+    'access arguments' => array('administer os2web'),
+    'page callback' => 'system_admin_menu_block_page',
+    'file' => 'system.admin.inc',
+    'file path' => drupal_get_path('module', 'system'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['admin/config/os2web_bygge_cases/settings'] = array(
+    'title' => 'OS2Web Byggecases Settings',
+    'description' => 'General settings for the OS2Web Byggecases',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('os2web_bygge_cases_settings_form'),
+    'access arguments' => array('administer os2web'),
+    'type' => MENU_NORMAL_ITEM | MENU_DEFAULT_LOCAL_TASK
+  );
+  $items['request-bygge-cases/%'] = array(
+    'title' => 'Cases request',
+    'type' => MENU_CALLBACK,
+    'page callback' => 'os2web_bygge_cases_request_cases',
+    'access arguments' => array(1),
+    'access callback' => 'os2web_bygge_cases_user_can_see_cases_by_address',
+    'page arguments' => array(1),
+  );
+  return $items;
+}
+
+function os2web_bygge_cases_settings_form($form, $form_state) {
+  $form['os2web_bygge_cases_show_only_buildings_with_cases'] = array(
+    '#type' => 'checkbox',
+    '#title' => 'Hvis kun bygninger med sager på',
+    '#default_value' => variable_get('os2web_bygge_cases_show_only_buildings_with_cases', FALSE),
+  );
+   $form['os2web_bygge_cases_request_case'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+    '#title' => t('Request cases notification email'),
+  );
+  $form['os2web_bygge_cases_request_case']['os2web_bygge_cases_request_case_email'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Email'),
+    '#default_value' => variable_get('os2web_bygge_cases_request_case_email', ''),
+  );
+  $form['os2web_bygge_cases_request_case']['os2web_bygge_cases_request_case_subject'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Subject'),
+    '#description' => t('Add subject'),
+    '#default_value' => variable_get('os2web_bygge_cases_request_case_subject', ''),
+  );
+  $form['os2web_bygge_cases_request_case']['os2web_bygge_cases_request_case_body'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Message'),
+    '#description' => t('Add text'),
+    '#default_value' => variable_get('os2web_bygge_cases_request_case_body', ''),
+  );
+  $form['os2web_bygge_cases_request_case']['os2web_bygge_cases_request_case_confirmation_text'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Thank you text'),
+    '#default_value' => variable_get('os2web_bygge_cases_request_case_confirmation_text', ''),
+  );
+  $form['os2web_bygge_cases_request_case']['os2web_bygge_cases_request_case_email_text_available_variables'] = array(
+    '#type' => 'fieldset',
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+    '#value' => t('Can be used both in subject and body:') . '<br/>
+    <b>!address</b> - ' . t('Building address') . '<br/>
+    <b>!bfe</b> - ' . t('BFE number') . '<br/>
+    <b>!name</b> - ' . t('User name') . '<br/>',
+    '#title' => t('Available variables'),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
  * Implements hook_node_access().
  */
 function os2web_bygge_cases_node_access($node, $op, $account) {
@@ -108,5 +188,114 @@ function os2web_bygge_cases_views_pre_render(&$view) {
     $term = taxonomy_term_load($args[1]);
     $view->build_info['title'] = t('Byggesager på %address', array('%address' => $term->name));
   }
+  if ($view->name == 'os2web_bygge_cases_by_adresses' && $view->current_display === 'page' && !variable_get('os2web_bygge_cases_show_only_buildings_with_cases', FALSE)) {
+    $view->style_plugin->render_fields($view->result);
+    foreach ($view->style_plugin->rendered_fields as $index => &$rendered_result) {
+      if (isset($view->result[$index]->field_os2web_cp_service_addr_taxonomy_term_data_nid) && (int)$view->result[$index]->field_os2web_cp_service_addr_taxonomy_term_data_nid === 0 ) {
+        $rendered_result['name'] = '<a href = "/bygge-cases/' . $view->result[$index]->tid . '" class ="inactive-link">' . $view->result[$index]->taxonomy_term_data_name . '</a>'
+          .'<a href = "/request-bygge-cases/' . $view->result[$index]->tid . '" class ="case-request-link">' . t('Request cases') . '</a>';
+      }
+    }
+  }
 }
 
+/**
+ * Implements hook_form_FORM_ID_alter().
+ *
+ */
+function os2web_bygge_cases_init() {
+  if (module_exists('nemlogin') && module_exists(os2web_datafordeler_intergation) && !variable_get('os2web_bygge_cases_show_only_buildings_with_cases', FALSE)) {
+   $nemlogin_object = nemlogin_get_plugin_object();
+   if ($nemlogin_object->isAuthenticated()) {
+     $bfe_numbers = !empty($nemlogin_object) ? $nemlogin_object->fetchValue('bfe_numbers') : NULL;
+      if (isset($bfe_numbers) && !empty($bfe_numbers)) {
+        $addresses_vocabulary = taxonomy_vocabulary_machine_name_load('os2web_cp_service_tax_addresses');
+        foreach ($bfe_numbers as $bfe) {
+          $query = new EntityFieldQuery();
+          $results = $query
+            ->entityCondition('entity_type', 'taxonomy_term')
+            ->entityCondition('bundle', 'os2web_cp_service_tax_addresses')
+            ->fieldCondition('field_cp_service_tax_addr_bfe_nr', 'value', $bfe)
+            ->execute();
+          if (empty($results['taxonomy_term'])) {
+            $address = os2web_datafordeler_intergation_fetch_address($bfe);
+            if (!empty($address)) {
+              $term = new stdClass();
+              $term->vid = $addresses_vocabulary->vid;
+              $term->name = $address;
+              $term->field_cp_service_tax_addr_bfe_nr[LANGUAGE_NONE][0]['value'] = $bfe;
+              taxonomy_term_save($term);
+            }
+          }
+        }
+      }
+   }
+  }
+}
+
+/**
+ * Implements hook_views_query_alter().
+ */
+function os2web_bygge_cases_views_query_alter(&$view, &$query) {
+  if (variable_get('os2web_bygge_cases_show_only_buildings_with_cases', FALSE) && $view->name == 'os2web_bygge_cases_by_adresses' && $view->current_display === 'page') {
+    // Traverse through the 'where' part of the query.
+    foreach ($query->having as &$condition_group) {
+      foreach ($condition_group['conditions'] as &$condition) {
+        // Replace the condition for field
+        // 'field_data_field_os2web_cp_service_pid_nr'.
+        if (is_string($condition['field']) && $condition['field'] == 'COUNT(field_os2web_cp_service_addr_taxonomy_term_data.nid) >= :node_nid') {
+           $condition['value'] = array(':node_nid' => '1');
+       }
+      }
+    }
+  }
+}
+
+/*
+ * Helper function to send request about missing cases to site admin
+ */
+function os2web_bygge_cases_request_cases($tid) {
+  $term = taxonomy_term_load($tid);
+  $title = t('Cases were requested for ') . $term->name;
+  drupal_set_title($title);
+  $name = 'test'; //os2web_nemlogin_auth_get_value('name');
+  $bfe_field_items = field_get_items('taxonomy_term', $term, 'field_cp_service_tax_addr_bfe_nr');
+  $bfe = $bfe_field_items[0]['value'];
+  $to = variable_get('os2web_bygge_cases_request_case_email', '');
+  $subject = variable_get('os2web_bygge_cases_request_case_subject', '');
+  $body = variable_get('os2web_bygge_cases_request_case_body', '');
+  $thank_you_text = variable_get('os2web_bygge_cases_request_case_confirmation_text', '');
+  $search = array(
+   '!address',
+   '!name',
+   '!bfe',
+   PHP_EOL,
+  );
+  $replace = array(
+    $term->name,
+    $name,
+    $bfe,
+    '<br/>',
+  );
+  $subject = str_replace($search, $replace, $subject);
+  $subject = ucfirst($subject);
+  $body = str_replace($search, $replace, $body);
+  $body = ucfirst($body);
+  $thank_you_text = str_replace($search, $replace, $thank_you_text);
+  $from = variable_get('site_mail');
+    $params = array(
+      'subject' => $subject,
+      'body' => $body,
+        );
+  drupal_mail('os2web_bygge_cases', 'case_request', $to, language_default(), $params, $from);
+  return $thank_you_text;
+
+}
+
+/*
+ * Implements hook_mail.
+ */
+function os2web_bygge_cases_mail($key, &$message, $params) {
+  $message['subject'] = $params['subject'];
+  $message['body'][] = $params['body'];
+}

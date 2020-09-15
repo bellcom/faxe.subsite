@@ -95,6 +95,7 @@ class NemloginAuthIDP extends NemloginAuth {
     $pid = NULL;
     $cvr = NULL;
     $rid = NULL;
+    $name = NULL;
 
     if ($this->fetchBFE) {
       $this->getBFE($token);
@@ -112,7 +113,6 @@ class NemloginAuthIDP extends NemloginAuth {
       // to be able use it in a a signup form.
       // This value will be deleted after first usage.
       // @see $this->fetchValue() method.
-
       if (isset($response->LogInResult->cpr)) {
         $cprraw = $response->LogInResult->cpr;
         if ($cprraw) {
@@ -142,6 +142,13 @@ class NemloginAuthIDP extends NemloginAuth {
         if ($ridraw) {
           $rid = utf8_decode($ridraw);
           $this->values['rid'] = $rid;
+        }
+      }
+      if (isset($response->LogInResult->name)) {
+        $nameraw = $response->LogInResult->name;
+        if ($nameraw) {
+          $name = utf8_decode($nameraw);
+          $this->values['name'] = $name;
         }
       }
     }
