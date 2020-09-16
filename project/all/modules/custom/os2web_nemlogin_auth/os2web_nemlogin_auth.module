@@ -170,7 +170,8 @@ function os2web_nemlogin_auth_node_view($node, $view_mode, $langcode) {
       $node->title = 'Log ud af NemID';
       $link = 'os2web_nemlogin_logout';
     } else {
-      $link = nemlogin_get_login_url();
+      $options = array('query' => array('destination' => variable_get('os2web_nemlogin_auth_nemlogin_after_login_redirect_url', '')));
+      $link = nemlogin_get_login_url($options);
     }
 
     $node->field_spot_link['und'][0]['url'] = $link;

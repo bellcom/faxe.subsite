@@ -318,7 +318,6 @@ function nemlogin_get_login_url(array $options = array()) {
   if (empty($options['query']['destination'])) {
     $options['query']['destination'] = ltrim(request_uri(), '/');
   }
-
   return url('nemlogin/login', $options);
 }
 
