@@ -258,7 +258,7 @@ function os2web_bygge_cases_request_cases($tid) {
   $term = taxonomy_term_load($tid);
   $title = t('Cases were requested for ') . $term->name;
   drupal_set_title($title);
-  $name = 'test'; //os2web_nemlogin_auth_get_value('name');
+  $name = os2web_nemlogin_auth_get_value('name');
   $bfe_field_items = field_get_items('taxonomy_term', $term, 'field_cp_service_tax_addr_bfe_nr');
   $bfe = $bfe_field_items[0]['value'];
   $to = variable_get('os2web_bygge_cases_request_case_email', '');
@@ -278,9 +278,9 @@ function os2web_bygge_cases_request_cases($tid) {
     '<br/>',
   );
   $subject = str_replace($search, $replace, $subject);
-  $subject = ucfirst($subject);
+  $subject = utf8_encode(ucfirst($subject));
   $body = str_replace($search, $replace, $body);
-  $body = ucfirst($body);
+  $body = utf8_encode(ucfirst($body));
   $thank_you_text = str_replace($search, $replace, $thank_you_text);
   $from = variable_get('site_mail');
     $params = array(
