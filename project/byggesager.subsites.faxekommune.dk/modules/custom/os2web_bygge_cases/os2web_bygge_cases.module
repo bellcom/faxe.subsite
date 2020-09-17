@@ -278,7 +278,7 @@ function os2web_bygge_cases_request_cases($tid) {
     '<br/>',
   );
   $subject = str_replace($search, $replace, $subject);
-  $subject = utf8_encode(ucfirst($subject));
+  $subject = ucfirst($subject);
   $body = str_replace($search, $replace, $body);
   $body = utf8_encode(ucfirst($body));
   $thank_you_text = str_replace($search, $replace, $thank_you_text);
