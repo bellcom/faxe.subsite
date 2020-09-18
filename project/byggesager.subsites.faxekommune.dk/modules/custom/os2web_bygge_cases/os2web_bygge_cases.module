@@ -80,7 +80,8 @@ function os2web_bygge_cases_settings_form($form, $form_state) {
     '#value' => t('Can be used both in subject and body:') . '<br/>
     <b>!address</b> - ' . t('Building address') . '<br/>
     <b>!bfe</b> - ' . t('BFE number') . '<br/>
-    <b>!name</b> - ' . t('User name') . '<br/>',
+    <b>!name</b> - ' . t('User name') . '<br/>
+    <b>!cpr</b> - ' . t('CPR number') . '<br/>',
     '#title' => t('Available variables'),
   );
 
@@ -259,6 +260,9 @@ function os2web_bygge_cases_request_cases($tid) {
   $title = t('Cases were requested for ') . $term->name;
   drupal_set_title($title);
   $name = os2web_nemlogin_auth_get_value('name');
+  $cpr = os2web_nemlogin_auth_get_value('cpr');
+  $cvr = os2web_nemlogin_auth_get_value('cvr');
+  $person_nr = is_null($cpr) ? $cvr : $cpr;
   $bfe_field_items = field_get_items('taxonomy_term', $term, 'field_cp_service_tax_addr_bfe_nr');
   $bfe = $bfe_field_items[0]['value'];
   $to = variable_get('os2web_bygge_cases_request_case_email', '');
@@ -269,12 +273,14 @@ function os2web_bygge_cases_request_cases($tid) {
    '!address',
    '!name',
    '!bfe',
+   '!cpr',
    PHP_EOL,
   );
   $replace = array(
     $term->name,
     $name,
     $bfe,
+    $person_nr,
     '<br/>',
   );
   $subject = str_replace($search, $replace, $subject);
