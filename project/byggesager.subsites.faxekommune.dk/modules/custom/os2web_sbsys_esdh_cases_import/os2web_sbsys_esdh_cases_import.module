@@ -99,6 +99,11 @@ function os2web_sbsys_esdh_cases_import_form_os2web_settings_settings_form_alter
     '#title' => t('Use Queue API for import'),
     '#default_value' => variable_get('os2web_sbsys_esdh_cases_import_queue_enabled', FALSE),
   );
+  $form['sbsys-cases-import']['os2web_sbsys_esdh_cases_import_updated_case_list'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Path to SBSYS updated cases file'),
+    '#default_value' => variable_get('os2web_sbsys_esdh_cases_import_updated_case_list', FALSE),
+  );
 
   // Case fields mapping.
   $case_mapping_list = variable_get('os2web_sbsys_esdh_cases_import_case_mapping_list', array());

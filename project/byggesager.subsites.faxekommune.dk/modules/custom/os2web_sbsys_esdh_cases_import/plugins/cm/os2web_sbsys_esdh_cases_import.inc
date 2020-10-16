@@ -284,10 +284,6 @@ function os2web_sbsys_esdh_cases_import_cm_lookup_case($case_id, $case_changed_d
     ->entityCondition('bundle', 'os2web_cp_service_cp_case')
     ->fieldCondition('field_os2web_cp_service_sysid', 'value', $case_id, '=');
 
-  if ($case_changed_date) {
-    $case_changed_date = format_date(strtotime($case_changed_date), 'custom', 'Y-m-d H:i:s', 'UTC');
-    $query->fieldCondition('field_os2web_cp_service_edited', 'value', $case_changed_date);
-  }
   $result = $query->execute();
 
   return (isset($result['node'])) ? array_keys($result['node']) : NULL;
