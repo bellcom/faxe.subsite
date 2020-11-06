@@ -93,7 +93,7 @@ function os2web_sbsys_esdh_cases_import_load_json_path_library() {
  * @param bool $force
  *   Force flag to reimport document.
  */
-function os2web_sbsys_esdh_cases_import_case($case, $force = FALSE) {
+function os2web_sbsys_esdh_cases_import_case($case, $updated_cases = array(), $force = FALSE) {
   $lock = __FUNCTION__ . $case['id'];
   if (!lock_acquire($lock)) {
     return;
@@ -106,11 +106,12 @@ function os2web_sbsys_esdh_cases_import_case($case, $force = FALSE) {
     return;
   }
 
-  $case_changed_date = jsonPath($case_data, variable_get('os2web_sbsys_esdh_cases_changed_value_path'));
-  $case_changed_date = empty($case_changed_date[0]) ? NULL : $case_changed_date[0];
+  if (in_array($case_data['Nummer'], $updated_cases)) {
+    $force = true;
+  }
   $existing_case = os2web_esdh_provider_invoke('cm', 'lookup_case', $case['id'], $case_changed_date);
 
-  if (!empty($existing_case) && !$force) {
+  if (!empty($existing_case)&& !$force) {
     lock_release($lock);
     return;
   }
@@ -150,7 +151,7 @@ function os2web_sbsys_esdh_cases_import_case($case, $force = FALSE) {
  * @param bool $force
  *   Force flag to reimport document.
  */
-function os2web_sbsys_esdh_cases_import_document($document, $src_path_uri, $force = FALSE) {
+function os2web_sbsys_esdh_cases_import_document($document, $src_path_uri, $updated_cases, $force = FALSE) {
   $lock = __FUNCTION__ . $document['Id'];
   if (!lock_acquire($lock)) {
     return;
@@ -159,10 +160,11 @@ function os2web_sbsys_esdh_cases_import_document($document, $src_path_uri, $forc
   if (!os2web_sbsys_esdh_cases_import_load_json_path_library()) {
     return;
   }
-
-  $document_changed_date = jsonPath($document, variable_get('os2web_sbsys_esdh_document_changed_value_path'));
-  $document_changed_date = empty($document_changed_date[0]) ? NULL : $document_changed_date[0];
-  $existing_documents = os2web_esdh_provider_invoke('cm', 'lookup_doc', $document['Id'], $document_changed_date);
+  $case_folder = array_pop(explode('/', $src_path_uri));
+  if (in_array($case_folder, $updated_cases)) {
+    $force = true;
+  }
+  $existing_documents = os2web_esdh_provider_invoke('cm', 'lookup_doc', $document['Id']);
   if (!empty($existing_documents) && !$force) {
     lock_release($lock);
     return;

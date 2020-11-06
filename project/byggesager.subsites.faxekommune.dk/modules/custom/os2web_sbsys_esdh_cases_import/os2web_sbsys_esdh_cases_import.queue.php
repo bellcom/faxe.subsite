@@ -16,6 +16,9 @@ if (lock_acquire(OS2WEB_SBSYS_ESDH_CASES_IMPORT_QUEUE_NAME . '_queue', 10000)) {
     os2web_sbsys_esdh_cases_import_cron_queue_worker($item->data);
     $queue->deleteItem($item);
   }
-
+  $path = variable_get('os2web_sbsys_esdh_cases_import_updated_case_list', FALSE);
+  if ($path && file_exists(drupal_realpath($path))){
+    unlink(drupal_realpath($path));
+  }
   lock_release(OS2WEB_SBSYS_ESDH_CASES_IMPORT_QUEUE_NAME . '_queue');
 }
