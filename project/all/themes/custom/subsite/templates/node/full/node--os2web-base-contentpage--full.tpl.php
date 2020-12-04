@@ -8,6 +8,13 @@
     </div>
     <!-- End - image -->
   <?php endif; ?>
+  <?php if (!empty($title)): ?>
+    <!-- Begin - heading -->
+    <div class="node__heading">
+      <h1 class="node__heading__title"><?php print $title; ?></h1>
+    </div>
+    <!-- End - heading -->
+  <?php endif; ?>
 
   <?php if (isset($content['field_os2web_base_field_summary'])): ?>
     <!-- Begin - intro -->
@@ -48,7 +55,7 @@
     </div>
     <!-- End - webform -->
   <?php endif; ?>
- 
+
   <?php if ( isset( $content['field_os2web_base_field_media'] ) ): ?>
     <!-- Begin - PDF files -->
     <div class="node__pdf-files">
