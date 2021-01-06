@@ -2,19 +2,19 @@
 <div class="layout__wrapper">
 
   <!-- Begin - sidr source provider -->
-  <aside class="sidr-source-provider">
+  <div class="sidr-source-provider">
 
     <!-- Begin - navigation -->
-    <nav class="slinky-menu" role="navigation">
+    <div class="slinky-menu">
       <?php print render($menu_slinky_custom__primary); ?>
-    </nav>
+    </div>
     <!-- End - navigation -->
 
-  </aside>
+  </div>
   <!-- End - sidr source provider -->
 
   <!-- Begin - header static -->
-  <header class="flexy-header flexy-header--static">
+  <div class="flexy-header flexy-header--static">
     <div class="flexy-header__row flexy-header__row--first">
       <div class="container">
         <div class="flexy-row">
@@ -32,10 +32,10 @@
           <div class="flexy-spacer"></div>
 
           <!-- Begin - navigation -->
-          <nav class="flexy-header__secondary-navigation hidden-xs hidden-sm"
-               role="navigation">
+          <div class="flexy-header__secondary-navigation hidden-xs hidden-sm"
+              >
             <?php print render($flexy_list__secondary); ?>
-          </nav>
+          </div>
           <!-- End - navigation -->
 
           <!-- Begin - link -->
@@ -60,17 +60,17 @@
         <div class="flexy-row">
 
           <!-- Begin - navigation -->
-          <nav class="flexy-header__navigation__wrapper"
-               role="navigation">
+          <div class="flexy-header__navigation__wrapper"
+              >
             <?php print render($flexy_navigation__primary); ?>
-          </nav>
+          </div>
           <!-- End - navigation -->
 
           <div class="flexy-spacer"></div>
 
           <!-- Begin - social icons -->
-          <nav class="flexy-header__social-icons hidden-xs hidden-sm"
-               role="navigation">
+          <div class="flexy-header__social-icons hidden-xs hidden-sm"
+              >
 
             <ul class="flexy-list">
 
@@ -87,7 +87,7 @@
               <?php endif; ?>
 
             </ul>
-          </nav>
+          </div>
           <!-- End - social icons -->
 
           <!-- Begin - search -->
@@ -105,11 +105,11 @@
         </div>
       </div>
     </div>
-  </header>
+  </div>
   <!-- End - header static -->
 
   <!-- Begin - header sticky -->
-  <header class="flexy-header flexy-header--sticky">
+  <div class="flexy-header flexy-header--sticky">
     <div class="flexy-header__row">
       <div class="container">
         <div class="flexy-row">
@@ -127,10 +127,10 @@
           <div class="flexy-spacer"></div>
 
           <!-- Begin - navigation -->
-          <nav class="flexy-header__navigation__wrapper hidden-xs hidden-sm"
-               role="navigation">
+          <div class="flexy-header__navigation__wrapper hidden-xs hidden-sm"
+              >
             <?php print render($flexy_navigation__primary); ?>
-          </nav>
+          </div>
           <!-- End - navigation -->
 
           <!-- Begin - link -->
@@ -150,11 +150,11 @@
         </div>
       </div>
     </div>
-  </header>
+  </div>
   <!-- End - header sticky -->
 
   <!-- Begin - content -->
-  <main class="layout__content" role="main">
+  <div class="layout__content" id="content">
 
     <?php if (!empty($page['banner'])): ?>
       <?php print render($page['banner']); ?>
@@ -194,8 +194,6 @@
 
     </div>
 
-    <a id="main-content"></a>
-
     <?php if (!panels_get_current_page_display()): ?>
       <div class="container">
         <div class="boxy">
@@ -217,20 +215,20 @@
       <?php print render($page['content']); ?>
     <?php endif; ?>
 
-  </main>
+  </div>
   <!-- End - content -->
 
   <!-- Begin - footer -->
-  <footer class="layout__footer">
+  <div class="layout__footer">
     <div class="layout__footer__inner">
       <div class="container">
 
         <!-- Begin - first -->
         <?php if (!empty($flexy_list__primary)): ?>
           <div class="layout__footer__row layout__footer__row--first">
-            <nav class="layout__footer__navigation" role="navigation">
+            <div class="layout__footer__navigation">
               <?php print render($flexy_list__primary); ?>
-            </nav>
+            </div>
           </div>
         <?php endif; ?>
         <!-- End - first -->
@@ -422,7 +420,7 @@
 
       </div>
     </div>
-  </footer>
+  </div>
   <!-- End - footer -->
 
 </div>

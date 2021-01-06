@@ -84,7 +84,7 @@
 
 <article id="node-<?php print $node->nid; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
   <?php if ((!$page && !empty($title)) || !empty($title_prefix) || !empty($title_suffix) || $display_submitted): ?>
-  <header>
+  <div>
     <?php print render($title_prefix); ?>
     <?php if (!$page && !empty($title)): ?>
     <h2<?php print $title_attributes; ?>><a href="<?php print $node_url; ?>"><?php print $title; ?></a></h2>
@@ -96,7 +96,7 @@
       <?php print $submitted; ?>
     </span>
     <?php endif; ?>
-  </header>
+  </div>
   <?php endif; ?>
   <?php
     // Hide comments, tags, and links now so that we can render them later.
@@ -111,10 +111,10 @@
     $links = render($content['links']);
     if ($field_tags || $links):
   ?>
-   <footer>
+   <div>
      <?php print $field_tags; ?>
      <?php print $links; ?>
-  </footer>
+  </div>
   <?php endif; ?>
   <?php print render($content['comments']); ?>
 </article>
