@@ -198,7 +198,9 @@ create_vhost() {
 install_drupal() {
   debug "Installing drupal ($SITENAME)"
   # Do a drush site install
-  /usr/bin/drush -q -y -r $MULTISITE site-install $PROFILE --locale=da --db-url="mysql://$DBUSER:$DBPASS@localhost/$DBNAME" --sites-subdir="$SITENAME" --account-mail="$EMAIL" --site-mail="$EMAIL" --site-name="$SITENAME" --account-pass="$ADMINPASS"
+  echo /usr/bin/drush -y -r $MULTISITE site-install $PROFILE --locale=da --db-url="mysql://$DBUSER:$DBPASS@localhost/$DBNAME" --sites-subdir="$SITENAME" --account-mail="$EMAIL" --site-mail="$EMAIL" --site-name="$SITENAME" --account-pass="$ADMINPASS"
+
+  /usr/bin/drush -y -r $MULTISITE site-install $PROFILE --db-url="mysql://$DBUSER:$DBPASS@localhost/$DBNAME" --sites-subdir="$SITENAME" --account-mail="$EMAIL" --site-mail="$EMAIL" --site-name="$SITENAME" --account-pass="$ADMINPASS"
 
   # Set tmp
   /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset file_temporary_path "$TMPDIR"
@@ -211,8 +213,16 @@ install_drupal() {
   #/usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset cache 1
   /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" vset page_cache_maximum_age 10800
   # translation updates - takes a long time
-  #/usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" l10n-update-refresh
-  #/usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" l10n-update
+  echo 'Download drush language'
+  /usr/bin/drush -y -r "$MULTISITE" --uri="$SITENAME" dl drush_language
+  echo 'Language add'
+  /usr/bin/drush -y -r "$MULTISITE" --uri="$SITENAME" language-add da
+  echo 'Language enabled'
+  /usr/bin/drush -y -r "$MULTISITE" --uri="$SITENAME" language-enable da
+  echo 'Language default'
+  /usr/bin/drush -y -r "$MULTISITE" --uri="$SITENAME" language-default da
+  /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" l10n-update-refresh
+  /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" l10n-update
   /usr/bin/drush -q -y -r "$MULTISITE" --uri="$SITENAME" dis update
 }
 
